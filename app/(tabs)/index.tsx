@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -79,20 +78,17 @@ export default function WelcomeScreen() {
             <ThemedText style={styles.avatarText}>👩‍🎓</ThemedText>
           </View>
         </View>
-        
+
         <ThemedText style={styles.welcomeTitle}>Welcome to SpeakEdge</ThemedText>
         <ThemedText style={styles.welcomeSubtitle}>
           India's most trusted CEFR-based English learning app powered by AI
         </ThemedText>
 
-        <TouchableOpacity 
-          style={styles.speechButton} 
-          onPress={() => speakText("Welcome to SpeakEdge - India's most trusted CEFR-based English learning app powered by AI. Please enter your name and mobile number to get started.")}
-        >
-          <ThemedText style={styles.speechButtonText}>
-            {isSpeaking ? '🔇 Stop' : '🔊 Listen'}
-          </ThemedText>
-        </TouchableOpacity>
+        {isSpeaking && (
+          <View style={styles.speakingIndicator}>
+            <ThemedText style={styles.speakingText}>🎙️ Rose is speaking...</ThemedText>
+          </View>
+        )}
 
         <View style={styles.inputContainer}>
           <TextInput
@@ -134,20 +130,17 @@ export default function WelcomeScreen() {
             <ThemedText style={styles.avatarText}>🤖</ThemedText>
           </View>
         </View>
-        
+
         <ThemedText style={styles.introTitle}>Meet Rose, Your AI Tutor</ThemedText>
         <ThemedText style={styles.introText}>
           Hi {name}, Welcome to SpeakEdge! I'm Rose, your AI tutor. I'm here to help you improve your English skills with personalized lessons and practice sessions.
         </ThemedText>
 
-        <TouchableOpacity 
-          style={styles.speechButton} 
-          onPress={() => speakText(`Hi ${name}, Welcome to SpeakEdge! I'm Rose, your AI tutor. I'm here to help you improve your English skills with personalized lessons and practice sessions. Let's get started with some questions to personalize your learning experience.`)}
-        >
-          <ThemedText style={styles.speechButtonText}>
-            {isSpeaking ? '🔇 Stop Rose' : '🔊 Hear Rose'}
-          </ThemedText>
-        </TouchableOpacity>
+        {isSpeaking && (
+          <View style={styles.speakingIndicator}>
+            <ThemedText style={styles.speakingText}>🎙️ Rose is speaking...</ThemedText>
+          </View>
+        )}
 
         <TouchableOpacity style={styles.primaryButton} onPress={() => setCurrentStep('level')}>
           <ThemedText style={styles.buttonText}>Let's Get Started</ThemedText>
@@ -158,21 +151,18 @@ export default function WelcomeScreen() {
 
   const renderLevelSelection = () => {
     const levels = ['Beginner', 'Elementary', 'Intermediate', 'Upper Intermediate', 'Advanced', 'Proficient'];
-    
+
     return (
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <ThemedView style={styles.container}>
           <ThemedText style={styles.stepTitle}>What's your English level?</ThemedText>
-          
-          <TouchableOpacity 
-            style={styles.speechButton} 
-            onPress={() => speakText("What's your English level? Please select from Beginner, Elementary, Intermediate, Upper Intermediate, Advanced, or Proficient.")}
-          >
-            <ThemedText style={styles.speechButtonText}>
-              {isSpeaking ? '🔇 Stop' : '🔊 Listen'}
-            </ThemedText>
-          </TouchableOpacity>
-          
+
+          {isSpeaking && (
+            <View style={styles.speakingIndicator}>
+              <ThemedText style={styles.speakingText}>🎙️ Rose is speaking...</ThemedText>
+            </View>
+          )}
+
           {levels.map((level) => (
             <TouchableOpacity
               key={level}
@@ -205,12 +195,18 @@ export default function WelcomeScreen() {
 
   const renderPurposeSelection = () => {
     const purposes = ['Job/Business', 'Abroad', 'Improve skills', 'Academic', 'Practise', 'Pronunciation', 'CEFR Test', 'Other'];
-    
+
     return (
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <ThemedView style={styles.container}>
           <ThemedText style={styles.stepTitle}>Why do you want to learn English?</ThemedText>
-          
+
+          {isSpeaking && (
+            <View style={styles.speakingIndicator}>
+              <ThemedText style={styles.speakingText}>🎙️ Rose is speaking...</ThemedText>
+            </View>
+          )}
+
           {purposes.map((purpose) => (
             <TouchableOpacity
               key={purpose}
@@ -248,12 +244,18 @@ export default function WelcomeScreen() {
 
   const renderSkillsSelection = () => {
     const skills = ['Speaking', 'Writing', 'Reading', 'Listening', 'Pronunciation', 'All', 'Other'];
-    
+
     return (
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <ThemedView style={styles.container}>
           <ThemedText style={styles.stepTitle}>Which skills do you want to focus on?</ThemedText>
-          
+
+          {isSpeaking && (
+            <View style={styles.speakingIndicator}>
+              <ThemedText style={styles.speakingText}>🎙️ Rose is speaking...</ThemedText>
+            </View>
+          )}
+
           {skills.map((skill) => (
             <TouchableOpacity
               key={skill}
@@ -291,12 +293,18 @@ export default function WelcomeScreen() {
 
   const renderPartnerSelection = () => {
     const options = ['Yes', 'No', 'Other'];
-    
+
     return (
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <ThemedView style={styles.container}>
           <ThemedText style={styles.stepTitle}>Are you interested in having a speaking partner?</ThemedText>
-          
+
+          {isSpeaking && (
+            <View style={styles.speakingIndicator}>
+              <ThemedText style={styles.speakingText}>🎙️ Rose is speaking...</ThemedText>
+            </View>
+          )}
+
           {options.map((option) => (
             <TouchableOpacity
               key={option}
@@ -331,7 +339,13 @@ export default function WelcomeScreen() {
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <ThemedView style={styles.container}>
         <ThemedText style={styles.stepTitle}>Personalized Course Recommendation</ThemedText>
-        
+
+        {isSpeaking && (
+          <View style={styles.speakingIndicator}>
+            <ThemedText style={styles.speakingText}>🎙️ Rose is speaking...</ThemedText>
+          </View>
+        )}
+
         <View style={styles.courseCard}>
           <ThemedText style={styles.courseTitle}>
             {userAnswers.level} English Course
@@ -386,6 +400,36 @@ export default function WelcomeScreen() {
       default: return renderWelcomeScreen();
     }
   };
+
+  // Effect to auto-play speech on screen load
+  useEffect(() => {
+    switch (currentStep) {
+      case 'welcome':
+        speakText("Welcome to SpeakEdge - India's most trusted CEFR-based English learning app powered by AI. Please enter your name and mobile number to get started.");
+        break;
+      case 'intro':
+        speakText(`Hi ${name}, Welcome to SpeakEdge! I'm Rose, your AI tutor. I'm here to help you improve your English skills with personalized lessons and practice sessions. Let's get started with some questions to personalize your learning experience.`);
+        break;
+      case 'level':
+        speakText("What's your English level? Please select from Beginner, Elementary, Intermediate, Upper Intermediate, Advanced, or Proficient.");
+        break;
+      case 'purpose':
+        speakText("Why do you want to learn English? Please select all that apply.");
+        break;
+      case 'skills':
+        speakText("Which skills do you want to focus on? Please select all that apply.");
+        break;
+      case 'partner':
+        speakText("Are you interested in having a speaking partner? Please answer yes or no.");
+        break;
+      case 'recommendation':
+        speakText(`Based on your input, we recommend the ${userAnswers.level} English course. We will now guide you through the joining process.`);
+        break;
+      default:
+        break;
+    }
+  }, [currentStep, name, userAnswers.level, userAnswers.purpose, userAnswers.skills]);
+
 
   return renderCurrentStep();
 }
@@ -566,5 +610,13 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 14,
     fontWeight: '600',
+  },
+  speakingIndicator: {
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  speakingText: {
+    fontSize: 14,
+    color: '#888',
   },
 });
