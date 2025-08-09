@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import {
   StyleSheet,
@@ -62,9 +63,9 @@ export default function ProfileScreen() {
 
   const renderBenefitsPage = () => (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <ThemedView style={[styles.container, { backgroundColor: colorScheme === 'dark' ? '#1a1a2e' : '#f8f9ff' }]}>
+      <ThemedView style={styles.container}>
         <ThemedText style={styles.title}>SpeakEdge Membership Benefits</ThemedText>
-
+        
         <View style={styles.benefitsList}>
           {[
             '1. Unlimited English conversation partner',
@@ -80,14 +81,14 @@ export default function ProfileScreen() {
         </View>
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.primaryButton}
+          <TouchableOpacity 
+            style={styles.primaryButton} 
             onPress={() => setShowMembershipForm(true)}
           >
             <ThemedText style={styles.buttonText}>I am Interested</ThemedText>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.secondaryButton}
+          <TouchableOpacity 
+            style={styles.secondaryButton} 
             onPress={() => setShowBenefits(false)}
           >
             <ThemedText style={[styles.buttonText, styles.secondaryButtonText]}>Skip for Now</ThemedText>
@@ -99,35 +100,27 @@ export default function ProfileScreen() {
 
   const renderMembershipForm = () => (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <ThemedView style={[styles.container, { backgroundColor: colorScheme === 'dark' ? '#1a1a2e' : '#f8f9ff' }]}>
+      <ThemedView style={styles.container}>
         <ThemedText style={styles.title}>Membership Registration</ThemedText>
-
+        
         <View style={styles.formContainer}>
           <TextInput
-            style={[styles.input, { 
-              borderColor: Colors[colorScheme ?? 'light'].tint + '30',
-              backgroundColor: Colors[colorScheme ?? 'light'].background,
-              color: Colors[colorScheme ?? 'light'].text 
-            }]}
+            style={[styles.input, { color: Colors[colorScheme ?? 'light'].text }]}
             placeholder="Name"
             placeholderTextColor={Colors[colorScheme ?? 'light'].icon}
             value={formData.name}
             onChangeText={(text) => setFormData({...formData, name: text})}
           />
-
+          
           <TextInput
-            style={[styles.input, { 
-              borderColor: Colors[colorScheme ?? 'light'].tint + '30',
-              backgroundColor: Colors[colorScheme ?? 'light'].background,
-              color: Colors[colorScheme ?? 'light'].text 
-            }]}
+            style={[styles.input, { color: Colors[colorScheme ?? 'light'].text }]}
             placeholder="Age"
             placeholderTextColor={Colors[colorScheme ?? 'light'].icon}
             value={formData.age}
             onChangeText={(text) => setFormData({...formData, age: text})}
             keyboardType="numeric"
           />
-
+          
           <View style={styles.genderContainer}>
             <ThemedText style={styles.label}>Gender:</ThemedText>
             <View style={styles.radioContainer}>
@@ -152,36 +145,24 @@ export default function ProfileScreen() {
           </View>
 
           <TextInput
-            style={[styles.input, { 
-              borderColor: Colors[colorScheme ?? 'light'].tint + '30',
-              backgroundColor: Colors[colorScheme ?? 'light'].background,
-              color: Colors[colorScheme ?? 'light'].text 
-            }]}
+            style={[styles.input, { color: Colors[colorScheme ?? 'light'].text }]}
             placeholder="Country"
             placeholderTextColor={Colors[colorScheme ?? 'light'].icon}
             value={formData.country}
             onChangeText={(text) => setFormData({...formData, country: text})}
           />
-
+          
           <TextInput
-            style={[styles.input, { 
-              borderColor: Colors[colorScheme ?? 'light'].tint + '30',
-              backgroundColor: Colors[colorScheme ?? 'light'].background,
-              color: Colors[colorScheme ?? 'light'].text 
-            }]}
+            style={[styles.input, { color: Colors[colorScheme ?? 'light'].text }]}
             placeholder="Mobile Number"
             placeholderTextColor={Colors[colorScheme ?? 'light'].icon}
             value={formData.mobile}
             onChangeText={(text) => setFormData({...formData, mobile: text})}
             keyboardType="phone-pad"
           />
-
+          
           <TextInput
-            style={[styles.input, { 
-              borderColor: Colors[colorScheme ?? 'light'].tint + '30',
-              backgroundColor: Colors[colorScheme ?? 'light'].background,
-              color: Colors[colorScheme ?? 'light'].text 
-            }]}
+            style={[styles.input, { color: Colors[colorScheme ?? 'light'].text }]}
             placeholder="WhatsApp Number (prefilled)"
             placeholderTextColor={Colors[colorScheme ?? 'light'].icon}
             value={formData.whatsapp || formData.mobile}
@@ -211,11 +192,7 @@ export default function ProfileScreen() {
           </View>
 
           <TextInput
-            style={[styles.input, { 
-              borderColor: Colors[colorScheme ?? 'light'].tint + '30',
-              backgroundColor: Colors[colorScheme ?? 'light'].background,
-              color: Colors[colorScheme ?? 'light'].text 
-            }]}
+            style={[styles.input, { color: Colors[colorScheme ?? 'light'].text }]}
             placeholder="Academic Qualification"
             placeholderTextColor={Colors[colorScheme ?? 'light'].icon}
             value={formData.qualification}
@@ -246,11 +223,7 @@ export default function ProfileScreen() {
           </View>
 
           <TextInput
-            style={[styles.textArea, { 
-              borderColor: Colors[colorScheme ?? 'light'].tint + '30',
-              backgroundColor: Colors[colorScheme ?? 'light'].background,
-              color: Colors[colorScheme ?? 'light'].text 
-            }]}
+            style={[styles.textArea, { color: Colors[colorScheme ?? 'light'].text }]}
             placeholder="About You (Max 300 characters)"
             placeholderTextColor={Colors[colorScheme ?? 'light'].icon}
             value={formData.about}
@@ -269,8 +242,8 @@ export default function ProfileScreen() {
             <ThemedText style={styles.photoInfo}>Max 1MB - Will be compressed to 100kb</ThemedText>
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.primaryButton}
+          <TouchableOpacity 
+            style={styles.primaryButton} 
             onPress={() => {
               Alert.alert('Success', 'Congratulations! Your SpeakEdge account is activated.', [
                 { text: 'OK', onPress: () => setShowDashboard(true) }
@@ -286,16 +259,16 @@ export default function ProfileScreen() {
 
   const renderDashboard = () => (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <ThemedView style={[styles.container, { backgroundColor: colorScheme === 'dark' ? '#1a1a2e' : '#f8f9ff' }]}>
+      <ThemedView style={styles.container}>
         <ThemedText style={styles.title}>Welcome to Your Dashboard</ThemedText>
-
+        
         <ThemedText style={styles.sectionTitle}>Available Plans</ThemedText>
-
+        
         {plans.map((plan, index) => (
           <TouchableOpacity key={index} style={styles.planCard}>
             <ThemedText style={styles.planText}>{plan}</ThemedText>
             {plan.includes('Professional English-Speaking Plan') && (
-              <TouchableOpacity
+              <TouchableOpacity 
                 style={styles.professionsButton}
                 onPress={() => Alert.alert('Top 20 Professions', professions.join(', '))}
               >
@@ -322,25 +295,25 @@ export default function ProfileScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <ThemedView style={[styles.container, { backgroundColor: colorScheme === 'dark' ? '#1a1a2e' : '#f8f9ff' }]}>
+      <ThemedView style={styles.container}>
         <ThemedText style={styles.title}>Profile</ThemedText>
-
+        
         <View style={styles.profileSection}>
-          <TouchableOpacity
+          <TouchableOpacity 
             style={styles.primaryButton}
             onPress={() => setShowBenefits(true)}
           >
             <ThemedText style={styles.buttonText}>View Membership Benefits</ThemedText>
           </TouchableOpacity>
-
-          <TouchableOpacity
+          
+          <TouchableOpacity 
             style={styles.secondaryButton}
             onPress={() => setShowMembershipForm(true)}
           >
             <ThemedText style={[styles.buttonText, styles.secondaryButtonText]}>Join Membership</ThemedText>
           </TouchableOpacity>
-
-          <TouchableOpacity
+          
+          <TouchableOpacity 
             style={styles.tertiaryButton}
             onPress={() => setShowDashboard(true)}
           >
@@ -361,11 +334,10 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   title: {
-    fontSize: 32,
+    fontSize: 28,
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 30,
-    color: Colors[colorScheme ?? 'light'].tint,
   },
   sectionTitle: {
     fontSize: 20,
@@ -376,17 +348,10 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   benefitItem: {
-    padding: 20,
-    marginBottom: 12,
-    backgroundColor: Colors[colorScheme ?? 'light'].background,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: Colors[colorScheme ?? 'light'].tint + '20',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
+    padding: 15,
+    marginBottom: 10,
+    backgroundColor: '#f8f9fa',
+    borderRadius: 10,
   },
   benefitText: {
     fontSize: 16,
@@ -396,34 +361,27 @@ const styles = StyleSheet.create({
     gap: 15,
   },
   primaryButton: {
-    backgroundColor: Colors[colorScheme ?? 'light'].tint,
-    padding: 18,
-    borderRadius: 16,
+    backgroundColor: '#007AFF',
+    padding: 15,
+    borderRadius: 10,
     alignItems: 'center',
-    marginBottom: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 6,
+    marginBottom: 10,
   },
   secondaryButton: {
-    borderWidth: 2,
-    borderColor: Colors[colorScheme ?? 'light'].tint,
-    padding: 18,
-    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#007AFF',
+    padding: 15,
+    borderRadius: 10,
     alignItems: 'center',
-    marginBottom: 12,
-    backgroundColor: 'transparent',
+    marginBottom: 10,
   },
   tertiaryButton: {
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: '#28A745',
-    padding: 18,
-    borderRadius: 16,
+    padding: 15,
+    borderRadius: 10,
     alignItems: 'center',
-    marginBottom: 12,
-    backgroundColor: 'transparent',
+    marginBottom: 10,
   },
   buttonText: {
     color: 'white',
@@ -440,23 +398,19 @@ const styles = StyleSheet.create({
     gap: 15,
   },
   input: {
-    borderWidth: 2,
-    borderColor: Colors[colorScheme ?? 'light'].tint + '30',
-    borderRadius: 12,
-    padding: 16,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 10,
+    padding: 15,
     fontSize: 16,
-    backgroundColor: Colors[colorScheme ?? 'light'].background,
-    color: Colors[colorScheme ?? 'light'].text,
   },
   textArea: {
-    borderWidth: 2,
-    borderColor: Colors[colorScheme ?? 'light'].tint + '30',
-    borderRadius: 12,
-    padding: 16,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 10,
+    padding: 15,
     fontSize: 16,
-    height: 120,
-    backgroundColor: Colors[colorScheme ?? 'light'].background,
-    color: Colors[colorScheme ?? 'light'].text,
+    height: 100,
     textAlignVertical: 'top',
   },
   charCount: {
@@ -540,7 +494,7 @@ const styles = StyleSheet.create({
     gap: 15,
   },
   planCard: {
-    backgroundColor: Colors[colorScheme ?? 'light'].background,
+    backgroundColor: '#f8f9fa',
     padding: 15,
     borderRadius: 10,
     marginBottom: 10,
