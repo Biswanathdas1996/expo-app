@@ -7,6 +7,7 @@ import {
   Alert,
   ScrollView,
   Image,
+  Modal,
 } from 'react-native';
 import { Audio } from 'expo-av';
 import * as Speech from 'expo-speech';
@@ -27,6 +28,8 @@ export default function WelcomeScreen() {
     language: 'English'
   });
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [showSkipPopup, setShowSkipPopup] = useState(false);
+  const [showBenefitsModal, setShowBenefitsModal] = useState(false);
   const colorScheme = useColorScheme();
 
   const speakText = async (text: string) => {
@@ -376,10 +379,10 @@ export default function WelcomeScreen() {
 
         <View style={styles.finalButtonContainer}>
           <TouchableOpacity style={styles.primaryButton} onPress={() => Alert.alert('Demo', 'Free demo starting!')}>
-            <ThemedText style={styles.buttonText}>Join Free Demo</ThemedText>
+            <ThemedText style={styles.buttonText}>Join a Free Demo Now!</ThemedText>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.secondaryButton} onPress={() => Alert.alert('Skip', 'Claim 100% free SpeakEdge lifetime membership...')}>
-            <ThemedText style={[styles.buttonText, styles.secondaryButtonText]}>Skip</ThemedText>
+          <TouchableOpacity style={styles.secondaryButton} onPress={() => setShowSkipPopup(true)}>
+            <ThemedText style={[styles.buttonText, styles.secondaryButtonText]}>Skip for Now</ThemedText>
           </TouchableOpacity>
         </View>
       </ThemedView>
@@ -428,7 +431,110 @@ export default function WelcomeScreen() {
   }, [currentStep, name]); // Only depend on currentStep and name, not on user selections
 
 
-  return renderCurrentStep();
+  const renderSkipPopup = () => (
+    <Modal
+      visible={showSkipPopup}
+      transparent={true}
+      animationType="fade"
+      onRequestClose={() => setShowSkipPopup(false)}
+    >
+      <View style={styles.modalOverlay}>
+        <View style={[styles.modalContent, { backgroundColor: Colors[colorScheme ?? 'light'].background }]}>
+          <ThemedText style={styles.popupText}>
+            Claim 100% free SpeakEdge lifetime membership – Limited time offer – Grab it now. Save ₹999 with 100% free.
+          </ThemedText>
+          
+          <View style={styles.popupButtonContainer}>
+            <TouchableOpacity 
+              style={styles.primaryButton} 
+              onPress={() => {
+                setShowSkipPopup(false);
+                setShowBenefitsModal(true);
+              }}
+            >
+              <ThemedText style={styles.buttonText}>Benefits of SpeakEdge Membership</ThemedText>
+            </TouchableOpacity>
+            
+            <TouchableOpacity 
+              style={styles.secondaryButton} 
+              onPress={() => setShowSkipPopup(false)}
+            >
+              <ThemedText style={[styles.buttonText, styles.secondaryButtonText]}>Skip for Now</ThemedText>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    </Modal>
+  );
+
+  const renderBenefitsModal = () => (
+    <Modal
+      visible={showBenefitsModal}
+      transparent={true}
+      animationType="slide"
+      onRequestClose={() => setShowBenefitsModal(false)}
+    >
+      <View style={styles.modalOverlay}>
+        <View style={[styles.benefitsModalContent, { backgroundColor: Colors[colorScheme ?? 'light'].background }]}>
+          <ThemedText style={styles.benefitsTitle}>Benefits of SpeakEdge Membership</ThemedText>
+          
+          <ScrollView style={styles.benefitsScrollView}>
+            <View style={styles.benefitItem}>
+              <ThemedText style={styles.benefitBullet}>• </ThemedText>
+              <ThemedText style={styles.benefitText}>Unlimited English conversation partners on SpeakEdge Platform</ThemedText>
+            </View>
+            
+            <View style={styles.benefitItem}>
+              <ThemedText style={styles.benefitBullet}>• </ThemedText>
+              <ThemedText style={styles.benefitText}>Daily English learning with fun</ThemedText>
+            </View>
+            
+            <View style={styles.benefitItem}>
+              <ThemedText style={styles.benefitBullet}>• </ThemedText>
+              <ThemedText style={styles.benefitText}>Lifetime membership access</ThemedText>
+            </View>
+            
+            <View style={styles.benefitItem}>
+              <ThemedText style={styles.benefitBullet}>• </ThemedText>
+              <ThemedText style={styles.benefitText}>Track progress with badges</ThemedText>
+            </View>
+            
+            <View style={styles.benefitItem}>
+              <ThemedText style={styles.benefitBullet}>• </ThemedText>
+              <ThemedText style={styles.benefitText}>Be the first to get SpeakEdge updates</ThemedText>
+            </View>
+          </ScrollView>
+          
+          <View style={styles.benefitsButtonContainer}>
+            <TouchableOpacity 
+              style={styles.primaryButton} 
+              onPress={() => {
+                setShowBenefitsModal(false);
+                Alert.alert('Interest', 'Thank you for your interest! We will contact you soon.');
+              }}
+            >
+              <ThemedText style={styles.buttonText}>I am Interested</ThemedText>
+            </TouchableOpacity>
+            
+            <TouchableOpacity 
+              style={styles.secondaryButton} 
+              onPress={() => setShowBenefitsModal(false)}
+            >
+              <ThemedText style={[styles.buttonText, styles.secondaryButtonText]}>Skip for Now</ThemedText>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    </Modal>
+  );
+
+  return (
+    <>
+      {renderCurrentStep()}
+      {renderSkipPopup()}
+      {renderBenefitsModal()}
+    </>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -615,5 +721,79 @@ const styles = StyleSheet.create({
   speakingText: {
     fontSize: 14,
     color: '#888',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  modalContent: {
+    borderRadius: 15,
+    padding: 25,
+    width: '100%',
+    maxWidth: 350,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  popupText: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 25,
+    lineHeight: 24,
+  },
+  popupButtonContainer: {
+    gap: 12,
+  },
+  benefitsModalContent: {
+    borderRadius: 15,
+    padding: 25,
+    width: '100%',
+    maxWidth: 400,
+    maxHeight: '80%',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  benefitsTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  benefitsScrollView: {
+    maxHeight: 300,
+    marginBottom: 20,
+  },
+  benefitItem: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 15,
+  },
+  benefitBullet: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#007AFF',
+    marginRight: 8,
+  },
+  benefitText: {
+    fontSize: 16,
+    flex: 1,
+    lineHeight: 22,
+  },
+  benefitsButtonContainer: {
+    gap: 12,
   },
 });
