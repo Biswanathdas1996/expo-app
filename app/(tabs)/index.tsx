@@ -218,7 +218,11 @@ export default function WelcomeScreen() {
     return (
       <View style={styles.gradientContainer}>
         <View style={styles.gradientBackground} />
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <ScrollView 
+          contentContainerStyle={styles.scrollContainer}
+          showsVerticalScrollIndicator={true}
+          bounces={true}
+        >
           <View style={styles.modernContainer}>
             <ThemedText style={styles.modernStepTitle}>What's your English level?</ThemedText>
 
@@ -293,7 +297,11 @@ export default function WelcomeScreen() {
     return (
       <View style={styles.gradientContainer}>
         <View style={styles.gradientBackground} />
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <ScrollView 
+          contentContainerStyle={styles.scrollContainer}
+          showsVerticalScrollIndicator={true}
+          bounces={true}
+        >
           <View style={styles.modernContainer}>
             <ThemedText style={styles.modernStepTitle}>Why do you want to learn English?</ThemedText>
             <ThemedText style={styles.stepSubtitle}>Select all that apply</ThemedText>
@@ -373,7 +381,11 @@ export default function WelcomeScreen() {
     return (
       <View style={styles.gradientContainer}>
         <View style={styles.gradientBackground} />
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <ScrollView 
+          contentContainerStyle={styles.scrollContainer}
+          showsVerticalScrollIndicator={true}
+          bounces={true}
+        >
           <View style={styles.modernContainer}>
             <ThemedText style={styles.modernStepTitle}>Which skills do you want to focus on?</ThemedText>
             <ThemedText style={styles.stepSubtitle}>Select all that apply</ThemedText>
@@ -449,7 +461,11 @@ export default function WelcomeScreen() {
     return (
       <View style={styles.gradientContainer}>
         <View style={styles.gradientBackground} />
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <ScrollView 
+          contentContainerStyle={styles.scrollContainer}
+          showsVerticalScrollIndicator={true}
+          bounces={true}
+        >
           <View style={styles.modernContainer}>
             <ThemedText style={styles.modernStepTitle}>Speaking Partner</ThemedText>
             <ThemedText style={styles.stepSubtitle}>Are you interested in having a speaking partner?</ThemedText>
@@ -515,7 +531,11 @@ export default function WelcomeScreen() {
   const renderRecommendation = () => (
     <View style={styles.gradientContainer}>
       <View style={styles.gradientBackground} />
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <ScrollView 
+        contentContainerStyle={styles.scrollContainer}
+        showsVerticalScrollIndicator={true}
+        bounces={true}
+      >
         <View style={styles.modernContainer}>
           <ThemedText style={styles.modernStepTitle}>Perfect Match Found! 🎉</ThemedText>
 
@@ -756,16 +776,17 @@ const styles = StyleSheet.create({
     right: 0,
     top: 0,
     bottom: 0,
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    backgroundColor: '#f0f4ff',
     opacity: 0.1,
   },
   scrollContainer: {
     flexGrow: 1,
+    paddingBottom: 50,
   },
   modernContainer: {
     flex: 1,
     padding: 24,
-    justifyContent: 'center',
+    minHeight: height,
   },
   heroSection: {
     alignItems: 'center',
@@ -873,6 +894,8 @@ const styles = StyleSheet.create({
     elevation: 8,
     position: 'relative',
     overflow: 'hidden',
+    marginTop: 20,
+    marginBottom: 20,
   },
   buttonGradient: {
     position: 'absolute',
@@ -880,7 +903,7 @@ const styles = StyleSheet.create({
     right: 0,
     top: 0,
     bottom: 0,
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    backgroundColor: '#667eea',
   },
   modernButtonText: {
     color: 'white',
