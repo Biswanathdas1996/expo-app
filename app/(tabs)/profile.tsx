@@ -515,12 +515,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
 });
-import React from 'react';
-import { StyleSheet, ScrollView, View, TouchableOpacity } from 'react-native';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { useColorScheme } from '@/hooks/useColorScheme';
-import { Colors } from '@/constants/Colors';
 
 export default function ProfileScreen() {
   const colorScheme = useColorScheme();
