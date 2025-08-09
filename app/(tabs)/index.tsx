@@ -9,7 +9,7 @@ import {
   Modal,
   Dimensions,
 } from 'react-native';
-import * as Speech from 'expo-speech';
+// import * as Speech from 'expo-speech';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useColorScheme } from '@/hooks/useColorScheme';
@@ -34,28 +34,12 @@ export default function WelcomeScreen() {
   const colorScheme = useColorScheme();
 
   const speakText = async (text: string) => {
-    if (isSpeaking) {
-      stopSpeaking();
-    }
-
-    try {
-      setIsSpeaking(true);
-      await Speech.speak(text, {
-        language: 'en-US',
-        pitch: 1.1,
-        rate: 0.9,
-        onDone: () => setIsSpeaking(false),
-        onStopped: () => setIsSpeaking(false),
-        onError: () => setIsSpeaking(false),
-      });
-    } catch (error) {
-      console.log('Speech error:', error);
-      setIsSpeaking(false);
-    }
+    // Temporarily disabled speech functionality
+    console.log('Would speak:', text);
   };
 
   const stopSpeaking = () => {
-    Speech.stop();
+    // Temporarily disabled speech functionality
     setIsSpeaking(false);
   };
 
@@ -245,7 +229,6 @@ export default function WelcomeScreen() {
           </TouchableOpacity>
         </ScrollView>
       </View>
-    </View>
   );
 
   const renderPurposeSelection = () => {
