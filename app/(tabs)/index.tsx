@@ -7,9 +7,7 @@ import {
   TouchableOpacity,
   Alert,
   ScrollView,
-  Image,
   Modal,
-  LinearGradient,
   Dimensions,
 } from 'react-native';
 import { Audio } from 'expo-av';
@@ -18,683 +16,294 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Colors } from '@/constants/Colors';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const { width, height } = Dimensions.get('window');
 
-export default function WelcomeScreen() {
-  const [name, setName] = useState('');
-  const [mobile, setMobile] = useState('');
+export default function HomeScreen() {
   const [currentStep, setCurrentStep] = useState('welcome');
-  const [userAnswers, setUserAnswers] = useState({
-    level: '',
-    purpose: [],
-    skills: [],
-    partner: '',
-    language: 'English'
-  });
-  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [name, setName] = useState('');
   const [showSkipPopup, setShowSkipPopup] = useState(false);
   const [showBenefitsModal, setShowBenefitsModal] = useState(false);
   const colorScheme = useColorScheme();
+  const themeColors = Colors[colorScheme ?? 'light'];
 
-  const speakText = async (text: string) => {
-    if (isSpeaking) {
-      stopSpeaking();
-    }
-    
-    try {
-      setIsSpeaking(true);
-      await Speech.speak(text, {
-        language: 'en-US',
-        pitch: 1.1,
-        rate: 0.9,
-        voice: 'com.apple.ttsbundle.Samantha-compact',
-        onDone: () => setIsSpeaking(false),
-        onStopped: () => setIsSpeaking(false),
-        onError: () => setIsSpeaking(false),
-      });
-    } catch (error) {
-      console.log('Speech error:', error);
-      setIsSpeaking(false);
-    }
-  };
-
-  const stopSpeaking = () => {
-    Speech.stop();
-    setIsSpeaking(false);
-  };
-
-  const handleSignIn = () => {
-    if (!name.trim() || !mobile.trim()) {
-      Alert.alert('Error', 'Please fill in both name and mobile number');
-      return;
-    }
-    setCurrentStep('intro');
-  };
-
-  const handleSignUp = () => {
-    if (!name.trim() || !mobile.trim()) {
-      Alert.alert('Error', 'Please fill in both name and mobile number');
-      return;
-    }
-    setCurrentStep('intro');
-  };
-
-  const renderWelcomeScreen = () => (
-    <View style={styles.gradientContainer}>
-      <View style={styles.gradientBackground} />
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
+  const renderWelcomeStep = () => (
+    <ThemedView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
         <View style={styles.modernContainer}>
+          {/* Hero Section */}
           <View style={styles.heroSection}>
             <View style={styles.modernAvatarContainer}>
-              <View style={styles.modernAvatar}>
-                <ThemedText style={styles.modernAvatarEmoji}>🎓</ThemedText>
-              </View>
               <View style={styles.avatarGlow} />
+              <View style={[styles.modernAvatar, { borderColor: themeColors.tint }]}>
+                <ThemedText style={styles.modernAvatarEmoji}>👋</ThemedText>
+              </View>
             </View>
-
-            <ThemedText style={styles.modernWelcomeTitle}>Welcome to</ThemedText>
+            
+            <ThemedText style={[styles.modernWelcomeTitle, { color: themeColors.text }]}>
+              Welcome to
+            </ThemedText>
+            
             <View style={styles.brandContainer}>
-              <ThemedText style={styles.brandName}>SpeakEdge</ThemedText>
-              <View style={styles.brandAccent} />
+              <ThemedText style={[styles.brandName, { color: themeColors.tint }]}>
+                MindFlow
+              </ThemedText>
             </View>
-            <ThemedText style={styles.modernSubtitle}>
-              Master English with AI-powered learning
+            
+            <ThemedText style={[styles.subtitle, { color: themeColors.text }]}>
+              Your personal mindfulness companion for a calmer, more focused you
             </ThemedText>
           </View>
 
-          <View style={styles.modernInputContainer}>
-            <View style={styles.inputWrapper}>
-              <View style={styles.inputIcon}>
-                <ThemedText style={styles.iconText}>👤</ThemedText>
-              </View>
-              <TextInput
-                style={[styles.modernInput, { color: Colors[colorScheme ?? 'light'].text }]}
-                placeholder="Enter your name"
-                placeholderTextColor="#A0A0A0"
-                value={name}
-                onChangeText={setName}
-              />
-            </View>
-
-            <View style={styles.inputWrapper}>
-              <View style={styles.inputIcon}>
-                <ThemedText style={styles.iconText}>📱</ThemedText>
-              </View>
-              <TextInput
-                style={[styles.modernInput, { color: Colors[colorScheme ?? 'light'].text }]}
-                placeholder="Enter mobile number"
-                placeholderTextColor="#A0A0A0"
-                value={mobile}
-                onChangeText={setMobile}
-                keyboardType="phone-pad"
-              />
-            </View>
-          </View>
-
-          <View style={styles.modernButtonContainer}>
-            <TouchableOpacity style={styles.modernPrimaryButton} onPress={handleSignUp}>
-              <View style={styles.buttonGradient} />
-              <ThemedText style={styles.modernButtonText}>Get Started</ThemedText>
-            </TouchableOpacity>
-            
-            <TouchableOpacity style={styles.modernSecondaryButton} onPress={handleSignIn}>
-              <ThemedText style={styles.modernSecondaryButtonText}>Already have an account?</ThemedText>
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.featureGrid}>
-            <View style={styles.featureCard}>
-              <ThemedText style={styles.featureIcon}>🎯</ThemedText>
-              <ThemedText style={styles.featureText}>CEFR Based</ThemedText>
-            </View>
-            <View style={styles.featureCard}>
-              <ThemedText style={styles.featureIcon}>🤖</ThemedText>
-              <ThemedText style={styles.featureText}>AI Powered</ThemedText>
-            </View>
-            <View style={styles.featureCard}>
-              <ThemedText style={styles.featureIcon}>🇮🇳</ThemedText>
-              <ThemedText style={styles.featureText}>Made in India</ThemedText>
-            </View>
-          </View>
-        </View>
-      </ScrollView>
-    </View>
-  );
-
-  const renderAIIntroduction = () => (
-    <View style={styles.gradientContainer}>
-      <View style={styles.gradientBackground} />
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={styles.modernContainer}>
-          <View style={styles.aiIntroSection}>
-            <View style={styles.aiAvatarContainer}>
-              <View style={styles.aiAvatar}>
-                <ThemedText style={styles.aiAvatarEmoji}>🌹</ThemedText>
-              </View>
-              <View style={styles.aiAvatarGlow} />
-            </View>
-
-            <ThemedText style={styles.aiIntroTitle}>Meet Rose</ThemedText>
-            <ThemedText style={styles.aiSubtitle}>Your AI English Tutor</ThemedText>
-            
-            <View style={styles.speechBubble}>
-              <ThemedText style={styles.speechText}>
-                Hi {name}! I'm Rose, your personal AI tutor. I'll help you master English with personalized lessons and practice sessions. Ready to begin your journey?
-              </ThemedText>
-            </View>
-
-            {isSpeaking && (
-              <View style={styles.modernSpeakingIndicator}>
-                <View style={styles.soundWave}>
-                  <View style={[styles.wave, styles.wave1]} />
-                  <View style={[styles.wave, styles.wave2]} />
-                  <View style={[styles.wave, styles.wave3]} />
+          {/* Features Grid */}
+          <View style={styles.featuresGrid}>
+            <View style={styles.featureRow}>
+              <View style={[styles.featureCard, { backgroundColor: themeColors.background }]}>
+                <View style={[styles.featureIcon, { backgroundColor: `${themeColors.tint}20` }]}>
+                  <ThemedText style={styles.featureEmoji}>🧘‍♀️</ThemedText>
                 </View>
-                <ThemedText style={styles.modernSpeakingText}>Rose is speaking...</ThemedText>
-              </View>
-            )}
-
-            <TouchableOpacity style={styles.modernPrimaryButton} onPress={() => setCurrentStep('level')}>
-              <View style={styles.buttonGradient} />
-              <ThemedText style={styles.modernButtonText}>Let's Begin! 🚀</ThemedText>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </ScrollView>
-    </View>
-  );
-
-  const renderLevelSelection = () => {
-    const levels = [
-      { name: 'Beginner', emoji: '🌱', color: '#4CAF50' },
-      { name: 'Elementary', emoji: '🌿', color: '#8BC34A' },
-      { name: 'Intermediate', emoji: '🌳', color: '#FF9800' },
-      { name: 'Upper Intermediate', emoji: '🏔️', color: '#FF5722' },
-      { name: 'Advanced', emoji: '🚀', color: '#9C27B0' },
-      { name: 'Proficient', emoji: '👑', color: '#673AB7' }
-    ];
-
-    return (
-      <View style={styles.gradientContainer}>
-        <View style={styles.gradientBackground} />
-        <ScrollView 
-          contentContainerStyle={styles.scrollContainer}
-          showsVerticalScrollIndicator={true}
-          bounces={true}
-        >
-          <View style={styles.modernContainer}>
-            <ThemedText style={styles.modernStepTitle}>What's your English level?</ThemedText>
-
-            {isSpeaking && (
-              <View style={styles.modernSpeakingIndicator}>
-                <View style={styles.soundWave}>
-                  <View style={[styles.wave, styles.wave1]} />
-                  <View style={[styles.wave, styles.wave2]} />
-                  <View style={[styles.wave, styles.wave3]} />
-                </View>
-                <ThemedText style={styles.modernSpeakingText}>Rose is speaking...</ThemedText>
-              </View>
-            )}
-
-            <View style={styles.optionsGrid}>
-              {levels.map((level) => (
-                <TouchableOpacity
-                  key={level.name}
-                  style={[
-                    styles.modernOptionCard,
-                    userAnswers.level === level.name && styles.modernSelectedOption
-                  ]}
-                  onPress={() => setUserAnswers({...userAnswers, level: level.name})}
-                >
-                  <View style={[styles.optionEmoji, { backgroundColor: level.color + '20' }]}>
-                    <ThemedText style={styles.optionEmojiText}>{level.emoji}</ThemedText>
-                  </View>
-                  <ThemedText style={[
-                    styles.modernOptionText,
-                    userAnswers.level === level.name && styles.modernSelectedOptionText
-                  ]}>
-                    {level.name}
-                  </ThemedText>
-                  {userAnswers.level === level.name && (
-                    <View style={styles.selectedCheckmark}>
-                      <ThemedText style={styles.checkmarkText}>✓</ThemedText>
-                    </View>
-                  )}
-                </TouchableOpacity>
-              ))}
-            </View>
-
-            <TouchableOpacity 
-              style={[
-                styles.modernPrimaryButton,
-                !userAnswers.level && styles.modernDisabledButton
-              ]} 
-              onPress={() => userAnswers.level && setCurrentStep('purpose')}
-              disabled={!userAnswers.level}
-            >
-              <View style={styles.buttonGradient} />
-              <ThemedText style={styles.modernButtonText}>Continue</ThemedText>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </View>
-    );
-  };
-
-  const renderPurposeSelection = () => {
-    const purposes = [
-      { name: 'Job/Business', emoji: '💼', color: '#2196F3' },
-      { name: 'Abroad', emoji: '✈️', color: '#FF5722' },
-      { name: 'Improve skills', emoji: '📈', color: '#4CAF50' },
-      { name: 'Academic', emoji: '🎓', color: '#9C27B0' },
-      { name: 'Practise', emoji: '🗣️', color: '#FF9800' },
-      { name: 'Pronunciation', emoji: '🎤', color: '#E91E63' },
-      { name: 'CEFR Test', emoji: '📊', color: '#795548' },
-      { name: 'Other', emoji: '💡', color: '#607D8B' }
-    ];
-
-    return (
-      <View style={styles.gradientContainer}>
-        <View style={styles.gradientBackground} />
-        <ScrollView 
-          contentContainerStyle={styles.scrollContainer}
-          showsVerticalScrollIndicator={true}
-          bounces={true}
-        >
-          <View style={styles.modernContainer}>
-            <ThemedText style={styles.modernStepTitle}>Why do you want to learn English?</ThemedText>
-            <ThemedText style={styles.stepSubtitle}>Select all that apply</ThemedText>
-
-            {isSpeaking && (
-              <View style={styles.modernSpeakingIndicator}>
-                <View style={styles.soundWave}>
-                  <View style={[styles.wave, styles.wave1]} />
-                  <View style={[styles.wave, styles.wave2]} />
-                  <View style={[styles.wave, styles.wave3]} />
-                </View>
-                <ThemedText style={styles.modernSpeakingText}>Rose is speaking...</ThemedText>
-              </View>
-            )}
-
-            <View style={styles.optionsGrid}>
-              {purposes.map((purpose) => (
-                <TouchableOpacity
-                  key={purpose.name}
-                  style={[
-                    styles.modernOptionCard,
-                    userAnswers.purpose.includes(purpose.name) && styles.modernSelectedOption
-                  ]}
-                  onPress={() => {
-                    const updatedPurposes = userAnswers.purpose.includes(purpose.name)
-                      ? userAnswers.purpose.filter(p => p !== purpose.name)
-                      : [...userAnswers.purpose, purpose.name];
-                    setUserAnswers({...userAnswers, purpose: updatedPurposes});
-                  }}
-                >
-                  <View style={[styles.optionEmoji, { backgroundColor: purpose.color + '20' }]}>
-                    <ThemedText style={styles.optionEmojiText}>{purpose.emoji}</ThemedText>
-                  </View>
-                  <ThemedText style={[
-                    styles.modernOptionText,
-                    userAnswers.purpose.includes(purpose.name) && styles.modernSelectedOptionText
-                  ]}>
-                    {purpose.name}
-                  </ThemedText>
-                  {userAnswers.purpose.includes(purpose.name) && (
-                    <View style={styles.selectedCheckmark}>
-                      <ThemedText style={styles.checkmarkText}>✓</ThemedText>
-                    </View>
-                  )}
-                </TouchableOpacity>
-              ))}
-            </View>
-
-            <TouchableOpacity 
-              style={[
-                styles.modernPrimaryButton,
-                userAnswers.purpose.length === 0 && styles.modernDisabledButton
-              ]} 
-              onPress={() => userAnswers.purpose.length > 0 && setCurrentStep('skills')}
-              disabled={userAnswers.purpose.length === 0}
-            >
-              <View style={styles.buttonGradient} />
-              <ThemedText style={styles.modernButtonText}>Continue</ThemedText>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </View>
-    );
-  };
-
-  const renderSkillsSelection = () => {
-    const skills = [
-      { name: 'Speaking', emoji: '🗣️', color: '#FF5722' },
-      { name: 'Writing', emoji: '✍️', color: '#2196F3' },
-      { name: 'Reading', emoji: '📖', color: '#4CAF50' },
-      { name: 'Listening', emoji: '👂', color: '#FF9800' },
-      { name: 'Pronunciation', emoji: '🎤', color: '#E91E63' },
-      { name: 'All', emoji: '🎯', color: '#9C27B0' },
-      { name: 'Other', emoji: '💡', color: '#607D8B' }
-    ];
-
-    return (
-      <View style={styles.gradientContainer}>
-        <View style={styles.gradientBackground} />
-        <ScrollView 
-          contentContainerStyle={styles.scrollContainer}
-          showsVerticalScrollIndicator={true}
-          bounces={true}
-        >
-          <View style={styles.modernContainer}>
-            <ThemedText style={styles.modernStepTitle}>Which skills do you want to focus on?</ThemedText>
-            <ThemedText style={styles.stepSubtitle}>Select all that apply</ThemedText>
-
-            {isSpeaking && (
-              <View style={styles.modernSpeakingIndicator}>
-                <View style={styles.soundWave}>
-                  <View style={[styles.wave, styles.wave1]} />
-                  <View style={[styles.wave, styles.wave2]} />
-                  <View style={[styles.wave, styles.wave3]} />
-                </View>
-                <ThemedText style={styles.modernSpeakingText}>Rose is speaking...</ThemedText>
-              </View>
-            )}
-
-            <View style={styles.optionsGrid}>
-              {skills.map((skill) => (
-                <TouchableOpacity
-                  key={skill.name}
-                  style={[
-                    styles.modernOptionCard,
-                    userAnswers.skills.includes(skill.name) && styles.modernSelectedOption
-                  ]}
-                  onPress={() => {
-                    const updatedSkills = userAnswers.skills.includes(skill.name)
-                      ? userAnswers.skills.filter(s => s !== skill.name)
-                      : [...userAnswers.skills, skill.name];
-                    setUserAnswers({...userAnswers, skills: updatedSkills});
-                  }}
-                >
-                  <View style={[styles.optionEmoji, { backgroundColor: skill.color + '20' }]}>
-                    <ThemedText style={styles.optionEmojiText}>{skill.emoji}</ThemedText>
-                  </View>
-                  <ThemedText style={[
-                    styles.modernOptionText,
-                    userAnswers.skills.includes(skill.name) && styles.modernSelectedOptionText
-                  ]}>
-                    {skill.name}
-                  </ThemedText>
-                  {userAnswers.skills.includes(skill.name) && (
-                    <View style={styles.selectedCheckmark}>
-                      <ThemedText style={styles.checkmarkText}>✓</ThemedText>
-                    </View>
-                  )}
-                </TouchableOpacity>
-              ))}
-            </View>
-
-            <TouchableOpacity 
-              style={[
-                styles.modernPrimaryButton,
-                userAnswers.skills.length === 0 && styles.modernDisabledButton
-              ]} 
-              onPress={() => userAnswers.skills.length > 0 && setCurrentStep('partner')}
-              disabled={userAnswers.skills.length === 0}
-            >
-              <View style={styles.buttonGradient} />
-              <ThemedText style={styles.modernButtonText}>Continue</ThemedText>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </View>
-    );
-  };
-
-  const renderPartnerSelection = () => {
-    const options = [
-      { name: 'Yes', emoji: '👥', color: '#4CAF50' },
-      { name: 'No', emoji: '🚫', color: '#F44336' },
-      { name: 'Other', emoji: '🤔', color: '#FF9800' }
-    ];
-
-    return (
-      <View style={styles.gradientContainer}>
-        <View style={styles.gradientBackground} />
-        <ScrollView 
-          contentContainerStyle={styles.scrollContainer}
-          showsVerticalScrollIndicator={true}
-          bounces={true}
-        >
-          <View style={styles.modernContainer}>
-            <ThemedText style={styles.modernStepTitle}>Speaking Partner</ThemedText>
-            <ThemedText style={styles.stepSubtitle}>Are you interested in having a speaking partner?</ThemedText>
-
-            {isSpeaking && (
-              <View style={styles.modernSpeakingIndicator}>
-                <View style={styles.soundWave}>
-                  <View style={[styles.wave, styles.wave1]} />
-                  <View style={[styles.wave, styles.wave2]} />
-                  <View style={[styles.wave, styles.wave3]} />
-                </View>
-                <ThemedText style={styles.modernSpeakingText}>Rose is speaking...</ThemedText>
-              </View>
-            )}
-
-            <View style={styles.optionsGrid}>
-              {options.map((option) => (
-                <TouchableOpacity
-                  key={option.name}
-                  style={[
-                    styles.modernOptionCard,
-                    styles.largeOptionCard,
-                    userAnswers.partner === option.name && styles.modernSelectedOption
-                  ]}
-                  onPress={() => setUserAnswers({...userAnswers, partner: option.name})}
-                >
-                  <View style={[styles.optionEmoji, styles.largeOptionEmoji, { backgroundColor: option.color + '20' }]}>
-                    <ThemedText style={[styles.optionEmojiText, styles.largeEmojiText]}>{option.emoji}</ThemedText>
-                  </View>
-                  <ThemedText style={[
-                    styles.modernOptionText,
-                    styles.largeOptionText,
-                    userAnswers.partner === option.name && styles.modernSelectedOptionText
-                  ]}>
-                    {option.name}
-                  </ThemedText>
-                  {userAnswers.partner === option.name && (
-                    <View style={styles.selectedCheckmark}>
-                      <ThemedText style={styles.checkmarkText}>✓</ThemedText>
-                    </View>
-                  )}
-                </TouchableOpacity>
-              ))}
-            </View>
-
-            <TouchableOpacity 
-              style={[
-                styles.modernPrimaryButton,
-                !userAnswers.partner && styles.modernDisabledButton
-              ]} 
-              onPress={() => userAnswers.partner && setCurrentStep('recommendation')}
-              disabled={!userAnswers.partner}
-            >
-              <View style={styles.buttonGradient} />
-              <ThemedText style={styles.modernButtonText}>Continue</ThemedText>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </View>
-    );
-  };
-
-  const renderRecommendation = () => (
-    <View style={styles.gradientContainer}>
-      <View style={styles.gradientBackground} />
-      <ScrollView 
-        contentContainerStyle={styles.scrollContainer}
-        showsVerticalScrollIndicator={true}
-        bounces={true}
-      >
-        <View style={styles.modernContainer}>
-          <ThemedText style={styles.modernStepTitle}>Perfect Match Found! 🎉</ThemedText>
-
-          {isSpeaking && (
-            <View style={styles.modernSpeakingIndicator}>
-              <View style={styles.soundWave}>
-                <View style={[styles.wave, styles.wave1]} />
-                <View style={[styles.wave, styles.wave2]} />
-                <View style={[styles.wave, styles.wave3]} />
-              </View>
-              <ThemedText style={styles.modernSpeakingText}>Rose is speaking...</ThemedText>
-            </View>
-          )}
-
-          <View style={styles.modernCourseCard}>
-            <View style={styles.courseHeader}>
-              <ThemedText style={styles.courseEmoji}>🎯</ThemedText>
-              <View>
-                <ThemedText style={styles.modernCourseTitle}>
-                  {userAnswers.level} English Course
+                <ThemedText style={[styles.featureTitle, { color: themeColors.text }]}>Meditate</ThemedText>
+                <ThemedText style={[styles.featureDesc, { color: themeColors.icon }]}>
+                  Guided sessions
                 </ThemedText>
-                <ThemedText style={styles.courseBadge}>Recommended for you</ThemedText>
+              </View>
+              
+              <View style={[styles.featureCard, { backgroundColor: themeColors.background }]}>
+                <View style={[styles.featureIcon, { backgroundColor: `${themeColors.tint}20` }]}>
+                  <ThemedText style={styles.featureEmoji}>📊</ThemedText>
+                </View>
+                <ThemedText style={[styles.featureTitle, { color: themeColors.text }]}>Track</ThemedText>
+                <ThemedText style={[styles.featureDesc, { color: themeColors.icon }]}>
+                  Your progress
+                </ThemedText>
               </View>
             </View>
             
-            <View style={styles.courseDetails}>
-              <View style={styles.courseDetailItem}>
-                <ThemedText style={styles.detailIcon}>📋</ThemedText>
-                <ThemedText style={styles.detailText}>Focus: {userAnswers.skills.join(', ')}</ThemedText>
+            <View style={styles.featureRow}>
+              <View style={[styles.featureCard, { backgroundColor: themeColors.background }]}>
+                <View style={[styles.featureIcon, { backgroundColor: `${themeColors.tint}20` }]}>
+                  <ThemedText style={styles.featureEmoji}>🌱</ThemedText>
+                </View>
+                <ThemedText style={[styles.featureTitle, { color: themeColors.text }]}>Grow</ThemedText>
+                <ThemedText style={[styles.featureDesc, { color: themeColors.icon }]}>
+                  Build habits
+                </ThemedText>
               </View>
-              <View style={styles.courseDetailItem}>
-                <ThemedText style={styles.detailIcon}>🎯</ThemedText>
-                <ThemedText style={styles.detailText}>Goal: {userAnswers.purpose.join(', ')}</ThemedText>
-              </View>
-              <View style={styles.courseDetailItem}>
-                <ThemedText style={styles.detailIcon}>👥</ThemedText>
-                <ThemedText style={styles.detailText}>Speaking Partner: {userAnswers.partner}</ThemedText>
+              
+              <View style={[styles.featureCard, { backgroundColor: themeColors.background }]}>
+                <View style={[styles.featureIcon, { backgroundColor: `${themeColors.tint}20` }]}>
+                  <ThemedText style={styles.featureEmoji}>🎯</ThemedText>
+                </View>
+                <ThemedText style={[styles.featureTitle, { color: themeColors.text }]}>Focus</ThemedText>
+                <ThemedText style={[styles.featureDesc, { color: themeColors.icon }]}>
+                  Stay present
+                </ThemedText>
               </View>
             </View>
           </View>
 
-          <View style={styles.languageSection}>
-            <ThemedText style={styles.languageTitle}>Choose your learning language:</ThemedText>
-            <View style={styles.modernLanguageContainer}>
-              {[
-                { name: 'English', flag: '🇺🇸' },
-                { name: 'Bengali', flag: '🇧🇩' },
-                { name: 'Hindi', flag: '🇮🇳' }
-              ].map((lang) => (
-                <TouchableOpacity
-                  key={lang.name}
-                  style={[
-                    styles.modernLanguageButton,
-                    userAnswers.language === lang.name && styles.selectedLanguageButton
-                  ]}
-                  onPress={() => setUserAnswers({...userAnswers, language: lang.name})}
-                >
-                  <ThemedText style={styles.languageFlag}>{lang.flag}</ThemedText>
-                  <ThemedText style={[
-                    styles.modernLanguageText,
-                    userAnswers.language === lang.name && styles.selectedLanguageText
-                  ]}>
-                    {lang.name}
-                  </ThemedText>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </View>
-
-          <View style={styles.finalActions}>
-            <TouchableOpacity style={styles.modernPrimaryButton} onPress={() => Alert.alert('Demo', 'Free demo starting!')}>
-              <View style={styles.buttonGradient} />
-              <ThemedText style={styles.modernButtonText}>Start Free Demo 🚀</ThemedText>
+          {/* CTA Section */}
+          <View style={styles.ctaSection}>
+            <TouchableOpacity 
+              style={[styles.primaryButton, { backgroundColor: themeColors.tint }]}
+              onPress={() => setCurrentStep('name')}
+            >
+              <ThemedText style={styles.primaryButtonText}>Get Started</ThemedText>
             </TouchableOpacity>
             
-            <TouchableOpacity style={styles.modernSecondaryButton} onPress={() => setShowSkipPopup(true)}>
-              <ThemedText style={styles.modernSecondaryButtonText}>Skip for Now</ThemedText>
+            <TouchableOpacity 
+              style={styles.secondaryButton}
+              onPress={() => setShowBenefitsModal(true)}
+            >
+              <ThemedText style={[styles.secondaryButtonText, { color: themeColors.tint }]}>
+                Learn More
+              </ThemedText>
             </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
-    </View>
+    </ThemedView>
+  );
+
+  const renderNameStep = () => (
+    <ThemedView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
+        <View style={styles.modernContainer}>
+          <View style={styles.stepHeader}>
+            <View style={[styles.progressBar, { backgroundColor: `${themeColors.tint}20` }]}>
+              <View style={[styles.progressFill, { backgroundColor: themeColors.tint, width: '33%' }]} />
+            </View>
+            
+            <ThemedText style={[styles.stepTitle, { color: themeColors.text }]}>
+              What's your name?
+            </ThemedText>
+            <ThemedText style={[styles.stepSubtitle, { color: themeColors.icon }]}>
+              We'd love to personalize your experience
+            </ThemedText>
+          </View>
+
+          <View style={styles.inputSection}>
+            <TextInput
+              style={[
+                styles.modernInput,
+                {
+                  backgroundColor: themeColors.background,
+                  borderColor: name ? themeColors.tint : themeColors.icon,
+                  color: themeColors.text,
+                }
+              ]}
+              placeholder="Enter your name"
+              placeholderTextColor={themeColors.icon}
+              value={name}
+              onChangeText={setName}
+              autoCapitalize="words"
+              autoComplete="name"
+            />
+          </View>
+
+          <View style={styles.buttonSection}>
+            <TouchableOpacity
+              style={[
+                styles.primaryButton,
+                {
+                  backgroundColor: name ? themeColors.tint : themeColors.icon,
+                  opacity: name ? 1 : 0.6,
+                }
+              ]}
+              onPress={() => name && setCurrentStep('purpose')}
+              disabled={!name}
+            >
+              <ThemedText style={styles.primaryButtonText}>Continue</ThemedText>
+            </TouchableOpacity>
+            
+            <TouchableOpacity onPress={() => setShowSkipPopup(true)}>
+              <ThemedText style={[styles.skipText, { color: themeColors.icon }]}>
+                Skip for now
+              </ThemedText>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
+    </ThemedView>
+  );
+
+  const renderPurposeSelection = () => (
+    <ThemedView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
+        <View style={styles.modernContainer}>
+          <View style={styles.stepHeader}>
+            <View style={[styles.progressBar, { backgroundColor: `${themeColors.tint}20` }]}>
+              <View style={[styles.progressFill, { backgroundColor: themeColors.tint, width: '66%' }]} />
+            </View>
+            
+            <ThemedText style={[styles.stepTitle, { color: themeColors.text }]}>
+              What brings you here?
+            </ThemedText>
+            <ThemedText style={[styles.stepSubtitle, { color: themeColors.icon }]}>
+              Choose what resonates with you most
+            </ThemedText>
+          </View>
+
+          <View style={styles.purposeGrid}>
+            {[
+              { emoji: '🧘‍♀️', title: 'Reduce Stress', desc: 'Find calm in daily chaos' },
+              { emoji: '😴', title: 'Better Sleep', desc: 'Improve sleep quality' },
+              { emoji: '🎯', title: 'Focus Better', desc: 'Enhance concentration' },
+              { emoji: '❤️', title: 'Self-Care', desc: 'Prioritize wellbeing' },
+            ].map((purpose, index) => (
+              <TouchableOpacity
+                key={index}
+                style={[styles.purposeCard, { backgroundColor: themeColors.background }]}
+                onPress={() => setCurrentStep('complete')}
+              >
+                <View style={[styles.purposeIcon, { backgroundColor: `${themeColors.tint}15` }]}>
+                  <ThemedText style={styles.purposeEmoji}>{purpose.emoji}</ThemedText>
+                </View>
+                <ThemedText style={[styles.purposeTitle, { color: themeColors.text }]}>
+                  {purpose.title}
+                </ThemedText>
+                <ThemedText style={[styles.purposeDesc, { color: themeColors.icon }]}>
+                  {purpose.desc}
+                </ThemedText>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+      </ScrollView>
+    </ThemedView>
+  );
+
+  const renderCompleteStep = () => (
+    <ThemedView style={styles.container}>
+      <View style={styles.modernContainer}>
+        <View style={styles.completeSection}>
+          <View style={styles.celebrationIcon}>
+            <ThemedText style={styles.celebrationEmoji}>🎉</ThemedText>
+          </View>
+          
+          <ThemedText style={[styles.completeTitle, { color: themeColors.text }]}>
+            Welcome aboard{name ? `, ${name}` : ''}!
+          </ThemedText>
+          
+          <ThemedText style={[styles.completeSubtitle, { color: themeColors.icon }]}>
+            Your mindfulness journey begins now. Ready to find your inner peace?
+          </ThemedText>
+          
+          <TouchableOpacity
+            style={[styles.primaryButton, { backgroundColor: themeColors.tint }]}
+            onPress={() => Alert.alert('Welcome!', 'Your journey to mindfulness begins now!')}
+          >
+            <ThemedText style={styles.primaryButtonText}>Start My Journey</ThemedText>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </ThemedView>
   );
 
   const renderCurrentStep = () => {
     switch (currentStep) {
-      case 'welcome': return renderWelcomeScreen();
-      case 'intro': return renderAIIntroduction();
-      case 'level': return renderLevelSelection();
+      case 'welcome': return renderWelcomeStep();
+      case 'name': return renderNameStep();
       case 'purpose': return renderPurposeSelection();
-      case 'skills': return renderSkillsSelection();
-      case 'partner': return renderPartnerSelection();
-      case 'recommendation': return renderRecommendation();
-      default: return renderWelcomeScreen();
+      case 'complete': return renderCompleteStep();
+      default: return renderWelcomeStep();
     }
   };
-
-  useEffect(() => {
-    stopSpeaking();
-    
-    switch (currentStep) {
-      case 'intro':
-        speakText(`Hi ${name}, Welcome to SpeakEdge! I'm Rose, your AI tutor. I'm here to help you improve your English skills with personalized lessons and practice sessions. Let's get started with some questions to personalize your learning experience.`);
-        break;
-      case 'level':
-        speakText("What's your English level? Please select from Beginner, Elementary, Intermediate, Upper Intermediate, Advanced, or Proficient.");
-        break;
-      case 'purpose':
-        speakText("Why do you want to learn English? Please select all that apply.");
-        break;
-      case 'skills':
-        speakText("Which skills do you want to focus on? Please select all that apply.");
-        break;
-      case 'partner':
-        speakText("Are you interested in having a speaking partner? Please answer yes or no.");
-        break;
-      case 'recommendation':
-        speakText(`Based on your input, we recommend the ${userAnswers.level} English course. We will now guide you through the joining process.`);
-        break;
-      default:
-        break;
-    }
-  }, [currentStep, name]);
 
   const renderSkipPopup = () => (
     <Modal
       visible={showSkipPopup}
-      transparent={true}
+      transparent
       animationType="fade"
-      onRequestClose={() => setShowSkipPopup(false)}
     >
-      <View style={styles.modernModalOverlay}>
-        <View style={[styles.modernModalContent, { backgroundColor: Colors[colorScheme ?? 'light'].background }]}>
-          <View style={styles.modalHeader}>
-            <ThemedText style={styles.modalEmoji}>🎁</ThemedText>
-            <ThemedText style={styles.modalTitle}>Limited Time Offer!</ThemedText>
-          </View>
-          
-          <ThemedText style={styles.modernPopupText}>
-            Claim 100% free SpeakEdge lifetime membership – Limited time offer – Grab it now. Save ₹999 with 100% free.
+      <View style={styles.modalOverlay}>
+        <View style={[styles.modalContent, { backgroundColor: themeColors.background }]}>
+          <ThemedText style={[styles.modalTitle, { color: themeColors.text }]}>
+            Skip personalization?
+          </ThemedText>
+          <ThemedText style={[styles.modalMessage, { color: themeColors.icon }]}>
+            We can provide a better experience if you complete the setup
           </ThemedText>
           
-          <View style={styles.modernPopupButtonContainer}>
-            <TouchableOpacity 
-              style={styles.modernPrimaryButton} 
-              onPress={() => {
-                setShowSkipPopup(false);
-                setShowBenefitsModal(true);
-              }}
-            >
-              <View style={styles.buttonGradient} />
-              <ThemedText style={styles.modernButtonText}>View Benefits</ThemedText>
-            </TouchableOpacity>
-            
-            <TouchableOpacity 
-              style={styles.modernSecondaryButton} 
+          <View style={styles.modalButtons}>
+            <TouchableOpacity
+              style={[styles.modalButton, styles.cancelButton]}
               onPress={() => setShowSkipPopup(false)}
             >
-              <ThemedText style={styles.modernSecondaryButtonText}>Skip for Now</ThemedText>
+              <ThemedText style={[styles.modalButtonText, { color: themeColors.tint }]}>
+                Continue Setup
+              </ThemedText>
+            </TouchableOpacity>
+            
+            <TouchableOpacity
+              style={[styles.modalButton, { backgroundColor: themeColors.icon }]}
+              onPress={() => {
+                setShowSkipPopup(false);
+                setCurrentStep('complete');
+              }}
+            >
+              <ThemedText style={styles.modalButtonText}>Skip</ThemedText>
             </TouchableOpacity>
           </View>
         </View>
@@ -705,53 +314,54 @@ export default function WelcomeScreen() {
   const renderBenefitsModal = () => (
     <Modal
       visible={showBenefitsModal}
-      transparent={true}
+      transparent
       animationType="slide"
-      onRequestClose={() => setShowBenefitsModal(false)}
     >
-      <View style={styles.modernModalOverlay}>
-        <View style={[styles.modernBenefitsModalContent, { backgroundColor: Colors[colorScheme ?? 'light'].background }]}>
-          <View style={styles.modalHeader}>
-            <ThemedText style={styles.modalEmoji}>💎</ThemedText>
-            <ThemedText style={styles.modalTitle}>Membership Benefits</ThemedText>
-          </View>
+      <View style={styles.modalOverlay}>
+        <View style={[styles.benefitsModal, { backgroundColor: themeColors.background }]}>
+          <ThemedText style={[styles.benefitsTitle, { color: themeColors.text }]}>
+            Why MindFlow?
+          </ThemedText>
           
-          <ScrollView style={styles.benefitsScrollView}>
+          <ScrollView showsVerticalScrollIndicator={false}>
             {[
-              { icon: '💬', text: 'Unlimited English conversation partners on SpeakEdge Platform' },
-              { icon: '🎯', text: 'Daily English learning with fun' },
-              { icon: '♾️', text: 'Lifetime membership access' },
-              { icon: '🏆', text: 'Track progress with badges' },
-              { icon: '🔔', text: 'Be the first to get SpeakEdge updates' }
+              { icon: '🧠', title: 'Improved Focus', desc: 'Enhance concentration and mental clarity' },
+              { icon: '😌', title: 'Reduced Stress', desc: 'Lower cortisol and anxiety levels' },
+              { icon: '💤', title: 'Better Sleep', desc: 'Fall asleep faster and sleep deeper' },
+              { icon: '❤️', title: 'Emotional Balance', desc: 'Better emotional regulation and resilience' },
             ].map((benefit, index) => (
-              <View key={index} style={styles.modernBenefitItem}>
-                <View style={styles.benefitIcon}>
-                  <ThemedText style={styles.benefitIconText}>{benefit.icon}</ThemedText>
+              <View key={index} style={styles.benefitItem}>
+                <ThemedText style={styles.benefitIcon}>{benefit.icon}</ThemedText>
+                <View style={styles.benefitText}>
+                  <ThemedText style={[styles.benefitTitle, { color: themeColors.text }]}>
+                    {benefit.title}
+                  </ThemedText>
+                  <ThemedText style={[styles.benefitDesc, { color: themeColors.icon }]}>
+                    {benefit.desc}
+                  </ThemedText>
                 </View>
-                <ThemedText style={styles.modernBenefitText}>{benefit.text}</ThemedText>
               </View>
             ))}
           </ScrollView>
           
-          <View style={styles.modernBenefitsButtonContainer}>
-            <TouchableOpacity 
-              style={styles.modernPrimaryButton} 
-              onPress={() => {
-                setShowBenefitsModal(false);
-                Alert.alert('Interest', 'Thank you for your interest! We will contact you soon.');
-              }}
-            >
-              <View style={styles.buttonGradient} />
-              <ThemedText style={styles.modernButtonText}>I'm Interested! ✨</ThemedText>
-            </TouchableOpacity>
-            
-            <TouchableOpacity 
-              style={styles.modernSecondaryButton} 
-              onPress={() => setShowBenefitsModal(false)}
-            >
-              <ThemedText style={styles.modernSecondaryButtonText}>Skip for Now</ThemedText>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity
+            style={[styles.primaryButton, { backgroundColor: themeColors.tint }]}
+            onPress={() => {
+              setShowBenefitsModal(false);
+              setCurrentStep('name');
+            }}
+          >
+            <ThemedText style={styles.primaryButtonText}>Get Started</ThemedText>
+          </TouchableOpacity>
+          
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={() => setShowBenefitsModal(false)}
+          >
+            <ThemedText style={[styles.closeButtonText, { color: themeColors.icon }]}>
+              Close
+            </ThemedText>
+          </TouchableOpacity>
         </View>
       </View>
     </Modal>
@@ -767,26 +377,17 @@ export default function WelcomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  gradientContainer: {
+  container: {
     flex: 1,
-  },
-  gradientBackground: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    backgroundColor: '#f0f4ff',
-    opacity: 0.1,
   },
   scrollContainer: {
     flexGrow: 1,
-    paddingBottom: 50,
+    minHeight: height,
   },
   modernContainer: {
     flex: 1,
     padding: 24,
-    minHeight: height,
+    justifyContent: 'center',
   },
   heroSection: {
     alignItems: 'center',
@@ -805,7 +406,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 3,
-    borderColor: '#667eea',
     zIndex: 2,
   },
   modernAvatarEmoji: {
@@ -829,485 +429,290 @@ const styles = StyleSheet.create({
   brandContainer: {
     alignItems: 'center',
     marginBottom: 10,
-    position: 'relative',
   },
   brandName: {
     fontSize: 42,
     fontWeight: 'bold',
     textAlign: 'center',
-    color: '#667eea',
   },
-  brandAccent: {
-    width: 60,
-    height: 4,
-    backgroundColor: '#764ba2',
-    borderRadius: 2,
-    marginTop: 5,
-  },
-  modernSubtitle: {
-    fontSize: 18,
+  subtitle: {
+    fontSize: 16,
     textAlign: 'center',
     opacity: 0.7,
     lineHeight: 24,
-  },
-  modernInputContainer: {
-    marginBottom: 32,
-    gap: 16,
-  },
-  inputWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    borderRadius: 16,
     paddingHorizontal: 20,
-    paddingVertical: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
   },
-  inputIcon: {
-    marginRight: 16,
+  featuresGrid: {
+    marginBottom: 40,
   },
-  iconText: {
-    fontSize: 20,
-  },
-  modernInput: {
-    flex: 1,
-    fontSize: 16,
-    paddingVertical: 16,
-  },
-  modernButtonContainer: {
-    gap: 16,
-    marginBottom: 32,
-  },
-  modernPrimaryButton: {
-    backgroundColor: '#667eea',
-    padding: 18,
-    borderRadius: 16,
-    alignItems: 'center',
-    shadowColor: '#667eea',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 12,
-    elevation: 8,
-    position: 'relative',
-    overflow: 'hidden',
-    marginTop: 20,
-    marginBottom: 20,
-  },
-  buttonGradient: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    backgroundColor: '#667eea',
-  },
-  modernButtonText: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: '600',
-    zIndex: 1,
-  },
-  modernSecondaryButton: {
-    padding: 18,
-    borderRadius: 16,
-    alignItems: 'center',
-  },
-  modernSecondaryButtonText: {
-    color: '#667eea',
-    fontSize: 16,
-    fontWeight: '500',
-  },
-  modernDisabledButton: {
-    backgroundColor: '#ccc',
-    shadowOpacity: 0,
-  },
-  featureGrid: {
+  featureRow: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginTop: 20,
+    justifyContent: 'space-between',
+    marginBottom: 16,
   },
   featureCard: {
+    flex: 0.48,
+    padding: 20,
+    borderRadius: 16,
     alignItems: 'center',
-    padding: 16,
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    borderRadius: 12,
-    minWidth: 80,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
   },
   featureIcon: {
-    fontSize: 24,
-    marginBottom: 8,
-  },
-  featureText: {
-    fontSize: 12,
-    fontWeight: '600',
-    textAlign: 'center',
-  },
-  aiIntroSection: {
-    alignItems: 'center',
-  },
-  aiAvatarContainer: {
-    alignItems: 'center',
-    marginBottom: 30,
-    position: 'relative',
-  },
-  aiAvatar: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    backgroundColor: 'rgba(233, 30, 99, 0.1)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 3,
-    borderColor: '#E91E63',
-    zIndex: 2,
-  },
-  aiAvatarEmoji: {
-    fontSize: 40,
-  },
-  aiAvatarGlow: {
-    position: 'absolute',
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    backgroundColor: 'rgba(233, 30, 99, 0.2)',
-    zIndex: 1,
-  },
-  aiIntroTitle: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 8,
-    color: '#E91E63',
-  },
-  aiSubtitle: {
-    fontSize: 18,
-    textAlign: 'center',
-    marginBottom: 30,
-    opacity: 0.8,
-  },
-  speechBubble: {
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    padding: 24,
-    borderRadius: 20,
-    marginBottom: 30,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
-    position: 'relative',
-  },
-  speechText: {
-    fontSize: 16,
-    lineHeight: 24,
-    textAlign: 'center',
-  },
-  modernStepTitle: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 16,
-    color: '#667eea',
-  },
-  stepSubtitle: {
-    fontSize: 16,
-    textAlign: 'center',
-    marginBottom: 30,
-    opacity: 0.7,
-  },
-  optionsGrid: {
-    gap: 12,
-    marginBottom: 32,
-  },
-  modernOptionCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    borderRadius: 16,
-    padding: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
-    borderWidth: 2,
-    borderColor: 'transparent',
-    position: 'relative',
-  },
-  largeOptionCard: {
-    justifyContent: 'center',
-    paddingVertical: 24,
-  },
-  modernSelectedOption: {
-    borderColor: '#667eea',
-    backgroundColor: 'rgba(103, 126, 234, 0.1)',
-  },
-  optionEmoji: {
     width: 50,
     height: 50,
     borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 16,
+    marginBottom: 12,
   },
-  largeOptionEmoji: {
+  featureEmoji: {
+    fontSize: 24,
+  },
+  featureTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  featureDesc: {
+    fontSize: 12,
+    textAlign: 'center',
+    opacity: 0.8,
+  },
+  ctaSection: {
+    alignItems: 'center',
+  },
+  primaryButton: {
+    paddingVertical: 16,
+    paddingHorizontal: 32,
+    borderRadius: 25,
+    marginBottom: 16,
+    minWidth: 200,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 5,
+  },
+  primaryButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  secondaryButton: {
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+  },
+  secondaryButtonText: {
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  stepHeader: {
+    alignItems: 'center',
+    marginBottom: 40,
+  },
+  progressBar: {
+    width: '100%',
+    height: 4,
+    borderRadius: 2,
+    marginBottom: 30,
+  },
+  progressFill: {
+    height: '100%',
+    borderRadius: 2,
+  },
+  stepTitle: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  stepSubtitle: {
+    fontSize: 16,
+    textAlign: 'center',
+    opacity: 0.7,
+  },
+  inputSection: {
+    marginBottom: 40,
+  },
+  modernInput: {
+    padding: 16,
+    borderRadius: 12,
+    borderWidth: 2,
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  buttonSection: {
+    alignItems: 'center',
+  },
+  skipText: {
+    fontSize: 14,
+    marginTop: 16,
+    textDecorationLine: 'underline',
+  },
+  purposeGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  purposeCard: {
+    width: '48%',
+    padding: 24,
+    borderRadius: 16,
+    alignItems: 'center',
+    marginBottom: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  purposeIcon: {
     width: 60,
     height: 60,
     borderRadius: 30,
-    marginRight: 0,
-    marginBottom: 12,
-  },
-  optionEmojiText: {
-    fontSize: 24,
-  },
-  largeEmojiText: {
-    fontSize: 30,
-  },
-  modernOptionText: {
-    fontSize: 18,
-    fontWeight: '500',
-    flex: 1,
-  },
-  largeOptionText: {
-    textAlign: 'center',
-    flex: 0,
-    fontSize: 20,
-  },
-  modernSelectedOptionText: {
-    color: '#667eea',
-    fontWeight: '600',
-  },
-  selectedCheckmark: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    backgroundColor: '#667eea',
     justifyContent: 'center',
     alignItems: 'center',
-    position: 'absolute',
-    top: 10,
-    right: 10,
+    marginBottom: 16,
   },
-  checkmarkText: {
-    color: 'white',
+  purposeEmoji: {
+    fontSize: 28,
+  },
+  purposeTitle: {
     fontSize: 16,
-    fontWeight: 'bold',
-  },
-  modernSpeakingIndicator: {
-    alignItems: 'center',
-    marginBottom: 20,
-    padding: 16,
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    borderRadius: 12,
-  },
-  soundWave: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    fontWeight: '600',
     marginBottom: 8,
+    textAlign: 'center',
   },
-  wave: {
-    width: 4,
-    backgroundColor: '#667eea',
-    borderRadius: 2,
-    marginHorizontal: 2,
+  purposeDesc: {
+    fontSize: 12,
+    textAlign: 'center',
+    opacity: 0.8,
   },
-  wave1: {
-    height: 20,
+  completeSection: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
   },
-  wave2: {
-    height: 35,
+  celebrationIcon: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 30,
   },
-  wave3: {
-    height: 15,
+  celebrationEmoji: {
+    fontSize: 60,
   },
-  modernSpeakingText: {
-    fontSize: 14,
-    color: '#667eea',
-    fontWeight: '500',
+  completeTitle: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 16,
   },
-  modernCourseCard: {
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    borderRadius: 20,
+  completeSubtitle: {
+    fontSize: 16,
+    textAlign: 'center',
+    opacity: 0.7,
+    marginBottom: 40,
+    paddingHorizontal: 20,
+    lineHeight: 24,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    margin: 20,
+    borderRadius: 16,
     padding: 24,
-    marginBottom: 32,
+    alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
+    shadowOpacity: 0.25,
     shadowRadius: 12,
     elevation: 8,
   },
-  courseHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  courseEmoji: {
-    fontSize: 40,
-    marginRight: 16,
-  },
-  modernCourseTitle: {
-    fontSize: 24,
+  modalTitle: {
+    fontSize: 20,
     fontWeight: 'bold',
-    color: '#667eea',
-    marginBottom: 4,
-  },
-  courseBadge: {
-    fontSize: 14,
-    color: '#4CAF50',
-    fontWeight: '600',
-    backgroundColor: 'rgba(76, 175, 80, 0.1)',
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 12,
-    alignSelf: 'flex-start',
-  },
-  courseDetails: {
-    gap: 12,
-  },
-  courseDetailItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  detailIcon: {
-    fontSize: 20,
-    marginRight: 12,
-    width: 30,
-  },
-  detailText: {
-    fontSize: 16,
-    flex: 1,
-    lineHeight: 22,
-  },
-  languageSection: {
-    marginBottom: 32,
-  },
-  languageTitle: {
-    fontSize: 20,
-    fontWeight: '600',
-    marginBottom: 16,
-    textAlign: 'center',
-    color: '#667eea',
-  },
-  modernLanguageContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  modernLanguageButton: {
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    borderRadius: 12,
-    padding: 16,
-    minWidth: 80,
-    borderWidth: 2,
-    borderColor: 'transparent',
-  },
-  selectedLanguageButton: {
-    borderColor: '#667eea',
-    backgroundColor: 'rgba(103, 126, 234, 0.1)',
-  },
-  languageFlag: {
-    fontSize: 24,
-    marginBottom: 8,
-  },
-  modernLanguageText: {
-    fontSize: 14,
-    fontWeight: '500',
-  },
-  selectedLanguageText: {
-    color: '#667eea',
-    fontWeight: '600',
-  },
-  finalActions: {
-    gap: 16,
-  },
-  modernModalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 24,
-  },
-  modernModalContent: {
-    borderRadius: 20,
-    padding: 28,
-    width: '100%',
-    maxWidth: 380,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.3,
-    shadowRadius: 16,
-    elevation: 12,
-  },
-  modernBenefitsModalContent: {
-    borderRadius: 20,
-    padding: 28,
-    width: '100%',
-    maxWidth: 420,
-    maxHeight: '85%',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.3,
-    shadowRadius: 16,
-    elevation: 12,
-  },
-  modalHeader: {
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  modalEmoji: {
-    fontSize: 48,
     marginBottom: 12,
   },
-  modalTitle: {
+  modalMessage: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 24,
+    opacity: 0.8,
+  },
+  modalButtons: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  modalButton: {
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    minWidth: 120,
+    alignItems: 'center',
+  },
+  cancelButton: {
+    backgroundColor: 'transparent',
+  },
+  modalButtonText: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  benefitsModal: {
+    margin: 20,
+    borderRadius: 16,
+    padding: 24,
+    maxHeight: '80%',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 12,
+    elevation: 8,
+  },
+  benefitsTitle: {
     fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
-    color: '#667eea',
+    marginBottom: 24,
   },
-  modernPopupText: {
-    fontSize: 18,
-    textAlign: 'center',
-    marginBottom: 28,
-    lineHeight: 26,
-  },
-  modernPopupButtonContainer: {
-    gap: 16,
-  },
-  modernBenefitsButtonContainer: {
-    gap: 16,
-    marginTop: 20,
-  },
-  benefitsScrollView: {
-    maxHeight: 300,
-    marginBottom: 20,
-  },
-  modernBenefitItem: {
+  benefitItem: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     marginBottom: 20,
-    padding: 16,
-    backgroundColor: 'rgba(103, 126, 234, 0.05)',
-    borderRadius: 12,
   },
   benefitIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'rgba(103, 126, 234, 0.1)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    fontSize: 32,
     marginRight: 16,
   },
-  benefitIconText: {
-    fontSize: 20,
-  },
-  modernBenefitText: {
-    fontSize: 16,
+  benefitText: {
     flex: 1,
-    lineHeight: 24,
+  },
+  benefitTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  benefitDesc: {
+    fontSize: 14,
+    opacity: 0.8,
+  },
+  closeButton: {
+    paddingVertical: 12,
+    alignItems: 'center',
+    marginTop: 16,
+  },
+  closeButtonText: {
+    fontSize: 14,
   },
 });
