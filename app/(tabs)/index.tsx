@@ -84,12 +84,6 @@ export default function WelcomeScreen() {
           India's most trusted CEFR-based English learning app powered by AI
         </ThemedText>
 
-        {isSpeaking && (
-          <View style={styles.speakingIndicator}>
-            <ThemedText style={styles.speakingText}>🎙️ Rose is speaking...</ThemedText>
-          </View>
-        )}
-
         <View style={styles.inputContainer}>
           <TextInput
             style={[styles.input, { color: Colors[colorScheme ?? 'light'].text }]}
@@ -401,12 +395,9 @@ export default function WelcomeScreen() {
     }
   };
 
-  // Effect to auto-play speech on screen load
+  // Effect to auto-play speech on screen load (skip welcome page)
   useEffect(() => {
     switch (currentStep) {
-      case 'welcome':
-        speakText("Welcome to SpeakEdge - India's most trusted CEFR-based English learning app powered by AI. Please enter your name and mobile number to get started.");
-        break;
       case 'intro':
         speakText(`Hi ${name}, Welcome to SpeakEdge! I'm Rose, your AI tutor. I'm here to help you improve your English skills with personalized lessons and practice sessions. Let's get started with some questions to personalize your learning experience.`);
         break;
