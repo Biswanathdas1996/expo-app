@@ -104,7 +104,11 @@ export default function ProfileScreen() {
 
         <View style={styles.formContainer}>
           <TextInput
-            style={[styles.input, { color: Colors[colorScheme ?? 'light'].text }]}
+            style={[styles.input, { 
+              borderColor: Colors[colorScheme ?? 'light'].tint + '30',
+              backgroundColor: Colors[colorScheme ?? 'light'].background,
+              color: Colors[colorScheme ?? 'light'].text 
+            }]}
             placeholder="Name"
             placeholderTextColor={Colors[colorScheme ?? 'light'].icon}
             value={formData.name}
@@ -112,7 +116,11 @@ export default function ProfileScreen() {
           />
 
           <TextInput
-            style={[styles.input, { color: Colors[colorScheme ?? 'light'].text }]}
+            style={[styles.input, { 
+              borderColor: Colors[colorScheme ?? 'light'].tint + '30',
+              backgroundColor: Colors[colorScheme ?? 'light'].background,
+              color: Colors[colorScheme ?? 'light'].text 
+            }]}
             placeholder="Age"
             placeholderTextColor={Colors[colorScheme ?? 'light'].icon}
             value={formData.age}
@@ -144,7 +152,11 @@ export default function ProfileScreen() {
           </View>
 
           <TextInput
-            style={[styles.input, { color: Colors[colorScheme ?? 'light'].text }]}
+            style={[styles.input, { 
+              borderColor: Colors[colorScheme ?? 'light'].tint + '30',
+              backgroundColor: Colors[colorScheme ?? 'light'].background,
+              color: Colors[colorScheme ?? 'light'].text 
+            }]}
             placeholder="Country"
             placeholderTextColor={Colors[colorScheme ?? 'light'].icon}
             value={formData.country}
@@ -152,7 +164,11 @@ export default function ProfileScreen() {
           />
 
           <TextInput
-            style={[styles.input, { color: Colors[colorScheme ?? 'light'].text }]}
+            style={[styles.input, { 
+              borderColor: Colors[colorScheme ?? 'light'].tint + '30',
+              backgroundColor: Colors[colorScheme ?? 'light'].background,
+              color: Colors[colorScheme ?? 'light'].text 
+            }]}
             placeholder="Mobile Number"
             placeholderTextColor={Colors[colorScheme ?? 'light'].icon}
             value={formData.mobile}
@@ -161,7 +177,11 @@ export default function ProfileScreen() {
           />
 
           <TextInput
-            style={[styles.input, { color: Colors[colorScheme ?? 'light'].text }]}
+            style={[styles.input, { 
+              borderColor: Colors[colorScheme ?? 'light'].tint + '30',
+              backgroundColor: Colors[colorScheme ?? 'light'].background,
+              color: Colors[colorScheme ?? 'light'].text 
+            }]}
             placeholder="WhatsApp Number (prefilled)"
             placeholderTextColor={Colors[colorScheme ?? 'light'].icon}
             value={formData.whatsapp || formData.mobile}
@@ -191,7 +211,11 @@ export default function ProfileScreen() {
           </View>
 
           <TextInput
-            style={[styles.input, { color: Colors[colorScheme ?? 'light'].text }]}
+            style={[styles.input, { 
+              borderColor: Colors[colorScheme ?? 'light'].tint + '30',
+              backgroundColor: Colors[colorScheme ?? 'light'].background,
+              color: Colors[colorScheme ?? 'light'].text 
+            }]}
             placeholder="Academic Qualification"
             placeholderTextColor={Colors[colorScheme ?? 'light'].icon}
             value={formData.qualification}
@@ -222,7 +246,11 @@ export default function ProfileScreen() {
           </View>
 
           <TextInput
-            style={[styles.textArea, { color: Colors[colorScheme ?? 'light'].text }]}
+            style={[styles.textArea, { 
+              borderColor: Colors[colorScheme ?? 'light'].tint + '30',
+              backgroundColor: Colors[colorScheme ?? 'light'].background,
+              color: Colors[colorScheme ?? 'light'].text 
+            }]}
             placeholder="About You (Max 300 characters)"
             placeholderTextColor={Colors[colorScheme ?? 'light'].icon}
             value={formData.about}
