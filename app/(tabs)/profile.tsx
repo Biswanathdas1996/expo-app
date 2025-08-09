@@ -515,3 +515,116 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
 });
+import React from 'react';
+import { StyleSheet, View, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
+import { ThemedText } from '@/components/ThemedText';
+import { ThemedView } from '@/components/ThemedView';
+import { IconSymbol } from '@/components/ui/IconSymbol';
+import { useColorScheme } from '@/hooks/useColorScheme';
+import { Colors } from '@/constants/Colors';
+
+const { width, height } = Dimensions.get('window');
+
+export default function ProfileScreen() {
+  const colorScheme = useColorScheme();
+
+  return (
+    <ScrollView style={[styles.container, { backgroundColor: Colors[colorScheme ?? 'light'].background }]}>
+      <ThemedView style={styles.header}>
+        <View style={[styles.avatarContainer, { borderColor: Colors[colorScheme ?? 'light'].tint }]}>
+          <ThemedText style={styles.avatarText}>👤</ThemedText>
+        </View>
+        <ThemedText type="title" style={[styles.name, { color: Colors[colorScheme ?? 'light'].text }]}>
+          Welcome User
+        </ThemedText>
+        <ThemedText style={[styles.subtitle, { color: Colors[colorScheme ?? 'light'].text }]}>
+          Complete your profile
+        </ThemedText>
+      </ThemedView>
+
+      <ThemedView style={styles.section}>
+        <ThemedText type="subtitle" style={[styles.sectionTitle, { color: Colors[colorScheme ?? 'light'].text }]}>
+          Settings
+        </ThemedText>
+        
+        <TouchableOpacity style={[styles.menuItem, { borderBottomColor: Colors[colorScheme ?? 'light'].tabIconDefault }]}>
+          <IconSymbol name="house.fill" size={24} color={Colors[colorScheme ?? 'light'].tint} />
+          <ThemedText style={[styles.menuText, { color: Colors[colorScheme ?? 'light'].text }]}>
+            Account Settings
+          </ThemedText>
+          <IconSymbol name="chevron.right" size={20} color={Colors[colorScheme ?? 'light'].tabIconDefault} />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={[styles.menuItem, { borderBottomColor: Colors[colorScheme ?? 'light'].tabIconDefault }]}>
+          <IconSymbol name="house.fill" size={24} color={Colors[colorScheme ?? 'light'].tint} />
+          <ThemedText style={[styles.menuText, { color: Colors[colorScheme ?? 'light'].text }]}>
+            Notifications
+          </ThemedText>
+          <IconSymbol name="chevron.right" size={20} color={Colors[colorScheme ?? 'light'].tabIconDefault} />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={[styles.menuItem, { borderBottomColor: Colors[colorScheme ?? 'light'].tabIconDefault }]}>
+          <IconSymbol name="house.fill" size={24} color={Colors[colorScheme ?? 'light'].tint} />
+          <ThemedText style={[styles.menuText, { color: Colors[colorScheme ?? 'light'].text }]}>
+            Privacy
+          </ThemedText>
+          <IconSymbol name="chevron.right" size={20} color={Colors[colorScheme ?? 'light'].tabIconDefault} />
+        </TouchableOpacity>
+      </ThemedView>
+    </ScrollView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  header: {
+    alignItems: 'center',
+    paddingVertical: 40,
+    paddingHorizontal: 20,
+  },
+  avatarContainer: {
+    width: width * 0.25,
+    height: width * 0.25,
+    borderRadius: width * 0.125,
+    borderWidth: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  avatarText: {
+    fontSize: width * 0.1,
+  },
+  name: {
+    fontSize: Math.min(width * 0.06, 24),
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: Math.min(width * 0.04, 16),
+    textAlign: 'center',
+    opacity: 0.7,
+  },
+  section: {
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+  },
+  sectionTitle: {
+    fontSize: Math.min(width * 0.05, 20),
+    fontWeight: '600',
+    marginBottom: 20,
+  },
+  menuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+  },
+  menuText: {
+    flex: 1,
+    fontSize: Math.min(width * 0.04, 16),
+    marginLeft: 12,
+  },
+});
