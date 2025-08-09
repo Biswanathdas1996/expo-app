@@ -229,6 +229,7 @@ export default function WelcomeScreen() {
           </TouchableOpacity>
         </ScrollView>
       </View>
+    </View>
   );
 
   const renderPurposeSelection = () => {
