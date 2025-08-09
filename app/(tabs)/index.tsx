@@ -9,6 +9,8 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
+import { Audio } from 'expo-av';
+import * as Speech from 'expo-speech';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useColorScheme } from '@/hooks/useColorScheme';
@@ -25,7 +27,31 @@ export default function WelcomeScreen() {
     partner: '',
     language: 'English'
   });
+  const [isSpeaking, setIsSpeaking] = useState(false);
   const colorScheme = useColorScheme();
+
+  const speakText = async (text: string) => {
+    try {
+      setIsSpeaking(true);
+      await Speech.speak(text, {
+        language: 'en-US',
+        pitch: 1.1,
+        rate: 0.9,
+        voice: 'com.apple.ttsbundle.Samantha-compact', // Female voice on iOS
+        onDone: () => setIsSpeaking(false),
+        onStopped: () => setIsSpeaking(false),
+        onError: () => setIsSpeaking(false),
+      });
+    } catch (error) {
+      console.log('Speech error:', error);
+      setIsSpeaking(false);
+    }
+  };
+
+  const stopSpeaking = () => {
+    Speech.stop();
+    setIsSpeaking(false);
+  };
 
   const handleSignIn = () => {
     if (!name.trim() || !mobile.trim()) {
@@ -58,6 +84,15 @@ export default function WelcomeScreen() {
         <ThemedText style={styles.welcomeSubtitle}>
           India's most trusted CEFR-based English learning app powered by AI
         </ThemedText>
+
+        <TouchableOpacity 
+          style={styles.speechButton} 
+          onPress={() => speakText("Welcome to SpeakEdge - India's most trusted CEFR-based English learning app powered by AI. Please enter your name and mobile number to get started.")}
+        >
+          <ThemedText style={styles.speechButtonText}>
+            {isSpeaking ? '🔇 Stop' : '🔊 Listen'}
+          </ThemedText>
+        </TouchableOpacity>
 
         <View style={styles.inputContainer}>
           <TextInput
@@ -105,6 +140,15 @@ export default function WelcomeScreen() {
           Hi {name}, Welcome to SpeakEdge! I'm Rose, your AI tutor. I'm here to help you improve your English skills with personalized lessons and practice sessions.
         </ThemedText>
 
+        <TouchableOpacity 
+          style={styles.speechButton} 
+          onPress={() => speakText(`Hi ${name}, Welcome to SpeakEdge! I'm Rose, your AI tutor. I'm here to help you improve your English skills with personalized lessons and practice sessions. Let's get started with some questions to personalize your learning experience.`)}
+        >
+          <ThemedText style={styles.speechButtonText}>
+            {isSpeaking ? '🔇 Stop Rose' : '🔊 Hear Rose'}
+          </ThemedText>
+        </TouchableOpacity>
+
         <TouchableOpacity style={styles.primaryButton} onPress={() => setCurrentStep('level')}>
           <ThemedText style={styles.buttonText}>Let's Get Started</ThemedText>
         </TouchableOpacity>
@@ -119,6 +163,15 @@ export default function WelcomeScreen() {
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <ThemedView style={styles.container}>
           <ThemedText style={styles.stepTitle}>What's your English level?</ThemedText>
+          
+          <TouchableOpacity 
+            style={styles.speechButton} 
+            onPress={() => speakText("What's your English level? Please select from Beginner, Elementary, Intermediate, Upper Intermediate, Advanced, or Proficient.")}
+          >
+            <ThemedText style={styles.speechButtonText}>
+              {isSpeaking ? '🔇 Stop' : '🔊 Listen'}
+            </ThemedText>
+          </TouchableOpacity>
           
           {levels.map((level) => (
             <TouchableOpacity
@@ -499,5 +552,19 @@ const styles = StyleSheet.create({
   },
   finalButtonContainer: {
     gap: 15,
+  },
+  speechButton: {
+    backgroundColor: '#FF6B6B',
+    padding: 12,
+    borderRadius: 25,
+    alignItems: 'center',
+    marginBottom: 20,
+    alignSelf: 'center',
+    paddingHorizontal: 20,
+  },
+  speechButtonText: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight: '600',
   },
 });
