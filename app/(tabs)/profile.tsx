@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import {
   StyleSheet,
@@ -63,9 +62,9 @@ export default function ProfileScreen() {
 
   const renderBenefitsPage = () => (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <ThemedView style={styles.container}>
+      <ThemedView style={[styles.container, { backgroundColor: colorScheme === 'dark' ? '#1a1a2e' : '#f8f9ff' }]}>
         <ThemedText style={styles.title}>SpeakEdge Membership Benefits</ThemedText>
-        
+
         <View style={styles.benefitsList}>
           {[
             '1. Unlimited English conversation partner',
@@ -81,14 +80,14 @@ export default function ProfileScreen() {
         </View>
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity 
-            style={styles.primaryButton} 
+          <TouchableOpacity
+            style={styles.primaryButton}
             onPress={() => setShowMembershipForm(true)}
           >
             <ThemedText style={styles.buttonText}>I am Interested</ThemedText>
           </TouchableOpacity>
-          <TouchableOpacity 
-            style={styles.secondaryButton} 
+          <TouchableOpacity
+            style={styles.secondaryButton}
             onPress={() => setShowBenefits(false)}
           >
             <ThemedText style={[styles.buttonText, styles.secondaryButtonText]}>Skip for Now</ThemedText>
@@ -100,9 +99,9 @@ export default function ProfileScreen() {
 
   const renderMembershipForm = () => (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <ThemedView style={styles.container}>
+      <ThemedView style={[styles.container, { backgroundColor: colorScheme === 'dark' ? '#1a1a2e' : '#f8f9ff' }]}>
         <ThemedText style={styles.title}>Membership Registration</ThemedText>
-        
+
         <View style={styles.formContainer}>
           <TextInput
             style={[styles.input, { color: Colors[colorScheme ?? 'light'].text }]}
@@ -111,7 +110,7 @@ export default function ProfileScreen() {
             value={formData.name}
             onChangeText={(text) => setFormData({...formData, name: text})}
           />
-          
+
           <TextInput
             style={[styles.input, { color: Colors[colorScheme ?? 'light'].text }]}
             placeholder="Age"
@@ -120,7 +119,7 @@ export default function ProfileScreen() {
             onChangeText={(text) => setFormData({...formData, age: text})}
             keyboardType="numeric"
           />
-          
+
           <View style={styles.genderContainer}>
             <ThemedText style={styles.label}>Gender:</ThemedText>
             <View style={styles.radioContainer}>
@@ -151,7 +150,7 @@ export default function ProfileScreen() {
             value={formData.country}
             onChangeText={(text) => setFormData({...formData, country: text})}
           />
-          
+
           <TextInput
             style={[styles.input, { color: Colors[colorScheme ?? 'light'].text }]}
             placeholder="Mobile Number"
@@ -160,7 +159,7 @@ export default function ProfileScreen() {
             onChangeText={(text) => setFormData({...formData, mobile: text})}
             keyboardType="phone-pad"
           />
-          
+
           <TextInput
             style={[styles.input, { color: Colors[colorScheme ?? 'light'].text }]}
             placeholder="WhatsApp Number (prefilled)"
@@ -242,8 +241,8 @@ export default function ProfileScreen() {
             <ThemedText style={styles.photoInfo}>Max 1MB - Will be compressed to 100kb</ThemedText>
           </TouchableOpacity>
 
-          <TouchableOpacity 
-            style={styles.primaryButton} 
+          <TouchableOpacity
+            style={styles.primaryButton}
             onPress={() => {
               Alert.alert('Success', 'Congratulations! Your SpeakEdge account is activated.', [
                 { text: 'OK', onPress: () => setShowDashboard(true) }
@@ -259,16 +258,16 @@ export default function ProfileScreen() {
 
   const renderDashboard = () => (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <ThemedView style={styles.container}>
+      <ThemedView style={[styles.container, { backgroundColor: colorScheme === 'dark' ? '#1a1a2e' : '#f8f9ff' }]}>
         <ThemedText style={styles.title}>Welcome to Your Dashboard</ThemedText>
-        
+
         <ThemedText style={styles.sectionTitle}>Available Plans</ThemedText>
-        
+
         {plans.map((plan, index) => (
           <TouchableOpacity key={index} style={styles.planCard}>
             <ThemedText style={styles.planText}>{plan}</ThemedText>
             {plan.includes('Professional English-Speaking Plan') && (
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={styles.professionsButton}
                 onPress={() => Alert.alert('Top 20 Professions', professions.join(', '))}
               >
@@ -295,25 +294,25 @@ export default function ProfileScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <ThemedView style={styles.container}>
+      <ThemedView style={[styles.container, { backgroundColor: colorScheme === 'dark' ? '#1a1a2e' : '#f8f9ff' }]}>
         <ThemedText style={styles.title}>Profile</ThemedText>
-        
+
         <View style={styles.profileSection}>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.primaryButton}
             onPress={() => setShowBenefits(true)}
           >
             <ThemedText style={styles.buttonText}>View Membership Benefits</ThemedText>
           </TouchableOpacity>
-          
-          <TouchableOpacity 
+
+          <TouchableOpacity
             style={styles.secondaryButton}
             onPress={() => setShowMembershipForm(true)}
           >
             <ThemedText style={[styles.buttonText, styles.secondaryButtonText]}>Join Membership</ThemedText>
           </TouchableOpacity>
-          
-          <TouchableOpacity 
+
+          <TouchableOpacity
             style={styles.tertiaryButton}
             onPress={() => setShowDashboard(true)}
           >
@@ -332,7 +331,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: colorScheme === 'dark' ? '#1a1a2e' : '#f8f9ff',
   },
   title: {
     fontSize: 32,
@@ -432,7 +430,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors[colorScheme ?? 'light'].background,
     color: Colors[colorScheme ?? 'light'].text,
     textAlignVertical: 'top',
-    textAlignVertical: 'top',
   },
   charCount: {
     textAlign: 'right',
@@ -515,7 +512,7 @@ const styles = StyleSheet.create({
     gap: 15,
   },
   planCard: {
-    backgroundColor: '#f8f9fa',
+    backgroundColor: Colors[colorScheme ?? 'light'].background,
     padding: 15,
     borderRadius: 10,
     marginBottom: 10,
