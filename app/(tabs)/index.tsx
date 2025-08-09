@@ -559,7 +559,7 @@ export default function WelcomeScreen() {
     }
   };
 
-  const useEffect(() => {
+  useEffect(() => {
     stopSpeaking();
 
     switch (currentStep) {
