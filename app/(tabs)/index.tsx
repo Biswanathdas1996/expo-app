@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
@@ -38,7 +37,7 @@ export default function WelcomeScreen() {
     if (isSpeaking) {
       stopSpeaking();
     }
-    
+
     try {
       setIsSpeaking(true);
       await Speech.speak(text, {
@@ -85,7 +84,7 @@ export default function WelcomeScreen() {
               <ThemedText style={styles.logoIcon}>🎓</ThemedText>
             </View>
           </View>
-          
+
           <ThemedText style={styles.title}>SpeakEdge</ThemedText>
           <ThemedText style={styles.subtitle}>AI-Powered English Learning</ThemedText>
         </View>
@@ -119,7 +118,7 @@ export default function WelcomeScreen() {
           <TouchableOpacity style={styles.primaryButton} onPress={handleSignUp}>
             <ThemedText style={styles.primaryButtonText}>Get Started</ThemedText>
           </TouchableOpacity>
-          
+
           <TouchableOpacity style={styles.secondaryButton} onPress={handleSignIn}>
             <ThemedText style={styles.secondaryButtonText}>Sign In</ThemedText>
           </TouchableOpacity>
@@ -153,7 +152,7 @@ export default function WelcomeScreen() {
 
           <ThemedText style={styles.aiTitle}>Meet Rose</ThemedText>
           <ThemedText style={styles.aiSubtitle}>Your AI English Tutor</ThemedText>
-          
+
           <View style={styles.speechCard}>
             <ThemedText style={styles.speechText}>
               Hi {name}! I'm Rose, your AI tutor. Let's personalize your English learning journey together.
@@ -489,7 +488,7 @@ export default function WelcomeScreen() {
               <ThemedText style={styles.courseBadge}>Recommended</ThemedText>
             </View>
           </View>
-          
+
           <View style={styles.courseDetails}>
             <View style={styles.detailRow}>
               <ThemedText style={styles.detailIcon}>📋</ThemedText>
@@ -538,7 +537,7 @@ export default function WelcomeScreen() {
           <TouchableOpacity style={styles.primaryButton} onPress={() => Alert.alert('Demo', 'Starting your free demo!')}>
             <ThemedText style={styles.primaryButtonText}>Start Free Demo</ThemedText>
           </TouchableOpacity>
-          
+
           <TouchableOpacity style={styles.secondaryButton} onPress={() => setShowSkipPopup(true)}>
             <ThemedText style={styles.secondaryButtonText}>Skip for Now</ThemedText>
           </TouchableOpacity>
@@ -560,9 +559,9 @@ export default function WelcomeScreen() {
     }
   };
 
-  useEffect(() => {
+  const useEffect(() => {
     stopSpeaking();
-    
+
     switch (currentStep) {
       case 'intro':
         speakText(`Hi ${name}, Welcome to SpeakEdge! I'm Rose, your AI tutor. Let's personalize your learning experience.`);
@@ -600,11 +599,11 @@ export default function WelcomeScreen() {
             <ThemedText style={styles.modalIcon}>🎁</ThemedText>
             <ThemedText style={styles.modalTitle}>Limited Offer!</ThemedText>
           </View>
-          
+
           <ThemedText style={styles.modalText}>
             Claim 100% free SpeakEdge lifetime membership. Limited time offer - Save ₹999!
           </ThemedText>
-          
+
           <View style={styles.modalButtons}>
             <TouchableOpacity 
               style={styles.primaryButton} 
@@ -615,7 +614,7 @@ export default function WelcomeScreen() {
             >
               <ThemedText style={styles.primaryButtonText}>View Benefits</ThemedText>
             </TouchableOpacity>
-            
+
             <TouchableOpacity 
               style={styles.secondaryButton} 
               onPress={() => setShowSkipPopup(false)}
@@ -641,7 +640,7 @@ export default function WelcomeScreen() {
             <ThemedText style={styles.modalIcon}>💎</ThemedText>
             <ThemedText style={styles.modalTitle}>Membership Benefits</ThemedText>
           </View>
-          
+
           <ScrollView style={styles.benefitsList}>
             {[
               { icon: '💬', text: 'Unlimited conversation partners' },
@@ -658,7 +657,7 @@ export default function WelcomeScreen() {
               </View>
             ))}
           </ScrollView>
-          
+
           <View style={styles.modalButtons}>
             <TouchableOpacity 
               style={styles.primaryButton} 
@@ -669,7 +668,7 @@ export default function WelcomeScreen() {
             >
               <ThemedText style={styles.primaryButtonText}>I'm Interested</ThemedText>
             </TouchableOpacity>
-            
+
             <TouchableOpacity 
               style={styles.secondaryButton} 
               onPress={() => setShowBenefitsModal(false)}
