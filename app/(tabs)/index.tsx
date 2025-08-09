@@ -243,9 +243,8 @@ export default function WelcomeScreen() {
           >
             <ThemedText style={styles.primaryButtonText}>Continue</ThemedText>
           </TouchableOpacity>
-        </View>
-      </ScrollView>
-    </View>
+        </ScrollView>
+      </View>
   );
 
   const renderPurposeSelection = () => {
