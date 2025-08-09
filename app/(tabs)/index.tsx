@@ -30,6 +30,10 @@ export default function WelcomeScreen() {
   const colorScheme = useColorScheme();
 
   const speakText = async (text: string) => {
+    if (isSpeaking) {
+      stopSpeaking(); // Stop current speech before starting new one
+    }
+    
     try {
       setIsSpeaking(true);
       await Speech.speak(text, {
@@ -395,8 +399,10 @@ export default function WelcomeScreen() {
     }
   };
 
-  // Effect to auto-play speech on screen load (skip welcome page)
+  // Effect to auto-play speech on section change only
   useEffect(() => {
+    stopSpeaking(); // Stop any ongoing speech when section changes
+    
     switch (currentStep) {
       case 'intro':
         speakText(`Hi ${name}, Welcome to SpeakEdge! I'm Rose, your AI tutor. I'm here to help you improve your English skills with personalized lessons and practice sessions. Let's get started with some questions to personalize your learning experience.`);
@@ -419,7 +425,7 @@ export default function WelcomeScreen() {
       default:
         break;
     }
-  }, [currentStep, name, userAnswers.level, userAnswers.purpose, userAnswers.skills]);
+  }, [currentStep, name]); // Only depend on currentStep and name, not on user selections
 
 
   return renderCurrentStep();
