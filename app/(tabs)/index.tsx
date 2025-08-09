@@ -32,9 +32,8 @@ export default function WelcomeScreen() {
       Alert.alert('Error', 'Please fill in both name and mobile number');
       return;
     }
-    Alert.alert('OTP Sent', 'OTP has been sent to your WhatsApp', [
-      { text: 'OK', onPress: () => setCurrentStep('intro') }
-    ]);
+    // Skip OTP for now - direct to intro
+    setCurrentStep('intro');
   };
 
   const handleSignUp = () => {
@@ -42,9 +41,8 @@ export default function WelcomeScreen() {
       Alert.alert('Error', 'Please fill in both name and mobile number');
       return;
     }
-    Alert.alert('Welcome!', 'WhatsApp OTP sent automatically for new users', [
-      { text: 'OK', onPress: () => setCurrentStep('intro') }
-    ]);
+    // Skip OTP for now - direct to intro
+    setCurrentStep('intro');
   };
 
   const renderWelcomeScreen = () => (
@@ -88,7 +86,7 @@ export default function WelcomeScreen() {
           </TouchableOpacity>
         </View>
 
-        <ThemedText style={styles.otpInfo}>OTP will be sent via WhatsApp</ThemedText>
+        <ThemedText style={styles.otpInfo}>OTP verification skipped for development</ThemedText>
       </ThemedView>
     </ScrollView>
   );
