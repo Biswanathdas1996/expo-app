@@ -78,7 +78,9 @@ export default function AIIntroduction({ navigation }: AIIntroductionProps) {
 
             <TouchableOpacity
               style={styles.modernPrimaryButton}
-              onPress={() => navigation.navigate("LevelSelection")}
+              onPress={() =>
+                navigation.navigate("LevelSelection", { name: "User" })
+              }
             >
               <View style={styles.buttonGradient} />
               <ThemedText style={styles.modernButtonText}>

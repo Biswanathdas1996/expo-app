@@ -72,33 +72,61 @@ export const WelcomeScreenComponent: React.FC<WelcomeScreenComponentProps> = ({
           </View>
 
           <View style={styles.modernInputContainer}>
-            <View style={styles.inputWrapper}>
+            <View
+              style={[
+                styles.inputWrapper,
+                {
+                  backgroundColor:
+                    colorScheme === "dark"
+                      ? "rgba(60, 60, 60, 0.9)"
+                      : "rgba(255, 255, 255, 0.9)",
+                },
+              ]}
+            >
               <View style={styles.inputIcon}>
                 <ThemedText style={styles.iconText}>👤</ThemedText>
               </View>
               <TextInput
                 style={[
                   styles.modernInput,
-                  { color: Colors[colorScheme ?? "dark"].text },
+                  {
+                    color: colorScheme === "dark" ? "#FFFFFF" : "#000000",
+                  },
                 ]}
                 placeholder="Enter your name"
-                placeholderTextColor="#A0A0A0"
+                placeholderTextColor={
+                  colorScheme === "dark" ? "#A0A0A0" : "#666666"
+                }
                 value={name}
                 onChangeText={setName}
               />
             </View>
 
-            <View style={styles.inputWrapper}>
+            <View
+              style={[
+                styles.inputWrapper,
+                {
+                  backgroundColor:
+                    colorScheme === "dark"
+                      ? "rgba(60, 60, 60, 0.9)"
+                      : "rgba(255, 255, 255, 0.9)",
+                },
+              ]}
+            >
               <View style={styles.inputIcon}>
                 <ThemedText style={styles.iconText}>📱</ThemedText>
               </View>
               <TextInput
                 style={[
                   styles.modernInput,
-                  { color: Colors[colorScheme ?? "dark"].text },
+                  {
+                    color: colorScheme === "dark" ? "#FFFFFF" : "#000000",
+                  },
                 ]}
                 placeholder="Enter mobile number"
-                placeholderTextColor="#A0A0A0"
+                placeholderTextColor={
+                  colorScheme === "dark" ? "#A0A0A0" : "#666666"
+                }
                 value={mobile}
                 onChangeText={setMobile}
                 keyboardType="phone-pad"
@@ -217,7 +245,6 @@ const styles = StyleSheet.create({
   inputWrapper: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "rgba(255, 255, 255, 0.9)",
     borderRadius: 16,
     paddingHorizontal: 20,
     paddingVertical: 4,
