@@ -75,11 +75,13 @@ export const WelcomeScreenComponent: React.FC<WelcomeScreenComponentProps> = ({
         style={[
           styles.backgroundGradient,
           {
-            backgroundColor: colorScheme === "dark" ? "#0f0f23" : "#ffffff",
+            backgroundColor: colorScheme === "dark" ? "#0a0a1a" : "#fafbff",
           },
         ]}
       />
       <View style={styles.backgroundAccent} />
+      <View style={styles.backgroundAccent2} />
+      <View style={styles.floatingOrbs} />
 
       <ScrollView
         contentContainerStyle={styles.scrollContent}
@@ -97,19 +99,34 @@ export const WelcomeScreenComponent: React.FC<WelcomeScreenComponentProps> = ({
         >
           {/* Hero Section */}
           <View style={styles.heroSection}>
-            <View style={styles.compactHeroContainer}>
+            <View
+              style={[
+                styles.compactHeroContainer,
+                {
+                  backgroundColor:
+                    colorScheme === "dark"
+                      ? "rgba(139, 69, 255, 0.08)"
+                      : "rgba(139, 69, 255, 0.06)",
+                  borderColor:
+                    colorScheme === "dark"
+                      ? "rgba(139, 69, 255, 0.2)"
+                      : "rgba(139, 69, 255, 0.15)",
+                },
+              ]}
+            >
               <View
                 style={[
                   styles.compactLogoCircle,
                   {
                     backgroundColor:
                       colorScheme === "dark"
-                        ? "rgba(139, 69, 255, 0.15)"
-                        : "rgba(139, 69, 255, 0.1)",
+                        ? "rgba(139, 69, 255, 0.2)"
+                        : "rgba(139, 69, 255, 0.15)",
                   },
                 ]}
               >
                 <ThemedText style={styles.compactLogoEmoji}>🎓</ThemedText>
+                <View style={styles.logoRipple} />
               </View>
 
               <View style={styles.compactTitleContainer}>
@@ -118,7 +135,7 @@ export const WelcomeScreenComponent: React.FC<WelcomeScreenComponentProps> = ({
                     style={[
                       styles.compactWelcomeText,
                       {
-                        color: colorScheme === "dark" ? "#a0a0a0" : "#666666",
+                        color: colorScheme === "dark" ? "#9ca3af" : "#6b7280",
                       },
                     ]}
                   >
@@ -132,11 +149,11 @@ export const WelcomeScreenComponent: React.FC<WelcomeScreenComponentProps> = ({
                   style={[
                     styles.compactTaglineText,
                     {
-                      color: colorScheme === "dark" ? "#ffffff" : "#1a1a1a",
+                      color: colorScheme === "dark" ? "#e5e7eb" : "#1f2937",
                     },
                   ]}
                 >
-                  Master English with AI-powered learning
+                  Master English with AI-powered learning ✨
                 </ThemedText>
               </View>
             </View>
@@ -150,22 +167,53 @@ export const WelcomeScreenComponent: React.FC<WelcomeScreenComponentProps> = ({
                 {
                   backgroundColor:
                     colorScheme === "dark"
-                      ? "rgba(30, 30, 30, 0.95)"
+                      ? "rgba(17, 24, 39, 0.95)"
                       : "rgba(255, 255, 255, 0.95)",
                   shadowColor: colorScheme === "dark" ? "#8B45FF" : "#000000",
+                  borderColor:
+                    colorScheme === "dark"
+                      ? "rgba(139, 69, 255, 0.15)"
+                      : "rgba(139, 69, 255, 0.1)",
                 },
               ]}
             >
+              <View style={styles.inputHeader}>
+                <ThemedText
+                  style={[
+                    styles.inputHeaderText,
+                    {
+                      color: colorScheme === "dark" ? "#e5e7eb" : "#374151",
+                    },
+                  ]}
+                >
+                  Let's get started 🚀
+                </ThemedText>
+              </View>
+
               <View style={styles.inputGroup}>
-                <View style={styles.inputContainer}>
+                <View
+                  style={[
+                    styles.inputContainer,
+                    {
+                      borderColor:
+                        colorScheme === "dark"
+                          ? "rgba(139, 69, 255, 0.3)"
+                          : "rgba(139, 69, 255, 0.25)",
+                      backgroundColor:
+                        colorScheme === "dark"
+                          ? "rgba(31, 41, 55, 0.5)"
+                          : "rgba(248, 250, 252, 0.8)",
+                    },
+                  ]}
+                >
                   <View
                     style={[
                       styles.inputIconWrapper,
                       {
                         backgroundColor:
                           colorScheme === "dark"
-                            ? "rgba(139, 69, 255, 0.2)"
-                            : "rgba(139, 69, 255, 0.1)",
+                            ? "rgba(139, 69, 255, 0.25)"
+                            : "rgba(139, 69, 255, 0.15)",
                       },
                     ]}
                   >
@@ -175,12 +223,12 @@ export const WelcomeScreenComponent: React.FC<WelcomeScreenComponentProps> = ({
                     style={[
                       styles.textInput,
                       {
-                        color: colorScheme === "dark" ? "#ffffff" : "#1a1a1a",
+                        color: colorScheme === "dark" ? "#f9fafb" : "#111827",
                       },
                     ]}
                     placeholder="Enter your full name"
                     placeholderTextColor={
-                      colorScheme === "dark" ? "#666666" : "#999999"
+                      colorScheme === "dark" ? "#9ca3af" : "#6b7280"
                     }
                     value={name}
                     onChangeText={setName}
@@ -190,15 +238,29 @@ export const WelcomeScreenComponent: React.FC<WelcomeScreenComponentProps> = ({
               </View>
 
               <View style={styles.inputGroup}>
-                <View style={styles.inputContainer}>
+                <View
+                  style={[
+                    styles.inputContainer,
+                    {
+                      borderColor:
+                        colorScheme === "dark"
+                          ? "rgba(139, 69, 255, 0.3)"
+                          : "rgba(139, 69, 255, 0.25)",
+                      backgroundColor:
+                        colorScheme === "dark"
+                          ? "rgba(31, 41, 55, 0.5)"
+                          : "rgba(248, 250, 252, 0.8)",
+                    },
+                  ]}
+                >
                   <View
                     style={[
                       styles.inputIconWrapper,
                       {
                         backgroundColor:
                           colorScheme === "dark"
-                            ? "rgba(139, 69, 255, 0.2)"
-                            : "rgba(139, 69, 255, 0.1)",
+                            ? "rgba(139, 69, 255, 0.25)"
+                            : "rgba(139, 69, 255, 0.15)",
                       },
                     ]}
                   >
@@ -208,12 +270,12 @@ export const WelcomeScreenComponent: React.FC<WelcomeScreenComponentProps> = ({
                     style={[
                       styles.textInput,
                       {
-                        color: colorScheme === "dark" ? "#ffffff" : "#1a1a1a",
+                        color: colorScheme === "dark" ? "#f9fafb" : "#111827",
                       },
                     ]}
                     placeholder="Enter mobile number"
                     placeholderTextColor={
-                      colorScheme === "dark" ? "#666666" : "#999999"
+                      colorScheme === "dark" ? "#9ca3af" : "#6b7280"
                     }
                     value={mobile}
                     onChangeText={setMobile}
@@ -238,9 +300,12 @@ export const WelcomeScreenComponent: React.FC<WelcomeScreenComponentProps> = ({
               activeOpacity={0.8}
             >
               <View style={styles.buttonGradient} />
-              <ThemedText style={styles.primaryButtonText}>
-                Get Started
-              </ThemedText>
+              <View style={styles.buttonContent}>
+                <ThemedText style={styles.primaryButtonText}>
+                  Get Started
+                </ThemedText>
+                <ThemedText style={styles.buttonEmoji}>🚀</ThemedText>
+              </View>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -249,8 +314,12 @@ export const WelcomeScreenComponent: React.FC<WelcomeScreenComponentProps> = ({
                 {
                   backgroundColor:
                     colorScheme === "dark"
-                      ? "rgba(255, 255, 255, 0.1)"
-                      : "rgba(139, 69, 255, 0.1)",
+                      ? "rgba(107, 114, 128, 0.15)"
+                      : "rgba(139, 69, 255, 0.08)",
+                  borderColor:
+                    colorScheme === "dark"
+                      ? "rgba(139, 69, 255, 0.25)"
+                      : "rgba(139, 69, 255, 0.2)",
                 },
               ]}
               onPress={handleSignIn}
@@ -260,11 +329,11 @@ export const WelcomeScreenComponent: React.FC<WelcomeScreenComponentProps> = ({
                 style={[
                   styles.secondaryButtonText,
                   {
-                    color: colorScheme === "dark" ? "#8B45FF" : "#8B45FF",
+                    color: colorScheme === "dark" ? "#a78bfa" : "#7c3aed",
                   },
                 ]}
               >
-                Already have an account?
+                Already have an account? Sign In
               </ThemedText>
             </TouchableOpacity>
           </View>
@@ -293,7 +362,25 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     borderRadius: 100,
-    backgroundColor: "rgba(139, 69, 255, 0.1)",
+    backgroundColor: "rgba(139, 69, 255, 0.08)",
+  },
+  backgroundAccent2: {
+    position: "absolute",
+    bottom: -80,
+    left: -80,
+    width: 160,
+    height: 160,
+    borderRadius: 80,
+    backgroundColor: "rgba(59, 130, 246, 0.06)",
+  },
+  floatingOrbs: {
+    position: "absolute",
+    top: "30%",
+    left: "10%",
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: "rgba(236, 72, 153, 0.04)",
   },
   scrollContent: {
     flexGrow: 1,
@@ -398,12 +485,14 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    borderRadius: 16,
-    borderWidth: 2,
-    borderColor: "rgba(139, 69, 255, 0.2)",
+    borderRadius: 18,
+    borderWidth: 1.5,
     paddingHorizontal: 20,
-    paddingVertical: 4,
-    backgroundColor: "transparent",
+    paddingVertical: 6,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
   },
   inputIconWrapper: {
     width: 40,
@@ -427,13 +516,13 @@ const styles = StyleSheet.create({
   },
   primaryButton: {
     backgroundColor: "#8B45FF",
-    paddingVertical: 18,
+    paddingVertical: 20,
     paddingHorizontal: 32,
-    borderRadius: 20,
+    borderRadius: 24,
     alignItems: "center",
     marginBottom: 16,
     shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.25,
     shadowRadius: 16,
     elevation: 8,
     position: "relative",
@@ -454,12 +543,15 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   secondaryButton: {
-    paddingVertical: 16,
+    paddingVertical: 18,
     paddingHorizontal: 32,
-    borderRadius: 16,
+    borderRadius: 20,
     alignItems: "center",
-    borderWidth: 2,
-    borderColor: "rgba(139, 69, 255, 0.3)",
+    borderWidth: 1.5,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    elevation: 2,
   },
   secondaryButtonText: {
     fontSize: 16,
@@ -514,24 +606,43 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: 20,
-    paddingVertical: 20,
-    backgroundColor: "rgba(139, 69, 255, 0.05)",
-    borderRadius: 24,
+    paddingHorizontal: 24,
+    paddingVertical: 24,
+    borderRadius: 28,
     marginHorizontal: 12,
+    borderWidth: 1,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 12,
+    elevation: 6,
   },
   compactLogoCircle: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    width: 64,
+    height: 64,
+    borderRadius: 32,
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 2,
     borderColor: "#8B45FF",
     marginRight: 20,
+    position: "relative",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  logoRipple: {
+    position: "absolute",
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: "rgba(139, 69, 255, 0.1)",
+    top: -8,
+    left: -8,
   },
   compactLogoEmoji: {
-    fontSize: 30,
+    fontSize: 32,
+    zIndex: 2,
   },
   compactTitleContainer: {
     flex: 1,
@@ -539,21 +650,44 @@ const styles = StyleSheet.create({
   brandRow: {
     flexDirection: "row",
     alignItems: "baseline",
-    marginBottom: 4,
+    marginBottom: 6,
     flexWrap: "wrap",
   },
   compactWelcomeText: {
     fontSize: 16,
-    fontWeight: "400",
+    fontWeight: "500",
   },
   compactBrandText: {
-    fontSize: 24,
-    fontWeight: "bold",
+    fontSize: 26,
+    fontWeight: "700",
     color: "#8B45FF",
+    textShadowColor: "rgba(139, 69, 255, 0.3)",
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 4,
   },
   compactTaglineText: {
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: "500",
-    lineHeight: 18,
+    lineHeight: 20,
+  },
+  // Input Styles
+  inputHeader: {
+    marginBottom: 20,
+    alignItems: "center",
+  },
+  inputHeaderText: {
+    fontSize: 18,
+    fontWeight: "600",
+  },
+  // Button Styles
+  buttonContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 2,
+  },
+  buttonEmoji: {
+    fontSize: 18,
+    marginLeft: 8,
   },
 });
