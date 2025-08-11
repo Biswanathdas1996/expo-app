@@ -11,6 +11,7 @@ import { sharedStyles } from "../shared/SharedStyles";
 import { SpeakingIndicator } from "../shared/SpeakingIndicator";
 import { ModernButton } from "../shared/ModernButton";
 import { ScreenProps, UserAnswers } from "../types";
+import { Colors } from "@/constants/Colors";
 
 interface RecommendationComponentProps {
   userAnswers: UserAnswers;
@@ -150,14 +151,14 @@ const styles = StyleSheet.create({
   modernCourseTitle: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#667eea",
+    color: Colors.light.primary,
     marginBottom: 4,
   },
   courseBadge: {
     fontSize: 14,
-    color: "#4CAF50",
+    color: Colors.light.success,
     fontWeight: "600",
-    backgroundColor: "rgba(76, 175, 80, 0.1)",
+    backgroundColor: "rgba(16, 185, 129, 0.1)",
     paddingHorizontal: 12,
     paddingVertical: 4,
     borderRadius: 12,
@@ -188,7 +189,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     marginBottom: 16,
     textAlign: "center",
-    color: "#667eea",
+    color: Colors.light.primary,
   },
   modernLanguageContainer: {
     flexDirection: "row",
@@ -204,8 +205,8 @@ const styles = StyleSheet.create({
     borderColor: "transparent",
   },
   selectedLanguageButton: {
-    borderColor: "#667eea",
-    backgroundColor: "rgba(103, 126, 234, 0.1)",
+    borderColor: Colors.light.primary,
+    backgroundColor: Colors.light.backgroundAccent,
   },
   languageFlag: {
     fontSize: 24,
@@ -216,7 +217,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   selectedLanguageText: {
-    color: "#667eea",
+    color: Colors.light.primary,
     fontWeight: "600",
   },
   finalActions: {

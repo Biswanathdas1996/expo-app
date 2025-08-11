@@ -8,13 +8,13 @@ import { ModernButton } from "../shared/ModernButton";
 import { ScreenProps, Option } from "../types";
 
 const skills: Option[] = [
-  { name: "Speaking", emoji: "🗣️", color: "#FF5722" },
-  { name: "Writing", emoji: "✍️", color: "#2196F3" },
-  { name: "Reading", emoji: "📖", color: "#4CAF50" },
-  { name: "Listening", emoji: "👂", color: "#FF9800" },
-  { name: "Pronunciation", emoji: "🎤", color: "#E91E63" },
-  { name: "All", emoji: "🎯", color: "#9C27B0" },
-  { name: "Other", emoji: "💡", color: "#607D8B" },
+  { name: "Speaking", emoji: "🗣️", color: "#8B45FF" },
+  { name: "Writing", emoji: "✍️", color: "#A78BFA" },
+  { name: "Reading", emoji: "📖", color: "#9F67FF" },
+  { name: "Listening", emoji: "👂", color: "#B794F6" },
+  { name: "Pronunciation", emoji: "🎤", color: "#A78BFA" },
+  { name: "All", emoji: "🎯", color: "#8B45FF" },
+  { name: "Other", emoji: "💡", color: "#C4B5FD" },
 ];
 
 interface SkillsSelectionComponentProps extends ScreenProps {

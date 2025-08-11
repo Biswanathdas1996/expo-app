@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from "react-native";
+import { Colors } from "@/constants/Colors";
 
 const { width, height } = Dimensions.get("window");
 
@@ -25,11 +26,11 @@ export const sharedStyles = StyleSheet.create({
     minHeight: height,
   },
   modernPrimaryButton: {
-    backgroundColor: "#667eea",
+    backgroundColor: "#8B45FF",
     padding: 18,
     borderRadius: 16,
     alignItems: "center",
-    shadowColor: "#667eea",
+    shadowColor: "#8B45FF",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 12,
@@ -45,7 +46,7 @@ export const sharedStyles = StyleSheet.create({
     right: 0,
     top: 0,
     bottom: 0,
-    backgroundColor: "#667eea",
+    backgroundColor: "#8B45FF",
   },
   modernButtonText: {
     color: "white",
@@ -59,7 +60,7 @@ export const sharedStyles = StyleSheet.create({
     alignItems: "center",
   },
   modernSecondaryButtonText: {
-    color: "#667eea",
+    color: "#8B45FF",
     fontSize: 16,
     fontWeight: "500",
   },
@@ -72,7 +73,7 @@ export const sharedStyles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 16,
-    color: "#667eea",
+    color: "#8B45FF",
   },
   stepSubtitle: {
     fontSize: 16,
@@ -94,7 +95,7 @@ export const sharedStyles = StyleSheet.create({
   },
   wave: {
     width: 4,
-    backgroundColor: "#667eea",
+    backgroundColor: "#8B45FF",
     borderRadius: 2,
     marginHorizontal: 2,
   },
@@ -109,7 +110,7 @@ export const sharedStyles = StyleSheet.create({
   },
   modernSpeakingText: {
     fontSize: 14,
-    color: "#667eea",
+    color: "#8B45FF",
     fontWeight: "500",
   },
 });
@@ -139,8 +140,8 @@ export const optionStyles = StyleSheet.create({
     paddingVertical: 24,
   },
   modernSelectedOption: {
-    borderColor: "#667eea",
-    backgroundColor: "rgba(103, 126, 234, 0.1)",
+    borderColor: "#8B45FF",
+    backgroundColor: "rgba(139, 69, 255, 0.1)",
   },
   optionEmoji: {
     width: 50,
@@ -174,14 +175,14 @@ export const optionStyles = StyleSheet.create({
     fontSize: 20,
   },
   modernSelectedOptionText: {
-    color: "#667eea",
+    color: "#8B45FF",
     fontWeight: "600",
   },
   selectedCheckmark: {
     width: 30,
     height: 30,
     borderRadius: 15,
-    backgroundColor: "#667eea",
+    backgroundColor: "#8B45FF",
     justifyContent: "center",
     alignItems: "center",
     position: "absolute",
@@ -238,7 +239,7 @@ export const modalStyles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     textAlign: "center",
-    color: "#667eea",
+    color: "#8B45FF",
   },
   modernPopupText: {
     fontSize: 18,
@@ -262,14 +263,14 @@ export const modalStyles = StyleSheet.create({
     alignItems: "flex-start",
     marginBottom: 20,
     padding: 16,
-    backgroundColor: "rgba(103, 126, 234, 0.05)",
+    backgroundColor: "rgba(139, 69, 255, 0.05)",
     borderRadius: 12,
   },
   benefitIcon: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: "rgba(103, 126, 234, 0.1)",
+    backgroundColor: "rgba(139, 69, 255, 0.1)",
     justifyContent: "center",
     alignItems: "center",
     marginRight: 16,

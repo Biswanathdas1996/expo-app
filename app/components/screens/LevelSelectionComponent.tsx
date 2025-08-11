@@ -8,12 +8,12 @@ import { ModernButton } from "../shared/ModernButton";
 import { ScreenProps, Option } from "../types";
 
 const levels: Option[] = [
-  { name: "Beginner", emoji: "🌱", color: "#4CAF50" },
-  { name: "Elementary", emoji: "🌿", color: "#8BC34A" },
-  { name: "Intermediate", emoji: "🌳", color: "#FF9800" },
-  { name: "Upper Intermediate", emoji: "🏔️", color: "#FF5722" },
-  { name: "Advanced", emoji: "🚀", color: "#9C27B0" },
-  { name: "Proficient", emoji: "👑", color: "#673AB7" },
+  { name: "Beginner", emoji: "🌱", color: "#C4B5FD" },
+  { name: "Elementary", emoji: "🌿", color: "#B794F6" },
+  { name: "Intermediate", emoji: "🌳", color: "#A78BFA" },
+  { name: "Upper Intermediate", emoji: "🏔️", color: "#9F67FF" },
+  { name: "Advanced", emoji: "🚀", color: "#8B45FF" },
+  { name: "Proficient", emoji: "👑", color: "#6B2FD6" },
 ];
 
 interface LevelSelectionComponentProps extends ScreenProps {

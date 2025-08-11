@@ -4,6 +4,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { sharedStyles } from "../shared/SharedStyles";
 import { SpeakingIndicator } from "../shared/SpeakingIndicator";
 import { ScreenProps } from "../types";
+import { Colors } from "@/constants/Colors";
 
 interface AIIntroductionComponentProps extends ScreenProps {
   name: string;
@@ -69,11 +70,11 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 50,
-    backgroundColor: "rgba(233, 30, 99, 0.1)",
+    backgroundColor: "rgba(139, 69, 255, 0.1)",
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 3,
-    borderColor: "#E91E63",
+    borderColor: Colors.light.primary,
     zIndex: 2,
   },
   aiAvatarEmoji: {
@@ -84,7 +85,7 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     borderRadius: 60,
-    backgroundColor: "rgba(233, 30, 99, 0.2)",
+    backgroundColor: "rgba(139, 69, 255, 0.2)",
     zIndex: 1,
   },
   aiIntroTitle: {
@@ -92,7 +93,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 8,
-    color: "#E91E63",
+    color: Colors.light.primary,
   },
   aiSubtitle: {
     fontSize: 18,

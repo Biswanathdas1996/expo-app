@@ -75,7 +75,10 @@ export const WelcomeScreenComponent: React.FC<WelcomeScreenComponentProps> = ({
         style={[
           styles.backgroundGradient,
           {
-            backgroundColor: colorScheme === "dark" ? "#0a0a1a" : "#fafbff",
+            backgroundColor:
+              colorScheme === "dark"
+                ? Colors.dark.background
+                : Colors.light.background,
           },
         ]}
       />
@@ -105,12 +108,12 @@ export const WelcomeScreenComponent: React.FC<WelcomeScreenComponentProps> = ({
                 {
                   backgroundColor:
                     colorScheme === "dark"
-                      ? "rgba(139, 69, 255, 0.08)"
-                      : "rgba(139, 69, 255, 0.06)",
+                      ? Colors.dark.backgroundAccent
+                      : Colors.light.backgroundAccent,
                   borderColor:
                     colorScheme === "dark"
-                      ? "rgba(139, 69, 255, 0.2)"
-                      : "rgba(139, 69, 255, 0.15)",
+                      ? Colors.dark.border
+                      : Colors.light.border,
                 },
               ]}
             >
@@ -135,13 +138,21 @@ export const WelcomeScreenComponent: React.FC<WelcomeScreenComponentProps> = ({
                     style={[
                       styles.compactWelcomeText,
                       {
-                        color: colorScheme === "dark" ? "#9ca3af" : "#6b7280",
+                        color:
+                          colorScheme === "dark"
+                            ? Colors.dark.textMuted
+                            : Colors.light.textMuted,
                       },
                     ]}
                   >
                     Welcome to{" "}
                   </ThemedText>
-                  <ThemedText style={styles.compactBrandText}>
+                  <ThemedText
+                    style={[
+                      styles.compactBrandText,
+                      { color: Colors.light.primary },
+                    ]}
+                  >
                     SpeakEdge
                   </ThemedText>
                 </View>
@@ -149,7 +160,10 @@ export const WelcomeScreenComponent: React.FC<WelcomeScreenComponentProps> = ({
                   style={[
                     styles.compactTaglineText,
                     {
-                      color: colorScheme === "dark" ? "#e5e7eb" : "#1f2937",
+                      color:
+                        colorScheme === "dark"
+                          ? Colors.dark.textSecondary
+                          : Colors.light.text,
                     },
                   ]}
                 >
@@ -167,13 +181,16 @@ export const WelcomeScreenComponent: React.FC<WelcomeScreenComponentProps> = ({
                 {
                   backgroundColor:
                     colorScheme === "dark"
-                      ? "rgba(17, 24, 39, 0.95)"
-                      : "rgba(255, 255, 255, 0.95)",
-                  shadowColor: colorScheme === "dark" ? "#8B45FF" : "#000000",
+                      ? Colors.dark.backgroundCard
+                      : Colors.light.backgroundCard,
+                  shadowColor:
+                    colorScheme === "dark"
+                      ? Colors.dark.primary
+                      : Colors.light.shadow,
                   borderColor:
                     colorScheme === "dark"
-                      ? "rgba(139, 69, 255, 0.15)"
-                      : "rgba(139, 69, 255, 0.1)",
+                      ? Colors.dark.border
+                      : Colors.light.border,
                 },
               ]}
             >
@@ -182,7 +199,10 @@ export const WelcomeScreenComponent: React.FC<WelcomeScreenComponentProps> = ({
                   style={[
                     styles.inputHeaderText,
                     {
-                      color: colorScheme === "dark" ? "#e5e7eb" : "#374151",
+                      color:
+                        colorScheme === "dark"
+                          ? Colors.dark.textSecondary
+                          : Colors.light.textSecondary,
                     },
                   ]}
                 >
@@ -197,8 +217,8 @@ export const WelcomeScreenComponent: React.FC<WelcomeScreenComponentProps> = ({
                     {
                       borderColor:
                         colorScheme === "dark"
-                          ? "rgba(139, 69, 255, 0.3)"
-                          : "rgba(139, 69, 255, 0.25)",
+                          ? Colors.dark.border
+                          : Colors.light.border,
                       backgroundColor:
                         colorScheme === "dark"
                           ? "rgba(31, 41, 55, 0.5)"
@@ -223,12 +243,17 @@ export const WelcomeScreenComponent: React.FC<WelcomeScreenComponentProps> = ({
                     style={[
                       styles.textInput,
                       {
-                        color: colorScheme === "dark" ? "#f9fafb" : "#111827",
+                        color:
+                          colorScheme === "dark"
+                            ? Colors.dark.text
+                            : Colors.light.text,
                       },
                     ]}
                     placeholder="Enter your full name"
                     placeholderTextColor={
-                      colorScheme === "dark" ? "#9ca3af" : "#6b7280"
+                      colorScheme === "dark"
+                        ? Colors.dark.textMuted
+                        : Colors.light.textMuted
                     }
                     value={name}
                     onChangeText={setName}
@@ -244,8 +269,8 @@ export const WelcomeScreenComponent: React.FC<WelcomeScreenComponentProps> = ({
                     {
                       borderColor:
                         colorScheme === "dark"
-                          ? "rgba(139, 69, 255, 0.3)"
-                          : "rgba(139, 69, 255, 0.25)",
+                          ? Colors.dark.border
+                          : Colors.light.border,
                       backgroundColor:
                         colorScheme === "dark"
                           ? "rgba(31, 41, 55, 0.5)"
@@ -270,12 +295,17 @@ export const WelcomeScreenComponent: React.FC<WelcomeScreenComponentProps> = ({
                     style={[
                       styles.textInput,
                       {
-                        color: colorScheme === "dark" ? "#f9fafb" : "#111827",
+                        color:
+                          colorScheme === "dark"
+                            ? Colors.dark.text
+                            : Colors.light.text,
                       },
                     ]}
                     placeholder="Enter mobile number"
                     placeholderTextColor={
-                      colorScheme === "dark" ? "#9ca3af" : "#6b7280"
+                      colorScheme === "dark"
+                        ? Colors.dark.textMuted
+                        : Colors.light.textMuted
                     }
                     value={mobile}
                     onChangeText={setMobile}
@@ -293,7 +323,7 @@ export const WelcomeScreenComponent: React.FC<WelcomeScreenComponentProps> = ({
               style={[
                 styles.primaryButton,
                 {
-                  shadowColor: "#8B45FF",
+                  shadowColor: Colors.light.primary,
                 },
               ]}
               onPress={handleSignUp}
@@ -314,12 +344,12 @@ export const WelcomeScreenComponent: React.FC<WelcomeScreenComponentProps> = ({
                 {
                   backgroundColor:
                     colorScheme === "dark"
-                      ? "rgba(107, 114, 128, 0.15)"
-                      : "rgba(139, 69, 255, 0.08)",
+                      ? Colors.dark.backgroundAccent
+                      : Colors.light.backgroundAccent,
                   borderColor:
                     colorScheme === "dark"
-                      ? "rgba(139, 69, 255, 0.25)"
-                      : "rgba(139, 69, 255, 0.2)",
+                      ? Colors.dark.border
+                      : Colors.light.border,
                 },
               ]}
               onPress={handleSignIn}
@@ -329,7 +359,10 @@ export const WelcomeScreenComponent: React.FC<WelcomeScreenComponentProps> = ({
                 style={[
                   styles.secondaryButtonText,
                   {
-                    color: colorScheme === "dark" ? "#a78bfa" : "#7c3aed",
+                    color:
+                      colorScheme === "dark"
+                        ? Colors.dark.primaryLight
+                        : Colors.light.primary,
                   },
                 ]}
               >
@@ -346,7 +379,7 @@ export const WelcomeScreenComponent: React.FC<WelcomeScreenComponentProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffffff",
+    backgroundColor: Colors.light.background,
   },
   backgroundGradient: {
     position: "absolute",
@@ -407,8 +440,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     position: "relative",
     borderWidth: 3,
-    borderColor: "#8B45FF",
-    shadowColor: "#8B45FF",
+    borderColor: Colors.light.primary,
+    shadowColor: Colors.light.primary,
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.3,
     shadowRadius: 20,
@@ -443,19 +476,19 @@ const styles = StyleSheet.create({
   brandText: {
     fontSize: 48,
     fontWeight: "bold",
-    color: "#8B45FF",
+    color: Colors.light.primary,
     textAlign: "center",
-    textShadowColor: "rgba(139, 69, 255, 0.3)",
+    textShadowColor: Colors.light.shadow,
     textShadowOffset: { width: 0, height: 2 },
     textShadowRadius: 8,
   },
   brandUnderline: {
     width: 80,
     height: 4,
-    backgroundColor: "#8B45FF",
+    backgroundColor: Colors.light.primary,
     borderRadius: 2,
     marginTop: 8,
-    shadowColor: "#8B45FF",
+    shadowColor: Colors.light.primary,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.5,
     shadowRadius: 4,
@@ -515,7 +548,7 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   primaryButton: {
-    backgroundColor: "#8B45FF",
+    backgroundColor: Colors.light.primary,
     paddingVertical: 20,
     paddingHorizontal: 32,
     borderRadius: 24,
@@ -534,10 +567,10 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: "linear-gradient(135deg, #8B45FF, #6B2FD6)",
+    backgroundColor: Colors.light.primary,
   },
   primaryButtonText: {
-    color: "#ffffff",
+    color: Colors.light.backgroundCard,
     fontSize: 18,
     fontWeight: "600",
     zIndex: 1,
@@ -623,7 +656,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 2,
-    borderColor: "#8B45FF",
+    borderColor: Colors.light.primary,
     marginRight: 20,
     position: "relative",
     shadowOffset: { width: 0, height: 4 },
@@ -660,8 +693,8 @@ const styles = StyleSheet.create({
   compactBrandText: {
     fontSize: 26,
     fontWeight: "700",
-    color: "#8B45FF",
-    textShadowColor: "rgba(139, 69, 255, 0.3)",
+    color: Colors.light.primary,
+    textShadowColor: Colors.light.shadow,
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 4,
   },

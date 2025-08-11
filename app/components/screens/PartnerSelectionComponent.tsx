@@ -8,9 +8,9 @@ import { ModernButton } from "../shared/ModernButton";
 import { ScreenProps, Option } from "../types";
 
 const options: Option[] = [
-  { name: "Yes", emoji: "👥", color: "#4CAF50" },
-  { name: "No", emoji: "🚫", color: "#F44336" },
-  { name: "Other", emoji: "🤔", color: "#FF9800" },
+  { name: "Yes", emoji: "👥", color: "#8B45FF" },
+  { name: "No", emoji: "🚫", color: "#A78BFA" },
+  { name: "Other", emoji: "🤔", color: "#B794F6" },
 ];
 
 interface PartnerSelectionComponentProps extends ScreenProps {

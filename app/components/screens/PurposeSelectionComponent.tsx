@@ -8,14 +8,14 @@ import { ModernButton } from "../shared/ModernButton";
 import { ScreenProps, Option } from "../types";
 
 const purposes: Option[] = [
-  { name: "Job/Business", emoji: "💼", color: "#2196F3" },
-  { name: "Abroad", emoji: "✈️", color: "#FF5722" },
-  { name: "Improve skills", emoji: "📈", color: "#4CAF50" },
-  { name: "Academic", emoji: "🎓", color: "#9C27B0" },
-  { name: "Practise", emoji: "🗣️", color: "#FF9800" },
-  { name: "Pronunciation", emoji: "🎤", color: "#E91E63" },
-  { name: "CEFR Test", emoji: "📊", color: "#795548" },
-  { name: "Other", emoji: "💡", color: "#607D8B" },
+  { name: "Job/Business", emoji: "💼", color: "#8B45FF" },
+  { name: "Abroad", emoji: "✈️", color: "#A78BFA" },
+  { name: "Improve skills", emoji: "📈", color: "#9F67FF" },
+  { name: "Academic", emoji: "🎓", color: "#8B45FF" },
+  { name: "Practise", emoji: "🗣️", color: "#B794F6" },
+  { name: "Pronunciation", emoji: "🎤", color: "#A78BFA" },
+  { name: "CEFR Test", emoji: "📊", color: "#9F67FF" },
+  { name: "Other", emoji: "💡", color: "#C4B5FD" },
 ];
 
 interface PurposeSelectionComponentProps extends ScreenProps {
