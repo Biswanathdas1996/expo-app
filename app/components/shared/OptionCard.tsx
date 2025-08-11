@@ -9,6 +9,7 @@ interface OptionCardProps {
   isSelected: boolean;
   onPress: () => void;
   isLarge?: boolean;
+  isCompact?: boolean;
 }
 
 export const OptionCard: React.FC<OptionCardProps> = ({
@@ -16,12 +17,14 @@ export const OptionCard: React.FC<OptionCardProps> = ({
   isSelected,
   onPress,
   isLarge = false,
+  isCompact = false,
 }) => {
   return (
     <TouchableOpacity
       style={[
         optionStyles.modernOptionCard,
         isLarge && optionStyles.largeOptionCard,
+        isCompact && optionStyles.compactOptionCard,
         isSelected && optionStyles.modernSelectedOption,
       ]}
       onPress={onPress}
@@ -30,6 +33,7 @@ export const OptionCard: React.FC<OptionCardProps> = ({
         style={[
           optionStyles.optionEmoji,
           isLarge && optionStyles.largeOptionEmoji,
+          isCompact && optionStyles.compactOptionEmoji,
           { backgroundColor: option.color + "20" },
         ]}
       >
@@ -37,6 +41,7 @@ export const OptionCard: React.FC<OptionCardProps> = ({
           style={[
             optionStyles.optionEmojiText,
             isLarge && optionStyles.largeEmojiText,
+            isCompact && optionStyles.compactEmojiText,
           ]}
         >
           {option.emoji}
@@ -46,7 +51,9 @@ export const OptionCard: React.FC<OptionCardProps> = ({
         style={[
           optionStyles.modernOptionText,
           isLarge && optionStyles.largeOptionText,
+          isCompact && optionStyles.compactOptionText,
           isSelected && optionStyles.modernSelectedOptionText,
+          !isSelected && { color: "#333333" }, // Ensure good contrast for unselected text
         ]}
       >
         {option.name}

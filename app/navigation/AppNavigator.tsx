@@ -10,6 +10,7 @@ import { PurposeSelectionComponent } from "../components/screens/PurposeSelectio
 import { RecommendationComponent } from "../components/screens/RecommendationComponent";
 import { SkillsSelectionComponent } from "../components/screens/SkillsSelectionComponent";
 import { UserAnswers } from "../components/types";
+import { useSpeech } from "../hooks/useSpeech";
 
 type RootStackParamList = {
   WelcomeScreen: undefined;
@@ -60,12 +61,20 @@ function AIIntroduction({
   navigation: StackNavigationProp<RootStackParamList, "AIIntroduction">;
 }) {
   const { name } = route.params;
+  const { isSpeaking, speakText, stopSpeaking } = useSpeech();
 
   const handleNext = () => {
+    stopSpeaking();
     navigation.navigate("LevelSelection", { name });
   };
 
-  return <AIIntroductionComponent name={name} onNext={handleNext} />;
+  return (
+    <AIIntroductionComponent
+      name={name}
+      onNext={handleNext}
+      isSpeaking={isSpeaking}
+    />
+  );
 }
 
 function LevelSelection({
@@ -77,16 +86,25 @@ function LevelSelection({
 }) {
   const { name } = route.params;
   const [selectedLevel, setSelectedLevel] = useState("");
+  const { isSpeaking, speakText, stopSpeaking } = useSpeech();
 
   const handleNext = () => {
+    stopSpeaking();
     navigation.navigate("PurposeSelection", { name, level: selectedLevel });
   };
+
+  // Auto-speak welcome message when component loads
+  React.useEffect(() => {
+    const welcomeText = `Hi ${name}! What's your English level? Please select your current proficiency level from the options below.`;
+    speakText(welcomeText);
+  }, [name, speakText]);
 
   return (
     <LevelSelectionComponent
       selectedLevel={selectedLevel}
       onLevelSelect={setSelectedLevel}
       onNext={handleNext}
+      isSpeaking={isSpeaking}
     />
   );
 }
