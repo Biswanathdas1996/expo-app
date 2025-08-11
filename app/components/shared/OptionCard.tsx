@@ -28,6 +28,7 @@ export const OptionCard: React.FC<OptionCardProps> = ({
         isSelected && optionStyles.modernSelectedOption,
       ]}
       onPress={onPress}
+      activeOpacity={0.8}
     >
       <View
         style={[
@@ -55,12 +56,29 @@ export const OptionCard: React.FC<OptionCardProps> = ({
           isSelected && optionStyles.modernSelectedOptionText,
           !isSelected && { color: "#333333" }, // Ensure good contrast for unselected text
         ]}
+        numberOfLines={isCompact ? 2 : undefined}
+        ellipsizeMode={isCompact ? "tail" : undefined}
       >
         {option.name}
       </ThemedText>
       {isSelected && (
-        <View style={optionStyles.selectedCheckmark}>
-          <ThemedText style={optionStyles.checkmarkText}>✓</ThemedText>
+        <View
+          style={[
+            optionStyles.selectedCheckmark,
+            isCompact && {
+              width: 16,
+              height: 16,
+              borderRadius: 8,
+              top: 4,
+              right: 4,
+            },
+          ]}
+        >
+          <ThemedText
+            style={[optionStyles.checkmarkText, isCompact && { fontSize: 9 }]}
+          >
+            ✓
+          </ThemedText>
         </View>
       )}
     </TouchableOpacity>

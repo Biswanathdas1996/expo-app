@@ -46,7 +46,7 @@ export const LevelSelectionComponent: React.FC<
             <ThemedText
               style={[
                 sharedStyles.modernStepTitle,
-                { fontSize: 24, marginBottom: 8, marginTop: 30 },
+                { fontSize: 24, marginBottom: 8, marginTop: 60 },
               ]}
             >
               What's your English level?
@@ -59,32 +59,32 @@ export const LevelSelectionComponent: React.FC<
           </View>
 
           {/* AI Avatar Section */}
-          <View style={{ alignItems: "center", marginBottom: 20 }}>
-            <View
-              style={{
-                width: 80,
-                height: 80,
-                borderRadius: 40,
-                padding: 2,
-                backgroundColor: "rgba(139, 69, 255, 0.1)",
-                shadowColor: "#8B45FF",
-                shadowOffset: { width: 0, height: 4 },
-                shadowOpacity: 0.2,
-                shadowRadius: 8,
-                elevation: 6,
-              }}
-            >
+          {isSpeaking && (
+            <View style={{ alignItems: "center", marginBottom: 20 }}>
               <View
                 style={{
-                  width: 76,
-                  height: 76,
-                  borderRadius: 38,
-                  overflow: "hidden",
-                  justifyContent: "center",
-                  alignItems: "center",
+                  width: 80,
+                  height: 80,
+                  borderRadius: 40,
+                  padding: 2,
+                  backgroundColor: "rgba(139, 69, 255, 0.1)",
+                  shadowColor: "#8B45FF",
+                  shadowOffset: { width: 0, height: 4 },
+                  shadowOpacity: 0.2,
+                  shadowRadius: 8,
+                  elevation: 6,
                 }}
               >
-                {isSpeaking ? (
+                <View
+                  style={{
+                    width: 76,
+                    height: 76,
+                    borderRadius: 38,
+                    overflow: "hidden",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
                   <Image
                     source={require("@/assets/images/ai-talk.gif")}
                     style={{ width: 76, height: 76, borderRadius: 38 }}
@@ -98,23 +98,10 @@ export const LevelSelectionComponent: React.FC<
                     }
                     cachePolicy="memory-disk"
                   />
-                ) : (
-                  <View
-                    style={{
-                      width: 76,
-                      height: 76,
-                      borderRadius: 38,
-                      backgroundColor: "rgba(139, 69, 255, 0.2)",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <ThemedText style={{ fontSize: 32 }}>🤖</ThemedText>
-                  </View>
-                )}
+                </View>
               </View>
             </View>
-          </View>
+          )}
 
           <SpeakingIndicator isVisible={isSpeaking} />
 
@@ -131,7 +118,7 @@ export const LevelSelectionComponent: React.FC<
             ]}
           >
             {levels.map((level) => (
-              <View key={level.name} style={{ width: "47%" }}>
+              <View key={level.name} style={{ width: "31%" }}>
                 <OptionCard
                   option={level}
                   isSelected={selectedLevel === level.name}

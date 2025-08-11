@@ -34,7 +34,12 @@ export const SkillsSelectionComponent: React.FC<
         bounces={true}
       >
         <View style={sharedStyles.modernContainer}>
-          <ThemedText style={sharedStyles.modernStepTitle}>
+          <ThemedText
+            style={[
+              sharedStyles.modernStepTitle,
+              { fontSize: 24, marginBottom: 8, marginTop: 80 },
+            ]}
+          >
             Which skills do you want to focus on?
           </ThemedText>
           <ThemedText style={sharedStyles.stepSubtitle}>
@@ -43,14 +48,28 @@ export const SkillsSelectionComponent: React.FC<
 
           <SpeakingIndicator isVisible={isSpeaking} />
 
-          <View style={optionStyles.optionsGrid}>
+          <View
+            style={[
+              optionStyles.optionsGrid,
+              {
+                flexDirection: "row",
+                flexWrap: "wrap",
+                gap: 10,
+                marginBottom: 20,
+                justifyContent: "space-between",
+              },
+            ]}
+          >
             {skills.map((skill) => (
-              <OptionCard
-                key={skill.name}
-                option={skill}
-                isSelected={selectedSkills.includes(skill.name)}
-                onPress={() => onSkillToggle(skill.name)}
-              />
+              <View key={skill.name} style={{ width: "31%" }}>
+                <OptionCard
+                  key={skill.name}
+                  option={skill}
+                  isCompact={true}
+                  isSelected={selectedSkills.includes(skill.name)}
+                  onPress={() => onSkillToggle(skill.name)}
+                />
+              </View>
             ))}
           </View>
 

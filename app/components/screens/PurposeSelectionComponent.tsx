@@ -30,28 +30,59 @@ export const PurposeSelectionComponent: React.FC<
     <View style={sharedStyles.gradientContainer}>
       <View style={sharedStyles.gradientBackground} />
       <ScrollView
-        contentContainerStyle={sharedStyles.scrollContainer}
-        showsVerticalScrollIndicator={true}
+        contentContainerStyle={[
+          sharedStyles.scrollContainer,
+          { paddingBottom: 30 },
+        ]}
+        showsVerticalScrollIndicator={false}
         bounces={true}
       >
-        <View style={sharedStyles.modernContainer}>
-          <ThemedText style={sharedStyles.modernStepTitle}>
-            Why do you want to learn English?
+        <View
+          style={[
+            sharedStyles.modernContainer,
+            { padding: 20, minHeight: "auto" },
+          ]}
+        >
+          <ThemedText
+            style={[
+              sharedStyles.modernStepTitle,
+              { fontSize: 24, marginBottom: 8, marginTop: 80 },
+            ]}
+          >
+            Why learn English?
           </ThemedText>
-          <ThemedText style={sharedStyles.stepSubtitle}>
+          <ThemedText
+            style={[
+              sharedStyles.stepSubtitle,
+              { fontSize: 14, marginBottom: 20 },
+            ]}
+          >
             Select all that apply
           </ThemedText>
 
           <SpeakingIndicator isVisible={isSpeaking} />
 
-          <View style={optionStyles.optionsGrid}>
+          <View
+            style={[
+              optionStyles.optionsGrid,
+              {
+                flexDirection: "row",
+                flexWrap: "wrap",
+                gap: 6,
+                marginBottom: 20,
+                justifyContent: "space-between",
+              },
+            ]}
+          >
             {purposes.map((purpose) => (
-              <OptionCard
-                key={purpose.name}
-                option={purpose}
-                isSelected={selectedPurposes.includes(purpose.name)}
-                onPress={() => onPurposeToggle(purpose.name)}
-              />
+              <View key={purpose.name} style={{ width: "31%" }}>
+                <OptionCard
+                  option={purpose}
+                  isSelected={selectedPurposes.includes(purpose.name)}
+                  onPress={() => onPurposeToggle(purpose.name)}
+                  isCompact={true}
+                />
+              </View>
             ))}
           </View>
 
