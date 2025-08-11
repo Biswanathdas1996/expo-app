@@ -6,6 +6,9 @@ import {
   TouchableOpacity,
   Alert,
   ScrollView,
+  Animated,
+  Dimensions,
+  Platform,
 } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
@@ -13,6 +16,8 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 import { Colors } from "@/constants/Colors";
 import { sharedStyles } from "../shared/SharedStyles";
 import { ScreenProps } from "../types";
+
+const { width, height } = Dimensions.get("window");
 
 interface WelcomeScreenComponentProps extends ScreenProps {
   setName: (name: string) => void;
@@ -29,6 +34,23 @@ export const WelcomeScreenComponent: React.FC<WelcomeScreenComponentProps> = ({
   mobile,
 }) => {
   const colorScheme = useColorScheme();
+  const [fadeAnim] = useState(new Animated.Value(0));
+  const [slideAnim] = useState(new Animated.Value(50));
+
+  React.useEffect(() => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true,
+      }),
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 800,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, []);
 
   const handleSignIn = () => {
     if (!name.trim() || !mobile.trim()) {
@@ -47,247 +69,491 @@ export const WelcomeScreenComponent: React.FC<WelcomeScreenComponentProps> = ({
   };
 
   return (
-    <View style={sharedStyles.gradientContainer}>
-      <View style={sharedStyles.gradientBackground} />
-      <ScrollView contentContainerStyle={sharedStyles.scrollContainer}>
-        <View style={sharedStyles.modernContainer}>
+    <View style={styles.container}>
+      {/* Modern gradient background */}
+      <View
+        style={[
+          styles.backgroundGradient,
+          {
+            backgroundColor: colorScheme === "dark" ? "#0f0f23" : "#ffffff",
+          },
+        ]}
+      />
+      <View style={styles.backgroundAccent} />
+
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+        bounces={false}
+      >
+        <Animated.View
+          style={[
+            styles.contentContainer,
+            {
+              opacity: fadeAnim,
+              transform: [{ translateY: slideAnim }],
+            },
+          ]}
+        >
+          {/* Hero Section */}
           <View style={styles.heroSection}>
-            <View style={styles.modernAvatarContainer}>
-              <View style={styles.modernAvatar}>
-                <ThemedText style={styles.modernAvatarEmoji}>🎓</ThemedText>
-              </View>
-              <View style={styles.avatarGlow} />
-            </View>
-
-            <ThemedText style={styles.modernWelcomeTitle}>
-              Welcome to
-            </ThemedText>
-            <View style={styles.brandContainer}>
-              <ThemedText style={styles.brandName}>SpeakEdge</ThemedText>
-              <View style={styles.brandAccent} />
-            </View>
-            <ThemedText style={styles.modernSubtitle}>
-              Master English with AI-powered learning
-            </ThemedText>
-          </View>
-
-          <View style={styles.modernInputContainer}>
-            <View
-              style={[
-                styles.inputWrapper,
-                {
-                  backgroundColor:
-                    colorScheme === "dark"
-                      ? "rgba(60, 60, 60, 0.9)"
-                      : "rgba(255, 255, 255, 0.9)",
-                },
-              ]}
-            >
-              <View style={styles.inputIcon}>
-                <ThemedText style={styles.iconText}>👤</ThemedText>
-              </View>
-              <TextInput
+            <View style={styles.compactHeroContainer}>
+              <View
                 style={[
-                  styles.modernInput,
+                  styles.compactLogoCircle,
                   {
-                    color: colorScheme === "dark" ? "#FFFFFF" : "#000000",
+                    backgroundColor:
+                      colorScheme === "dark"
+                        ? "rgba(139, 69, 255, 0.15)"
+                        : "rgba(139, 69, 255, 0.1)",
                   },
                 ]}
-                placeholder="Enter your name"
-                placeholderTextColor={
-                  colorScheme === "dark" ? "#A0A0A0" : "#666666"
-                }
-                value={name}
-                onChangeText={setName}
-              />
-            </View>
-
-            <View
-              style={[
-                styles.inputWrapper,
-                {
-                  backgroundColor:
-                    colorScheme === "dark"
-                      ? "rgba(60, 60, 60, 0.9)"
-                      : "rgba(255, 255, 255, 0.9)",
-                },
-              ]}
-            >
-              <View style={styles.inputIcon}>
-                <ThemedText style={styles.iconText}>📱</ThemedText>
+              >
+                <ThemedText style={styles.compactLogoEmoji}>🎓</ThemedText>
               </View>
-              <TextInput
-                style={[
-                  styles.modernInput,
-                  {
-                    color: colorScheme === "dark" ? "#FFFFFF" : "#000000",
-                  },
-                ]}
-                placeholder="Enter mobile number"
-                placeholderTextColor={
-                  colorScheme === "dark" ? "#A0A0A0" : "#666666"
-                }
-                value={mobile}
-                onChangeText={setMobile}
-                keyboardType="phone-pad"
-              />
+
+              <View style={styles.compactTitleContainer}>
+                <View style={styles.brandRow}>
+                  <ThemedText
+                    style={[
+                      styles.compactWelcomeText,
+                      {
+                        color: colorScheme === "dark" ? "#a0a0a0" : "#666666",
+                      },
+                    ]}
+                  >
+                    Welcome to{" "}
+                  </ThemedText>
+                  <ThemedText style={styles.compactBrandText}>
+                    SpeakEdge
+                  </ThemedText>
+                </View>
+                <ThemedText
+                  style={[
+                    styles.compactTaglineText,
+                    {
+                      color: colorScheme === "dark" ? "#ffffff" : "#1a1a1a",
+                    },
+                  ]}
+                >
+                  Master English with AI-powered learning
+                </ThemedText>
+              </View>
             </View>
           </View>
 
-          <View style={styles.modernButtonContainer}>
+          {/* Input Section */}
+          <View style={styles.inputSection}>
+            <View
+              style={[
+                styles.inputCard,
+                {
+                  backgroundColor:
+                    colorScheme === "dark"
+                      ? "rgba(30, 30, 30, 0.95)"
+                      : "rgba(255, 255, 255, 0.95)",
+                  shadowColor: colorScheme === "dark" ? "#8B45FF" : "#000000",
+                },
+              ]}
+            >
+              <View style={styles.inputGroup}>
+                <View style={styles.inputContainer}>
+                  <View
+                    style={[
+                      styles.inputIconWrapper,
+                      {
+                        backgroundColor:
+                          colorScheme === "dark"
+                            ? "rgba(139, 69, 255, 0.2)"
+                            : "rgba(139, 69, 255, 0.1)",
+                      },
+                    ]}
+                  >
+                    <ThemedText style={styles.inputIcon}>👤</ThemedText>
+                  </View>
+                  <TextInput
+                    style={[
+                      styles.textInput,
+                      {
+                        color: colorScheme === "dark" ? "#ffffff" : "#1a1a1a",
+                      },
+                    ]}
+                    placeholder="Enter your full name"
+                    placeholderTextColor={
+                      colorScheme === "dark" ? "#666666" : "#999999"
+                    }
+                    value={name}
+                    onChangeText={setName}
+                    autoCapitalize="words"
+                  />
+                </View>
+              </View>
+
+              <View style={styles.inputGroup}>
+                <View style={styles.inputContainer}>
+                  <View
+                    style={[
+                      styles.inputIconWrapper,
+                      {
+                        backgroundColor:
+                          colorScheme === "dark"
+                            ? "rgba(139, 69, 255, 0.2)"
+                            : "rgba(139, 69, 255, 0.1)",
+                      },
+                    ]}
+                  >
+                    <ThemedText style={styles.inputIcon}>📱</ThemedText>
+                  </View>
+                  <TextInput
+                    style={[
+                      styles.textInput,
+                      {
+                        color: colorScheme === "dark" ? "#ffffff" : "#1a1a1a",
+                      },
+                    ]}
+                    placeholder="Enter mobile number"
+                    placeholderTextColor={
+                      colorScheme === "dark" ? "#666666" : "#999999"
+                    }
+                    value={mobile}
+                    onChangeText={setMobile}
+                    keyboardType="phone-pad"
+                    maxLength={15}
+                  />
+                </View>
+              </View>
+            </View>
+          </View>
+
+          {/* Button Section */}
+          <View style={styles.buttonSection}>
             <TouchableOpacity
-              style={sharedStyles.modernPrimaryButton}
+              style={[
+                styles.primaryButton,
+                {
+                  shadowColor: "#8B45FF",
+                },
+              ]}
               onPress={handleSignUp}
+              activeOpacity={0.8}
             >
-              <View style={sharedStyles.buttonGradient} />
-              <ThemedText style={sharedStyles.modernButtonText}>
+              <View style={styles.buttonGradient} />
+              <ThemedText style={styles.primaryButtonText}>
                 Get Started
               </ThemedText>
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={sharedStyles.modernSecondaryButton}
+              style={[
+                styles.secondaryButton,
+                {
+                  backgroundColor:
+                    colorScheme === "dark"
+                      ? "rgba(255, 255, 255, 0.1)"
+                      : "rgba(139, 69, 255, 0.1)",
+                },
+              ]}
               onPress={handleSignIn}
+              activeOpacity={0.7}
             >
-              <ThemedText style={sharedStyles.modernSecondaryButtonText}>
+              <ThemedText
+                style={[
+                  styles.secondaryButtonText,
+                  {
+                    color: colorScheme === "dark" ? "#8B45FF" : "#8B45FF",
+                  },
+                ]}
+              >
                 Already have an account?
               </ThemedText>
             </TouchableOpacity>
           </View>
-
-          <View style={styles.featureGrid}>
-            <View style={styles.featureCard}>
-              <ThemedText style={styles.featureIcon}>🎯</ThemedText>
-              <ThemedText style={styles.featureText}>CEFR Based</ThemedText>
-            </View>
-            <View style={styles.featureCard}>
-              <ThemedText style={styles.featureIcon}>🤖</ThemedText>
-              <ThemedText style={styles.featureText}>AI Powered</ThemedText>
-            </View>
-            <View style={styles.featureCard}>
-              <ThemedText style={styles.featureIcon}>🇮🇳</ThemedText>
-              <ThemedText style={styles.featureText}>Made in India</ThemedText>
-            </View>
-          </View>
-        </View>
+        </Animated.View>
       </ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#ffffff",
+  },
+  backgroundGradient: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  backgroundAccent: {
+    position: "absolute",
+    top: -100,
+    right: -100,
+    width: 200,
+    height: 200,
+    borderRadius: 100,
+    backgroundColor: "rgba(139, 69, 255, 0.1)",
+  },
+  scrollContent: {
+    flexGrow: 1,
+    paddingBottom: 40,
+  },
+  contentContainer: {
+    flex: 1,
+    paddingHorizontal: 24,
+    paddingTop: Platform.OS === "ios" ? 60 : 40,
+  },
   heroSection: {
+    alignItems: "center",
+    marginBottom: 30,
+  },
+  logoContainer: {
     alignItems: "center",
     marginBottom: 40,
   },
-  modernAvatarContainer: {
-    alignItems: "center",
-    marginBottom: 30,
-    position: "relative",
-  },
-  modernAvatar: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    backgroundColor: "rgba(103, 126, 234, 0.1)",
-    justifyContent: "center",
-    alignItems: "center",
-    borderWidth: 3,
-    borderColor: "#667eea",
-    zIndex: 2,
-  },
-  modernAvatarEmoji: {
-    fontSize: 50,
-  },
-  avatarGlow: {
-    position: "absolute",
+  logoCircle: {
     width: 140,
     height: 140,
     borderRadius: 70,
-    backgroundColor: "rgba(103, 126, 234, 0.2)",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "relative",
+    borderWidth: 3,
+    borderColor: "#8B45FF",
+    shadowColor: "#8B45FF",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.3,
+    shadowRadius: 20,
+    elevation: 10,
+  },
+  logoEmoji: {
+    fontSize: 60,
+    zIndex: 2,
+  },
+  logoGlow: {
+    position: "absolute",
+    width: 160,
+    height: 160,
+    borderRadius: 80,
+    backgroundColor: "rgba(139, 69, 255, 0.15)",
     zIndex: 1,
   },
-  modernWelcomeTitle: {
-    fontSize: 24,
-    fontWeight: "300",
-    textAlign: "center",
-    marginBottom: 5,
-    opacity: 0.8,
-  },
-  brandContainer: {
+  titleContainer: {
     alignItems: "center",
-    marginBottom: 10,
-    position: "relative",
+    marginBottom: 20,
   },
-  brandName: {
-    fontSize: 42,
-    fontWeight: "bold",
+  welcomeText: {
+    fontSize: 28,
+    fontWeight: "300",
+    marginBottom: 8,
     textAlign: "center",
-    color: "#667eea",
   },
-  brandAccent: {
-    width: 60,
+  brandWrapper: {
+    alignItems: "center",
+    marginBottom: 16,
+  },
+  brandText: {
+    fontSize: 48,
+    fontWeight: "bold",
+    color: "#8B45FF",
+    textAlign: "center",
+    textShadowColor: "rgba(139, 69, 255, 0.3)",
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 8,
+  },
+  brandUnderline: {
+    width: 80,
     height: 4,
-    backgroundColor: "#764ba2",
+    backgroundColor: "#8B45FF",
     borderRadius: 2,
-    marginTop: 5,
+    marginTop: 8,
+    shadowColor: "#8B45FF",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
   },
-  modernSubtitle: {
+  taglineText: {
     fontSize: 18,
     textAlign: "center",
-    opacity: 0.7,
-    lineHeight: 24,
+    lineHeight: 26,
+    fontWeight: "400",
   },
-  modernInputContainer: {
-    marginBottom: 32,
-    gap: 16,
+  inputSection: {
+    marginBottom: 40,
   },
-  inputWrapper: {
+  inputCard: {
+    borderRadius: 24,
+    padding: 32,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.15,
+    shadowRadius: 20,
+    elevation: 8,
+    borderWidth: 1,
+    borderColor: "rgba(139, 69, 255, 0.1)",
+  },
+  inputGroup: {
+    marginBottom: 24,
+  },
+  inputContainer: {
     flexDirection: "row",
     alignItems: "center",
     borderRadius: 16,
+    borderWidth: 2,
+    borderColor: "rgba(139, 69, 255, 0.2)",
     paddingHorizontal: 20,
     paddingVertical: 4,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
+    backgroundColor: "transparent",
   },
-  inputIcon: {
+  inputIconWrapper: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: "center",
+    alignItems: "center",
     marginRight: 16,
   },
-  iconText: {
+  inputIcon: {
     fontSize: 20,
   },
-  modernInput: {
+  textInput: {
     flex: 1,
     fontSize: 16,
     paddingVertical: 16,
+    fontWeight: "500",
   },
-  modernButtonContainer: {
-    gap: 16,
-    marginBottom: 32,
+  buttonSection: {
+    marginBottom: 50,
   },
-  featureGrid: {
+  primaryButton: {
+    backgroundColor: "#8B45FF",
+    paddingVertical: 18,
+    paddingHorizontal: 32,
+    borderRadius: 20,
+    alignItems: "center",
+    marginBottom: 16,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.3,
+    shadowRadius: 16,
+    elevation: 8,
+    position: "relative",
+    overflow: "hidden",
+  },
+  buttonGradient: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "linear-gradient(135deg, #8B45FF, #6B2FD6)",
+  },
+  primaryButtonText: {
+    color: "#ffffff",
+    fontSize: 18,
+    fontWeight: "600",
+    zIndex: 1,
+  },
+  secondaryButton: {
+    paddingVertical: 16,
+    paddingHorizontal: 32,
+    borderRadius: 16,
+    alignItems: "center",
+    borderWidth: 2,
+    borderColor: "rgba(139, 69, 255, 0.3)",
+  },
+  secondaryButtonText: {
+    fontSize: 16,
+    fontWeight: "500",
+  },
+  featuresSection: {
+    alignItems: "center",
+  },
+  featuresTitle: {
+    fontSize: 22,
+    fontWeight: "600",
+    marginBottom: 24,
+    textAlign: "center",
+  },
+  featuresGrid: {
     flexDirection: "row",
-    justifyContent: "space-around",
-    marginTop: 20,
+    justifyContent: "space-between",
+    width: "100%",
+    paddingHorizontal: 10,
   },
   featureCard: {
     alignItems: "center",
-    padding: 16,
-    backgroundColor: "rgba(255, 255, 255, 0.8)",
-    borderRadius: 12,
-    minWidth: 80,
+    padding: 20,
+    borderRadius: 16,
+    minWidth: width * 0.25,
+    maxWidth: width * 0.28,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
+    borderWidth: 1,
+    borderColor: "rgba(139, 69, 255, 0.1)",
   },
   featureIcon: {
-    fontSize: 24,
-    marginBottom: 8,
+    fontSize: 28,
+    marginBottom: 12,
   },
-  featureText: {
-    fontSize: 12,
+  featureTitle: {
+    fontSize: 14,
     fontWeight: "600",
     textAlign: "center",
+    marginBottom: 6,
+  },
+  featureDesc: {
+    fontSize: 11,
+    textAlign: "center",
+    lineHeight: 16,
+    fontWeight: "400",
+  },
+  // Compact Hero Styles
+  compactHeroContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+    backgroundColor: "rgba(139, 69, 255, 0.05)",
+    borderRadius: 24,
+    marginHorizontal: 12,
+  },
+  compactLogoCircle: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 2,
+    borderColor: "#8B45FF",
+    marginRight: 20,
+  },
+  compactLogoEmoji: {
+    fontSize: 30,
+  },
+  compactTitleContainer: {
+    flex: 1,
+  },
+  brandRow: {
+    flexDirection: "row",
+    alignItems: "baseline",
+    marginBottom: 4,
+    flexWrap: "wrap",
+  },
+  compactWelcomeText: {
+    fontSize: 16,
+    fontWeight: "400",
+  },
+  compactBrandText: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#8B45FF",
+  },
+  compactTaglineText: {
+    fontSize: 14,
+    fontWeight: "500",
+    lineHeight: 18,
   },
 });
