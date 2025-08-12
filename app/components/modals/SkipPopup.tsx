@@ -1,10 +1,11 @@
 import React from "react";
-import { Modal, View, ScrollView, Alert } from "react-native";
+import { Modal, View } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { modalStyles } from "../shared/SharedStyles";
 import { ModernButton } from "../shared/ModernButton";
+import { MaterialIcons } from "@expo/vector-icons";
 
 interface SkipPopupProps {
   visible: boolean;
@@ -22,7 +23,7 @@ export const SkipPopup: React.FC<SkipPopupProps> = ({
   return (
     <Modal
       visible={visible}
-      transparent={true}
+      transparent
       animationType="fade"
       onRequestClose={onClose}
     >
@@ -34,7 +35,12 @@ export const SkipPopup: React.FC<SkipPopupProps> = ({
           ]}
         >
           <View style={modalStyles.modalHeader}>
-            <ThemedText style={modalStyles.modalEmoji}>🎁</ThemedText>
+            <MaterialIcons
+              name="card-giftcard"
+              size={48}
+              color="#8B45FF"
+              style={{ marginBottom: 12 }}
+            />
             <ThemedText style={modalStyles.modalTitle}>
               Limited Time Offer!
             </ThemedText>
@@ -53,7 +59,6 @@ export const SkipPopup: React.FC<SkipPopupProps> = ({
                 onViewBenefits();
               }}
             />
-
             <ModernButton
               title="Skip for Now"
               onPress={onClose}

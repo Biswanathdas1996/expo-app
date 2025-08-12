@@ -31,14 +31,19 @@ export const RecommendationComponent: React.FC<
         showsVerticalScrollIndicator={true}
         bounces={true}
       >
-        <View style={sharedStyles.modernContainer}>
-          <ThemedText style={sharedStyles.modernStepTitle}>
+        <View style={[sharedStyles.modernContainer]}>
+          <ThemedText
+            style={[
+              sharedStyles.modernStepTitle,
+              { fontSize: 24, marginBottom: 8, marginTop: 80 },
+            ]}
+          >
             Perfect Match Found! 🎉
           </ThemedText>
 
           <SpeakingIndicator isVisible={isSpeaking} />
 
-          <View style={styles.modernCourseCard}>
+          <View style={[styles.modernCourseCard, { marginTop: 20 }]}>
             <View style={styles.courseHeader}>
               <ThemedText style={styles.courseEmoji}>🎯</ThemedText>
               <View>
