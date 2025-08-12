@@ -246,9 +246,13 @@ export const AIIntroductionComponent: React.FC<
                 ]}
               >
                 <ThemedText style={[styles.speechText, { color: textColor }]}>
-                  Hi {name}! I'm Rose, your personal AI tutor. I'll help you
-                  master English with personalized lessons and practice
-                  sessions. Ready to begin your journey?
+                  Hello there, {name}! It's wonderful to meet you. My name is
+                  Rose, and I'm absolutely thrilled to be your personal AI
+                  English tutor. I'm here to help you discover the joy of
+                  learning English through carefully designed, personalized
+                  lessons and engaging practice sessions that are tailored just
+                  for you. Are you ready to embark on this exciting learning
+                  adventure together?
                 </ThemedText>
               </LinearGradient>
             </View>

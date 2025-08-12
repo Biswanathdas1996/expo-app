@@ -95,7 +95,7 @@ function LevelSelection({
 
   // Auto-speak welcome message when component loads
   React.useEffect(() => {
-    const welcomeText = `Hi ${name}! What's your English level? Please select your current proficiency level from the options below.`;
+    const welcomeText = `Hello ${name}! I hope you're having a wonderful day. Let's talk about your English proficiency level. Could you please take a moment to select the level that best describes your current abilities? You can choose from the options displayed below, and please don't worry - there's no pressure to be perfect. This will simply help me provide you with the most suitable learning experience.`;
     speakText(welcomeText);
   }, [name, speakText]);
 
