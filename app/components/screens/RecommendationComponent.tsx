@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 import { ThemedText } from "@/components/ThemedText";
 import { sharedStyles } from "../shared/SharedStyles";
 import { SpeakingIndicator } from "../shared/SpeakingIndicator";
@@ -38,14 +39,24 @@ export const RecommendationComponent: React.FC<
               { fontSize: 24, marginBottom: 8, marginTop: 80 },
             ]}
           >
-            Perfect Match Found! 🎉
+            Perfect Match Found!{" "}
+            <MaterialIcons
+              name="celebration"
+              size={28}
+              color={Colors.light.primary}
+            />
           </ThemedText>
 
           <SpeakingIndicator isVisible={isSpeaking} />
 
           <View style={[styles.modernCourseCard, { marginTop: 20 }]}>
             <View style={styles.courseHeader}>
-              <ThemedText style={styles.courseEmoji}>🎯</ThemedText>
+              <MaterialIcons
+                name="school"
+                size={40}
+                color={Colors.light.primary}
+                style={{ marginRight: 16 }}
+              />
               <View>
                 <ThemedText style={styles.modernCourseTitle}>
                   {userAnswers.level} English Course
@@ -58,19 +69,34 @@ export const RecommendationComponent: React.FC<
 
             <View style={styles.courseDetails}>
               <View style={styles.courseDetailItem}>
-                <ThemedText style={styles.detailIcon}>📋</ThemedText>
+                <MaterialIcons
+                  name="assignment"
+                  size={20}
+                  color={Colors.light.primary}
+                  style={styles.detailIcon}
+                />
                 <ThemedText style={styles.detailText}>
                   Focus: {userAnswers.skills.join(", ")}
                 </ThemedText>
               </View>
               <View style={styles.courseDetailItem}>
-                <ThemedText style={styles.detailIcon}>🎯</ThemedText>
+                <MaterialIcons
+                  name="flag"
+                  size={20}
+                  color={Colors.light.primary}
+                  style={styles.detailIcon}
+                />
                 <ThemedText style={styles.detailText}>
                   Goal: {userAnswers.purpose.join(", ")}
                 </ThemedText>
               </View>
               <View style={styles.courseDetailItem}>
-                <ThemedText style={styles.detailIcon}>👥</ThemedText>
+                <MaterialIcons
+                  name="people"
+                  size={20}
+                  color={Colors.light.primary}
+                  style={styles.detailIcon}
+                />
                 <ThemedText style={styles.detailText}>
                   Speaking Partner: {userAnswers.partner}
                 </ThemedText>
@@ -84,9 +110,9 @@ export const RecommendationComponent: React.FC<
             </ThemedText>
             <View style={styles.modernLanguageContainer}>
               {[
-                { name: "English", flag: "🇺🇸" },
-                { name: "Bengali", flag: "🇧🇩" },
-                { name: "Hindi", flag: "🇮🇳" },
+                { name: "English", icon: "language" },
+                { name: "Bengali", icon: "translate" },
+                { name: "Hindi", icon: "translate" },
               ].map((lang) => (
                 <TouchableOpacity
                   key={lang.name}
@@ -97,9 +123,16 @@ export const RecommendationComponent: React.FC<
                   ]}
                   onPress={() => onLanguageSelect(lang.name)}
                 >
-                  <ThemedText style={styles.languageFlag}>
-                    {lang.flag}
-                  </ThemedText>
+                  <MaterialIcons
+                    name={lang.icon as any}
+                    size={24}
+                    color={
+                      userAnswers.language === lang.name
+                        ? Colors.light.primary
+                        : "#666"
+                    }
+                    style={{ marginBottom: 8 }}
+                  />
                   <ThemedText
                     style={[
                       styles.modernLanguageText,
@@ -116,7 +149,7 @@ export const RecommendationComponent: React.FC<
 
           <View style={styles.finalActions}>
             <ModernButton
-              title="Start Free Demo 🚀"
+              title="Start Free Demo"
               onPress={() => Alert.alert("Demo", "Free demo starting!")}
             />
 
@@ -149,10 +182,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 20,
   },
-  courseEmoji: {
-    fontSize: 40,
-    marginRight: 16,
-  },
   modernCourseTitle: {
     fontSize: 24,
     fontWeight: "bold",
@@ -177,7 +206,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   detailIcon: {
-    fontSize: 20,
     marginRight: 12,
     width: 30,
   },
@@ -212,10 +240,6 @@ const styles = StyleSheet.create({
   selectedLanguageButton: {
     borderColor: Colors.light.primary,
     backgroundColor: Colors.light.backgroundAccent,
-  },
-  languageFlag: {
-    fontSize: 24,
-    marginBottom: 8,
   },
   modernLanguageText: {
     fontSize: 14,
