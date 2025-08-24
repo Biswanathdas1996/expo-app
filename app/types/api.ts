@@ -66,6 +66,26 @@ export interface LearningGoalsUpdateResponse extends ApiResponse {
   learningGoals?: string[];
 }
 
+export interface SkillsFocusUpdateRequest {
+  sessionId: string;
+  skillsFocus: string[];
+}
+
+export interface SkillsFocusUpdateResponse extends ApiResponse {
+  sessionId?: string;
+  skillsFocus?: string[];
+}
+
+export interface SpeakingPartnerUpdateRequest {
+  sessionId: string;
+  needsSpeakingPartner: boolean;
+}
+
+export interface SpeakingPartnerUpdateResponse extends ApiResponse {
+  sessionId?: string;
+  needsSpeakingPartner?: boolean;
+}
+
 // Storage Types
 export interface UserSession {
   user: User;

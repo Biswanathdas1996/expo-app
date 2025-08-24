@@ -11,9 +11,15 @@ export const API_CONFIG = {
     USER: {
       ENGLISH_LEVEL: "/api/user/english-level",
       LEARNING_GOALS: "/api/user/learning-goals",
+      SKILLS_FOCUS: "/api/user/skills-focus",
+      SPEAKING_PARTNER: "/api/user/speaking-partner",
     },
+    HEALTH: "/api/health", // Health check endpoint
   },
   TIMEOUT: 10000, // 10 seconds
+  // CORS Configuration (handled by backend)
+  CORS_ENABLED: true,
+  ALLOWED_ORIGINS: ["http://localhost:8081", "exp://localhost:8081"],
 };
 
 // Error Messages

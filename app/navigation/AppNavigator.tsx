@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Alert } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -40,6 +41,8 @@ function WelcomeScreen({
   const [mobile, setMobile] = useState("");
 
   const handleNext = () => {
+    // Only navigate after successful authentication
+    // The WelcomeScreenComponent handles the authentication internally
     navigation.navigate("AIIntroduction", { name });
   };
 
@@ -97,18 +100,78 @@ function LevelSelection({
     stopSpeaking();
 
     try {
+      // Check if user is authenticated first
+      const sessionInfo = await ApiService.getSessionInfo();
+      console.log("Current session info:", sessionInfo);
+
+      if (!sessionInfo || !sessionInfo.isLoggedIn) {
+        console.error("User is not authenticated");
+        Alert.alert(
+          "Authentication Error",
+          "Please go back and sign in again.",
+          [
+            {
+              text: "Go Back",
+              onPress: () => navigation.goBack(),
+            },
+          ]
+        );
+        return;
+      }
+
       // Update English level via API
       const result = await ApiService.updateEnglishLevel(selectedLevel);
+      console.log("English level update result:", result);
+
       if (!result.success) {
         console.error("Failed to update English level:", result.message);
-        // You could show an error message to the user here
+        Alert.alert(
+          "Update Failed",
+          `Failed to save your English level: ${result.message}. Continue anyway?`,
+          [
+            {
+              text: "Retry",
+              onPress: () => handleNext(),
+            },
+            {
+              text: "Continue",
+              onPress: () =>
+                navigation.navigate("PurposeSelection", {
+                  name,
+                  level: selectedLevel,
+                }),
+            },
+          ]
+        );
+        return;
       }
+
+      // Success - navigate to next screen
+      navigation.navigate("PurposeSelection", { name, level: selectedLevel });
     } catch (error) {
       console.error("Error updating English level:", error);
-      // You could show an error message to the user here
+      Alert.alert(
+        "Network Error",
+        `An error occurred: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }. Continue anyway?`,
+        [
+          {
+            text: "Retry",
+            onPress: () => handleNext(),
+          },
+          {
+            text: "Continue",
+            onPress: () =>
+              navigation.navigate("PurposeSelection", {
+                name,
+                level: selectedLevel,
+              }),
+          },
+        ]
+      );
     } finally {
       setIsLoading(false);
-      navigation.navigate("PurposeSelection", { name, level: selectedLevel });
     }
   };
 

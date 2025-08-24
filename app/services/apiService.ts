@@ -1,5 +1,13 @@
 import { AuthService } from "./authService";
 import { API_CONFIG, ERROR_MESSAGES } from "@/app/constants/Api";
+import {
+  SkillsFocusUpdateRequest,
+  SkillsFocusUpdateResponse,
+  LearningGoalsUpdateRequest,
+  EnglishLevelUpdateRequest,
+  SpeakingPartnerUpdateRequest,
+  SpeakingPartnerUpdateResponse,
+} from "@/app/types/api";
 
 export interface ApiCallOptions {
   method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
@@ -45,10 +53,17 @@ export class ApiService {
         method,
         headers: {
           "Content-Type": "application/json",
+          Accept: "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods":
+            "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+          "Access-Control-Allow-Headers":
+            "Content-Type, Authorization, X-Requested-With",
           ...authHeaders,
           ...customHeaders,
         },
         signal: controller.signal,
+        mode: "cors" as RequestMode,
       };
 
       if (
@@ -190,12 +205,32 @@ export class ApiService {
         throw new Error("No session ID found. Please log in again.");
       }
 
-      const requestBody = {
+      // Map frontend level names to API-compatible format
+      const levelMapping: Record<string, string> = {
+        Beginner: "beginner",
+        Elementary: "elementary",
+        Intermediate: "intermediate",
+        "Upper Intermediate": "upper_intermediate",
+        Advanced: "advanced",
+        Proficient: "proficient",
+      };
+
+      const mappedLevel =
+        levelMapping[englishLevel] ||
+        englishLevel.toLowerCase().replace(/\s+/g, "_");
+
+      const requestBody: EnglishLevelUpdateRequest = {
         sessionId: tokens.sessionId,
-        englishLevel: englishLevel.toLowerCase(),
+        englishLevel: mappedLevel,
       };
 
       console.log("Updating English level:", requestBody);
+      console.log(
+        "Original level:",
+        englishLevel,
+        "Mapped level:",
+        mappedLevel
+      );
 
       const response = await this.put("/api/user/english-level", requestBody);
 
@@ -251,7 +286,7 @@ export class ApiService {
         (goal) => goalMapping[goal] || goal.toLowerCase().replace(/\s+/g, "_")
       );
 
-      const requestBody = {
+      const requestBody: LearningGoalsUpdateRequest = {
         sessionId: tokens.sessionId,
         learningGoals: mappedGoals,
       };
@@ -269,6 +304,123 @@ export class ApiService {
       };
     } catch (error) {
       console.error("Learning goals update error:", error);
+
+      if (error instanceof Error) {
+        return {
+          success: false,
+          message: error.message,
+        };
+      }
+
+      return {
+        success: false,
+        message: ERROR_MESSAGES.UNKNOWN_ERROR,
+      };
+    }
+  }
+
+  /**
+   * Update user's skills focus
+   */
+  static async updateSkillsFocus(skillsFocus: string[]) {
+    try {
+      // Get current user session and tokens
+      const tokens = await AuthService.getUserTokens();
+
+      if (!tokens.sessionId) {
+        throw new Error("No session ID found. Please log in again.");
+      }
+
+      // Map skill names to API-compatible format
+      const skillMapping: Record<string, string> = {
+        Speaking: "speaking",
+        Writing: "writing",
+        Reading: "reading",
+        Listening: "listening",
+        Pronunciation: "pronunciation",
+        All: "all",
+        Other: "other",
+      };
+
+      const mappedSkills = skillsFocus.map(
+        (skill) =>
+          skillMapping[skill] || skill.toLowerCase().replace(/\s+/g, "_")
+      );
+
+      const requestBody: SkillsFocusUpdateRequest = {
+        sessionId: tokens.sessionId,
+        skillsFocus: mappedSkills,
+      };
+
+      console.log("Updating skills focus:", requestBody);
+
+      const response: SkillsFocusUpdateResponse = await this.put(
+        "/api/user/skills-focus",
+        requestBody
+      );
+
+      console.log("Skills focus update response:", response);
+
+      return {
+        success: true,
+        message: response.message || "Skills focus updated successfully",
+        data: response,
+      };
+    } catch (error) {
+      console.error("Skills focus update error:", error);
+
+      if (error instanceof Error) {
+        return {
+          success: false,
+          message: error.message,
+        };
+      }
+
+      return {
+        success: false,
+        message: ERROR_MESSAGES.UNKNOWN_ERROR,
+      };
+    }
+  }
+
+  /**
+   * Update user's speaking partner preference
+   */
+  static async updateSpeakingPartner(partnerSelection: string) {
+    try {
+      // Get current user session and tokens
+      const tokens = await AuthService.getUserTokens();
+
+      if (!tokens.sessionId) {
+        throw new Error("No session ID found. Please log in again.");
+      }
+
+      // Map partner selection to boolean
+      const needsSpeakingPartner = partnerSelection.toLowerCase() === "yes";
+
+      const requestBody: SpeakingPartnerUpdateRequest = {
+        sessionId: tokens.sessionId,
+        needsSpeakingPartner,
+      };
+
+      console.log("Updating speaking partner preference:", requestBody);
+
+      const response: SpeakingPartnerUpdateResponse = await this.put(
+        "/api/user/speaking-partner",
+        requestBody
+      );
+
+      console.log("Speaking partner update response:", response);
+
+      return {
+        success: true,
+        message:
+          response.message ||
+          "Speaking partner preference updated successfully",
+        data: response,
+      };
+    } catch (error) {
+      console.error("Speaking partner update error:", error);
 
       if (error instanceof Error) {
         return {

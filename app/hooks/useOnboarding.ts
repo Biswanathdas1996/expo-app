@@ -29,10 +29,14 @@ export const useOnboarding = () => {
     try {
       // If moving from level selection, update the API
       if (currentStep === "level" && userAnswers.level) {
+        console.log("About to update English level:", userAnswers.level);
         const result = await ApiService.updateEnglishLevel(userAnswers.level);
+        console.log("English level update result:", result);
         if (!result.success) {
           console.error("Failed to update English level:", result.message);
           // You might want to show an error message to the user here
+        } else {
+          console.log("✅ English level updated successfully!");
         }
       }
 
@@ -46,6 +50,29 @@ export const useOnboarding = () => {
           // You might want to show an error message to the user here
         }
       }
+
+      // If moving from skills selection, update the skills focus API
+      if (currentStep === "skills" && userAnswers.skills.length > 0) {
+        const result = await ApiService.updateSkillsFocus(userAnswers.skills);
+        if (!result.success) {
+          console.error("Failed to update skills focus:", result.message);
+          // You might want to show an error message to the user here
+        }
+      }
+
+      // If moving from partner selection, update the speaking partner API
+      if (currentStep === "partner" && userAnswers.partner) {
+        const result = await ApiService.updateSpeakingPartner(
+          userAnswers.partner
+        );
+        if (!result.success) {
+          console.error(
+            "Failed to update speaking partner preference:",
+            result.message
+          );
+          // You might want to show an error message to the user here
+        }
+      }
     } catch (error) {
       console.error("Error updating user data:", error);
       // You might want to show an error message to the user here
@@ -56,7 +83,13 @@ export const useOnboarding = () => {
     if (currentIndex < steps.length - 1) {
       setCurrentStep(steps[currentIndex + 1]);
     }
-  }, [currentStep, userAnswers.level, userAnswers.purpose]);
+  }, [
+    currentStep,
+    userAnswers.level,
+    userAnswers.purpose,
+    userAnswers.skills,
+    userAnswers.partner,
+  ]);
 
   const handleLevelSelect = useCallback((level: string) => {
     setUserAnswers((prev) => ({ ...prev, level }));
