@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import { UserAnswers, StepType } from "@/app/components";
+import { ApiService } from "@/app/services/apiService";
 
 export const useOnboarding = () => {
   const [currentStep, setCurrentStep] = useState<StepType>("welcome");
@@ -10,8 +11,9 @@ export const useOnboarding = () => {
     partner: "",
     language: "English",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleNext = useCallback(() => {
+  const handleNext = useCallback(async () => {
     const steps: StepType[] = [
       "welcome",
       "intro",
@@ -22,10 +24,28 @@ export const useOnboarding = () => {
       "recommendation",
     ];
     const currentIndex = steps.indexOf(currentStep);
+
+    // If moving from level selection, update the API
+    if (currentStep === "level" && userAnswers.level) {
+      setIsLoading(true);
+      try {
+        const result = await ApiService.updateEnglishLevel(userAnswers.level);
+        if (!result.success) {
+          console.error("Failed to update English level:", result.message);
+          // You might want to show an error message to the user here
+        }
+      } catch (error) {
+        console.error("Error updating English level:", error);
+        // You might want to show an error message to the user here
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
     if (currentIndex < steps.length - 1) {
       setCurrentStep(steps[currentIndex + 1]);
     }
-  }, [currentStep]);
+  }, [currentStep, userAnswers.level]);
 
   const handleLevelSelect = useCallback((level: string) => {
     setUserAnswers((prev) => ({ ...prev, level }));
@@ -68,5 +88,6 @@ export const useOnboarding = () => {
     handleSkillToggle,
     handlePartnerSelect,
     handleLanguageSelect,
+    isLoading,
   };
 };

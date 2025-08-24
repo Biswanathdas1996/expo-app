@@ -8,6 +8,9 @@ export const API_CONFIG = {
       LOGIN: "/api/auth/login",
       LOGOUT: "/api/auth/logout",
     },
+    USER: {
+      ENGLISH_LEVEL: "/api/user/english-level",
+    },
   },
   TIMEOUT: 10000, // 10 seconds
 };

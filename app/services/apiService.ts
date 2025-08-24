@@ -177,4 +177,49 @@ export class ApiService {
       return null;
     }
   }
+
+  /**
+   * Update user's English level
+   */
+  static async updateEnglishLevel(englishLevel: string) {
+    try {
+      // Get current user session and tokens
+      const tokens = await AuthService.getUserTokens();
+
+      if (!tokens.sessionId) {
+        throw new Error("No session ID found. Please log in again.");
+      }
+
+      const requestBody = {
+        sessionId: tokens.sessionId,
+        englishLevel: englishLevel.toLowerCase(),
+      };
+
+      console.log("Updating English level:", requestBody);
+
+      const response = await this.put("/api/user/english-level", requestBody);
+
+      console.log("English level update response:", response);
+
+      return {
+        success: true,
+        message: response.message || "English level updated successfully",
+        data: response,
+      };
+    } catch (error) {
+      console.error("English level update error:", error);
+
+      if (error instanceof Error) {
+        return {
+          success: false,
+          message: error.message,
+        };
+      }
+
+      return {
+        success: false,
+        message: ERROR_MESSAGES.UNKNOWN_ERROR,
+      };
+    }
+  }
 }

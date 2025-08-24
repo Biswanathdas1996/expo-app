@@ -20,11 +20,18 @@ const levels: Option[] = [
 interface LevelSelectionComponentProps extends ScreenProps {
   selectedLevel: string;
   onLevelSelect: (level: string) => void;
+  isLoading?: boolean;
 }
 
 export const LevelSelectionComponent: React.FC<
   LevelSelectionComponentProps
-> = ({ onNext, selectedLevel, onLevelSelect, isSpeaking = true }) => {
+> = ({
+  onNext,
+  selectedLevel,
+  onLevelSelect,
+  isSpeaking = true,
+  isLoading = false,
+}) => {
   return (
     <View style={sharedStyles.gradientContainer}>
       <View style={sharedStyles.gradientBackground} />
@@ -130,9 +137,9 @@ export const LevelSelectionComponent: React.FC<
           </View>
 
           <ModernButton
-            title="Continue"
+            title={isLoading ? "Updating..." : "Continue"}
             onPress={onNext}
-            disabled={!selectedLevel}
+            disabled={!selectedLevel || isLoading}
           />
         </View>
       </ScrollView>

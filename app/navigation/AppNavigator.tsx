@@ -11,6 +11,7 @@ import { RecommendationComponent } from "../components/screens/RecommendationCom
 import { SkillsSelectionComponent } from "../components/screens/SkillsSelectionComponent";
 import { UserAnswers } from "../components/types";
 import { useSpeech } from "../hooks/useSpeech";
+import { ApiService } from "../services/apiService";
 
 type RootStackParamList = {
   WelcomeScreen: undefined;
@@ -86,11 +87,29 @@ function LevelSelection({
 }) {
   const { name } = route.params;
   const [selectedLevel, setSelectedLevel] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const { isSpeaking, speakText, stopSpeaking } = useSpeech();
 
-  const handleNext = () => {
+  const handleNext = async () => {
+    if (!selectedLevel) return;
+
+    setIsLoading(true);
     stopSpeaking();
-    navigation.navigate("PurposeSelection", { name, level: selectedLevel });
+
+    try {
+      // Update English level via API
+      const result = await ApiService.updateEnglishLevel(selectedLevel);
+      if (!result.success) {
+        console.error("Failed to update English level:", result.message);
+        // You could show an error message to the user here
+      }
+    } catch (error) {
+      console.error("Error updating English level:", error);
+      // You could show an error message to the user here
+    } finally {
+      setIsLoading(false);
+      navigation.navigate("PurposeSelection", { name, level: selectedLevel });
+    }
   };
 
   // Auto-speak welcome message when component loads
@@ -105,6 +124,7 @@ function LevelSelection({
       onLevelSelect={setSelectedLevel}
       onNext={handleNext}
       isSpeaking={isSpeaking}
+      isLoading={isLoading}
     />
   );
 }

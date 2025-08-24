@@ -30,6 +30,7 @@ export default function WelcomeScreen() {
     handleSkillToggle,
     handlePartnerSelect,
     handleLanguageSelect,
+    isLoading,
   } = useOnboarding();
 
   // Render the appropriate screen based on current step
@@ -60,6 +61,7 @@ export default function WelcomeScreen() {
             selectedLevel={userAnswers.level}
             onLevelSelect={handleLevelSelect}
             isSpeaking={isSpeaking}
+            isLoading={isLoading}
           />
         );
       case "purpose":

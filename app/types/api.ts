@@ -45,6 +45,17 @@ export interface LoginRequest {
   mobileNumber: string;
 }
 
+// User Profile Update Types
+export interface EnglishLevelUpdateRequest {
+  sessionId: string;
+  englishLevel: string;
+}
+
+export interface EnglishLevelUpdateResponse extends ApiResponse {
+  sessionId?: string;
+  englishLevel?: string;
+}
+
 // Storage Types
 export interface UserSession {
   user: User;
