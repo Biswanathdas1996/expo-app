@@ -10,6 +10,7 @@ import { PartnerSelectionComponent } from "../components/screens/PartnerSelectio
 import { PurposeSelectionComponent } from "../components/screens/PurposeSelectionComponent";
 import { RecommendationComponent } from "../components/screens/RecommendationComponent";
 import { SkillsSelectionComponent } from "../components/screens/SkillsSelectionComponent";
+import { UserProfileComponent } from "../components/screens/UserProfileComponent";
 import { UserAnswers } from "../components/types";
 import { useSpeech } from "../hooks/useSpeech";
 import { ApiService } from "../services/apiService";
@@ -27,6 +28,7 @@ type RootStackParamList = {
     skills: string[];
   };
   Recommendation: { name: string; userAnswers: UserAnswers };
+  UserProfile: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -300,8 +302,10 @@ function PartnerSelection({
 
 function Recommendation({
   route,
+  navigation,
 }: {
   route: { params: { name: string; userAnswers: UserAnswers } };
+  navigation: StackNavigationProp<RootStackParamList, "Recommendation">;
 }) {
   const { name, userAnswers } = route.params;
 
@@ -322,6 +326,28 @@ function Recommendation({
   );
 }
 
+function UserProfile({
+  navigation,
+}: {
+  navigation: StackNavigationProp<RootStackParamList, "UserProfile">;
+}) {
+  const handleBack = () => {
+    navigation.goBack();
+  };
+
+  const handleEditProfile = () => {
+    // TODO: Navigate to edit profile screen or show edit modal
+    Alert.alert("Edit Profile", "Edit profile functionality coming soon!");
+  };
+
+  return (
+    <UserProfileComponent
+      onBack={handleBack}
+      onEditProfile={handleEditProfile}
+    />
+  );
+}
+
 export default function AppNavigator() {
   return (
     <NavigationContainer>
@@ -336,6 +362,7 @@ export default function AppNavigator() {
         <Stack.Screen name="SkillsSelection" component={SkillsSelection} />
         <Stack.Screen name="PartnerSelection" component={PartnerSelection} />
         <Stack.Screen name="Recommendation" component={Recommendation} />
+        <Stack.Screen name="UserProfile" component={UserProfile} />
       </Stack.Navigator>
     </NavigationContainer>
   );

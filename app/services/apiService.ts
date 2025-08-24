@@ -435,4 +435,89 @@ export class ApiService {
       };
     }
   }
+
+  /**
+   * Submit membership registration
+   */
+  static async submitMembershipRegistration(membershipData: any) {
+    try {
+      console.log("Submitting membership data:", membershipData);
+
+      const response = await fetch(
+        "https://55c1e6e5-cc5c-43f8-a6bc-09dbe6a8787c-00-30mdf3t7vv0b7.riker.replit.dev/api/membership/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(membershipData),
+        }
+      );
+
+      const data = await response.json();
+      console.log("Membership registration response:", data);
+
+      if (!response.ok) {
+        // Handle detailed validation errors
+        if (data.errors && Array.isArray(data.errors)) {
+          const errorMessages = data.errors
+            .map((error: any) => `${error.path?.join(".")}: ${error.message}`)
+            .join("\n");
+          throw new Error(`Validation errors:\n${errorMessages}`);
+        }
+        throw new Error(
+          data.message || `HTTP error! status: ${response.status}`
+        );
+      }
+
+      return {
+        success: true,
+        message: data.message || "Membership registration successful",
+        data: data,
+      };
+    } catch (error) {
+      console.error("Membership registration error:", error);
+
+      if (error instanceof Error) {
+        return {
+          success: false,
+          message: error.message,
+        };
+      }
+
+      return {
+        success: false,
+        message: ERROR_MESSAGES.UNKNOWN_ERROR,
+      };
+    }
+  }
+
+  /**
+   * Get user profile with memberships
+   */
+  static async getUserProfileWithMemberships() {
+    try {
+      const response = await this.get("/api/user/profile-with-memberships");
+
+      return {
+        success: true,
+        message: "Profile retrieved successfully",
+        data: response,
+      };
+    } catch (error) {
+      console.error("Get user profile error:", error);
+
+      if (error instanceof Error) {
+        return {
+          success: false,
+          message: error.message,
+        };
+      }
+
+      return {
+        success: false,
+        message: ERROR_MESSAGES.UNKNOWN_ERROR,
+      };
+    }
+  }
 }

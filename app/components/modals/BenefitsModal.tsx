@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Modal, View, ScrollView, Alert } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { Colors } from "@/constants/Colors";
@@ -6,6 +6,8 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 import { modalStyles } from "../shared/SharedStyles";
 import { ModernButton } from "../shared/ModernButton";
 import { MaterialIcons } from "@expo/vector-icons";
+import { MembershipFormModal } from "./MembershipFormModal";
+import { router } from "expo-router";
 
 interface BenefitsModalProps {
   visible: boolean;
@@ -28,13 +30,20 @@ export const BenefitsModal: React.FC<BenefitsModalProps> = ({
   onClose,
 }) => {
   const colorScheme = useColorScheme();
+  const [showMembershipForm, setShowMembershipForm] = useState(false);
 
   const handleInterestPress = () => {
-    onClose();
-    Alert.alert(
-      "Interest",
-      "Thank you for your interest! We will contact you soon."
-    );
+    setShowMembershipForm(true);
+  };
+
+  const handleMembershipFormClose = () => {
+    setShowMembershipForm(false);
+    onClose(); // Close the benefits modal as well
+  };
+
+  const handleMembershipSuccess = () => {
+    // Navigate to profile tab after successful membership
+    router.push("/(tabs)/explore");
   };
 
   return (
@@ -129,6 +138,13 @@ export const BenefitsModal: React.FC<BenefitsModalProps> = ({
           </View>
         </View>
       </View>
+
+      {/* Membership Form Modal */}
+      <MembershipFormModal
+        visible={showMembershipForm}
+        onClose={handleMembershipFormClose}
+        onSuccess={handleMembershipSuccess}
+      />
     </Modal>
   );
 };
