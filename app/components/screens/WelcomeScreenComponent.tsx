@@ -9,15 +9,15 @@ import {
   Animated,
   Dimensions,
   Platform,
+  ActivityIndicator,
 } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { Colors } from "@/constants/Colors";
-import { sharedStyles } from "../shared/SharedStyles";
 import { ScreenProps } from "../types";
+import { AuthService } from "@/app/services/authService";
 
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 interface WelcomeScreenComponentProps extends ScreenProps {
   setName: (name: string) => void;
@@ -36,6 +36,7 @@ export const WelcomeScreenComponent: React.FC<WelcomeScreenComponentProps> = ({
   const colorScheme = useColorScheme();
   const [fadeAnim] = useState(new Animated.Value(0));
   const [slideAnim] = useState(new Animated.Value(50));
+  const [isLoading, setIsLoading] = useState(false);
 
   React.useEffect(() => {
     Animated.parallel([
@@ -50,22 +51,110 @@ export const WelcomeScreenComponent: React.FC<WelcomeScreenComponentProps> = ({
         useNativeDriver: true,
       }),
     ]).start();
-  }, []);
+  }, [fadeAnim, slideAnim]);
 
-  const handleSignIn = () => {
-    if (!name.trim() || !mobile.trim()) {
-      Alert.alert("Error", "Please fill in both name and mobile number");
-      return;
+  const validateInputs = () => {
+    if (!name.trim()) {
+      Alert.alert("Error", "Please enter your full name");
+      return false;
     }
-    onNext();
+
+    if (!mobile.trim()) {
+      Alert.alert("Error", "Please enter your mobile number");
+      return false;
+    }
+
+    // More flexible mobile number validation - at least 10 digits
+    const cleanMobile = mobile.replace(/\D/g, ""); // Remove all non-digits
+    if (cleanMobile.length < 10) {
+      Alert.alert(
+        "Error",
+        "Please enter a valid mobile number (at least 10 digits)"
+      );
+      return false;
+    }
+
+    return true;
   };
 
-  const handleSignUp = () => {
-    if (!name.trim() || !mobile.trim()) {
-      Alert.alert("Error", "Please fill in both name and mobile number");
-      return;
+  const handleSignIn = async () => {
+    if (!validateInputs()) return;
+
+    setIsLoading(true);
+    try {
+      console.log("Starting sign in process...", {
+        name: name.trim(),
+        mobile: mobile.trim(),
+      });
+
+      const result = await AuthService.signIn({
+        fullName: name.trim(),
+        mobileNumber: mobile.trim(),
+      });
+
+      console.log("Sign in result:", result);
+
+      if (result.success) {
+        console.log("Sign in successful, navigating to next screen...");
+        Alert.alert("Success", result.message, [
+          {
+            text: "OK",
+            onPress: () => {
+              console.log("User pressed OK, calling onNext()");
+              onNext();
+            },
+          },
+        ]);
+      } else {
+        console.log("Sign in failed:", result.message);
+        Alert.alert("Sign In Failed", result.message);
+      }
+    } catch (error) {
+      console.error("Sign in error:", error);
+      Alert.alert("Error", "An unexpected error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
-    onNext();
+  };
+
+  const handleSignUp = async () => {
+    if (!validateInputs()) return;
+
+    setIsLoading(true);
+    try {
+      console.log("Starting registration process...", {
+        name: name.trim(),
+        mobile: mobile.trim(),
+      });
+
+      const result = await AuthService.register({
+        fullName: name.trim(),
+        mobileNumber: mobile.trim(),
+      });
+
+      console.log("Registration result:", result);
+
+      if (result.success) {
+        console.log("Registration successful, navigating to next screen...");
+        Alert.alert("Success", result.message, [
+          {
+            text: "OK",
+            onPress: () => {
+              console.log("User pressed OK, calling onNext()");
+              onNext();
+            },
+          },
+        ]);
+      } else {
+        console.log("Registration failed:", result.message);
+        Alert.alert("Registration Failed", result.message);
+      }
+    } catch (error) {
+      console.error("Registration error:", error);
+      Alert.alert("Error", "An unexpected error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -206,7 +295,7 @@ export const WelcomeScreenComponent: React.FC<WelcomeScreenComponentProps> = ({
                     },
                   ]}
                 >
-                  Let's get started 🚀
+                  Let&apos;s get started 🚀
                 </ThemedText>
               </View>
 
@@ -324,17 +413,34 @@ export const WelcomeScreenComponent: React.FC<WelcomeScreenComponentProps> = ({
                 styles.primaryButton,
                 {
                   shadowColor: Colors.light.primary,
+                  opacity: isLoading ? 0.7 : 1,
                 },
               ]}
               onPress={handleSignUp}
               activeOpacity={0.8}
+              disabled={isLoading}
             >
               <View style={styles.buttonGradient} />
               <View style={styles.buttonContent}>
-                <ThemedText style={styles.primaryButtonText}>
-                  Get Started
-                </ThemedText>
-                <ThemedText style={styles.buttonEmoji}>🚀</ThemedText>
+                {isLoading ? (
+                  <>
+                    <ActivityIndicator
+                      size="small"
+                      color={Colors.light.backgroundCard}
+                      style={{ marginRight: 8 }}
+                    />
+                    <ThemedText style={styles.primaryButtonText}>
+                      Creating Account...
+                    </ThemedText>
+                  </>
+                ) : (
+                  <>
+                    <ThemedText style={styles.primaryButtonText}>
+                      Get Started
+                    </ThemedText>
+                    <ThemedText style={styles.buttonEmoji}>🚀</ThemedText>
+                  </>
+                )}
               </View>
             </TouchableOpacity>
 
@@ -350,24 +456,53 @@ export const WelcomeScreenComponent: React.FC<WelcomeScreenComponentProps> = ({
                     colorScheme === "dark"
                       ? Colors.dark.border
                       : Colors.light.border,
+                  opacity: isLoading ? 0.7 : 1,
                 },
               ]}
               onPress={handleSignIn}
               activeOpacity={0.7}
+              disabled={isLoading}
             >
-              <ThemedText
-                style={[
-                  styles.secondaryButtonText,
-                  {
-                    color:
+              {isLoading ? (
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <ActivityIndicator
+                    size="small"
+                    color={
                       colorScheme === "dark"
                         ? Colors.dark.primaryLight
-                        : Colors.light.primary,
-                  },
-                ]}
-              >
-                Already have an account? Sign In
-              </ThemedText>
+                        : Colors.light.primary
+                    }
+                    style={{ marginRight: 8 }}
+                  />
+                  <ThemedText
+                    style={[
+                      styles.secondaryButtonText,
+                      {
+                        color:
+                          colorScheme === "dark"
+                            ? Colors.dark.primaryLight
+                            : Colors.light.primary,
+                      },
+                    ]}
+                  >
+                    Signing In...
+                  </ThemedText>
+                </View>
+              ) : (
+                <ThemedText
+                  style={[
+                    styles.secondaryButtonText,
+                    {
+                      color:
+                        colorScheme === "dark"
+                          ? Colors.dark.primaryLight
+                          : Colors.light.primary,
+                    },
+                  ]}
+                >
+                  Already have an account? Sign In
+                </ThemedText>
+              )}
             </TouchableOpacity>
           </View>
         </Animated.View>
