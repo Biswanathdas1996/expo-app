@@ -222,4 +222,65 @@ export class ApiService {
       };
     }
   }
+
+  /**
+   * Update user's learning goals
+   */
+  static async updateLearningGoals(learningGoals: string[]) {
+    try {
+      // Get current user session and tokens
+      const tokens = await AuthService.getUserTokens();
+
+      if (!tokens.sessionId) {
+        throw new Error("No session ID found. Please log in again.");
+      }
+
+      // Map purpose names to API-compatible format
+      const goalMapping: Record<string, string> = {
+        "Job/Business": "career_advancement",
+        Abroad: "travel",
+        "Improve skills": "skill_improvement",
+        Academic: "education",
+        Practise: "practice",
+        Pronunciation: "pronunciation",
+        "CEFR Test": "test_preparation",
+        Other: "other",
+      };
+
+      const mappedGoals = learningGoals.map(
+        (goal) => goalMapping[goal] || goal.toLowerCase().replace(/\s+/g, "_")
+      );
+
+      const requestBody = {
+        sessionId: tokens.sessionId,
+        learningGoals: mappedGoals,
+      };
+
+      console.log("Updating learning goals:", requestBody);
+
+      const response = await this.put("/api/user/learning-goals", requestBody);
+
+      console.log("Learning goals update response:", response);
+
+      return {
+        success: true,
+        message: response.message || "Learning goals updated successfully",
+        data: response,
+      };
+    } catch (error) {
+      console.error("Learning goals update error:", error);
+
+      if (error instanceof Error) {
+        return {
+          success: false,
+          message: error.message,
+        };
+      }
+
+      return {
+        success: false,
+        message: ERROR_MESSAGES.UNKNOWN_ERROR,
+      };
+    }
+  }
 }

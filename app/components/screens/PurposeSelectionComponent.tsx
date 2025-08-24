@@ -22,11 +22,18 @@ const purposes: Option[] = [
 interface PurposeSelectionComponentProps extends ScreenProps {
   selectedPurposes: string[];
   onPurposeToggle: (purpose: string) => void;
+  isLoading?: boolean;
 }
 
 export const PurposeSelectionComponent: React.FC<
   PurposeSelectionComponentProps
-> = ({ onNext, selectedPurposes, onPurposeToggle, isSpeaking = false }) => {
+> = ({
+  onNext,
+  selectedPurposes,
+  onPurposeToggle,
+  isSpeaking = false,
+  isLoading = false,
+}) => {
   return (
     <View style={sharedStyles.gradientContainer}>
       <View style={sharedStyles.gradientBackground} />
@@ -132,9 +139,9 @@ export const PurposeSelectionComponent: React.FC<
           </View>
 
           <ModernButton
-            title="Continue"
+            title={isLoading ? "Saving..." : "Continue"}
             onPress={onNext}
-            disabled={selectedPurposes.length === 0}
+            disabled={selectedPurposes.length === 0 || isLoading}
           />
         </View>
       </ScrollView>

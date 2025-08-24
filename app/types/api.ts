@@ -56,6 +56,16 @@ export interface EnglishLevelUpdateResponse extends ApiResponse {
   englishLevel?: string;
 }
 
+export interface LearningGoalsUpdateRequest {
+  sessionId: string;
+  learningGoals: string[];
+}
+
+export interface LearningGoalsUpdateResponse extends ApiResponse {
+  sessionId?: string;
+  learningGoals?: string[];
+}
+
 // Storage Types
 export interface UserSession {
   user: User;

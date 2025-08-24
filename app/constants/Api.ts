@@ -10,6 +10,7 @@ export const API_CONFIG = {
     },
     USER: {
       ENGLISH_LEVEL: "/api/user/english-level",
+      LEARNING_GOALS: "/api/user/learning-goals",
     },
   },
   TIMEOUT: 10000, // 10 seconds

@@ -25,27 +25,38 @@ export const useOnboarding = () => {
     ];
     const currentIndex = steps.indexOf(currentStep);
 
-    // If moving from level selection, update the API
-    if (currentStep === "level" && userAnswers.level) {
-      setIsLoading(true);
-      try {
+    setIsLoading(true);
+    try {
+      // If moving from level selection, update the API
+      if (currentStep === "level" && userAnswers.level) {
         const result = await ApiService.updateEnglishLevel(userAnswers.level);
         if (!result.success) {
           console.error("Failed to update English level:", result.message);
           // You might want to show an error message to the user here
         }
-      } catch (error) {
-        console.error("Error updating English level:", error);
-        // You might want to show an error message to the user here
-      } finally {
-        setIsLoading(false);
       }
+
+      // If moving from purpose selection, update the learning goals API
+      if (currentStep === "purpose" && userAnswers.purpose.length > 0) {
+        const result = await ApiService.updateLearningGoals(
+          userAnswers.purpose
+        );
+        if (!result.success) {
+          console.error("Failed to update learning goals:", result.message);
+          // You might want to show an error message to the user here
+        }
+      }
+    } catch (error) {
+      console.error("Error updating user data:", error);
+      // You might want to show an error message to the user here
+    } finally {
+      setIsLoading(false);
     }
 
     if (currentIndex < steps.length - 1) {
       setCurrentStep(steps[currentIndex + 1]);
     }
-  }, [currentStep, userAnswers.level]);
+  }, [currentStep, userAnswers.level, userAnswers.purpose]);
 
   const handleLevelSelect = useCallback((level: string) => {
     setUserAnswers((prev) => ({ ...prev, level }));

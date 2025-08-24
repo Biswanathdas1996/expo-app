@@ -71,6 +71,7 @@ export default function WelcomeScreen() {
             selectedPurposes={userAnswers.purpose}
             onPurposeToggle={handlePurposeToggle}
             isSpeaking={isSpeaking}
+            isLoading={isLoading}
           />
         );
       case "skills":
